@@ -1,9 +1,6 @@
 import 'package:fincabay_application/configs/colors.dart';
 import 'package:fincabay_application/configs/text_styles.dart';
-import 'package:fincabay_application/helper_services/navigation_services.dart';
 import 'package:fincabay_application/helper_widgets/custom_button.dart';
-import 'package:fincabay_application/helper_widgets/custom_drop_down.dart';
-import 'package:fincabay_application/helper_widgets/custom_text_field.dart';
 import 'package:fincabay_application/helper_widgets/house_details.dart';
 import 'package:fincabay_application/screens/home_dashboard/dashboard_widgets/property_details_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -73,7 +70,7 @@ class _AreaSizeDetailsScreenState extends State<AreaSizeDetailsScreen> {
             children: <Widget>[
 
               Container(
-                width: MediaQuery.of(context).size.width/2.3,
+                width: MediaQuery.of(context).size.width/2.1,
                 child: Card(
                   child: DropdownButtonFormField(
                     decoration: InputDecoration(
@@ -108,7 +105,7 @@ class _AreaSizeDetailsScreenState extends State<AreaSizeDetailsScreen> {
                     ),
                   ))),
               Container(
-                width: MediaQuery.of(context).size.width/1.7,
+                width: MediaQuery.of(context).size.width/1.5,
                 child: Card(
                   child: DropdownButtonFormField(
                     decoration: InputDecoration(

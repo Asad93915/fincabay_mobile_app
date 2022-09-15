@@ -75,7 +75,7 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
         ),
       ),
       bottomNavigationBar: Container(
-        height: MediaQuery.of(context).size.height/10.9,
+        height: MediaQuery.of(context).size.height/10.2,
         child: BottomAppBar(
 
           shape: CircularNotchedRectangle(), //shape of notch

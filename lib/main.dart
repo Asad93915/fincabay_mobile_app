@@ -4,6 +4,7 @@ import 'package:fincabay_application/providers/commercial_area_type_service.dart
 import 'package:fincabay_application/providers/plot_type_provider.dart';
 import 'package:fincabay_application/screens/auth/login_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -27,7 +28,10 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
-
+          useMaterial3:  false,
+          textTheme: GoogleFonts.poppinsTextTheme(
+            Theme.of(context).textTheme
+          ),
           primarySwatch: Colors.blue,
         ),
         home: LoginScreen(),

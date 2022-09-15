@@ -19,10 +19,10 @@ class AreaSizeWidget extends StatelessWidget {
       child: Container(
 
         margin: EdgeInsets.symmetric(vertical:8.0,horizontal: 5.0),
-        padding: EdgeInsets.symmetric(vertical: 8.0),
+        padding: EdgeInsets.symmetric(vertical: 6.0),
         alignment: Alignment.center,
         width: MediaQuery.of(context).size.width/4.0,
-        height: MediaQuery.of(context).size.height/11.0,
+        height: MediaQuery.of(context).size.height/11.2,
         decoration: BoxDecoration(
           border: Border.all(
             color: black26,
