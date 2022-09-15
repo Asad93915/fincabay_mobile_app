@@ -7,6 +7,7 @@ const Color lightBlackColor=Colors.black54;
 const Color greenColor=Colors.green;
 const Color bgColor=Color(0xFF29489C);
 const Color lightBlueColor=Color(0xFF279FDA);
+const Color pkrColor=Color(0xFF2958A7);
 const Color barColor=Color(0xFFF7F7F7);
 const Color black26=Colors.black26;
 const Color drawerColor=Color(0xFFBECDDB);
