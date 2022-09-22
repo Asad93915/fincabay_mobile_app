@@ -1,8 +1,8 @@
 import 'package:fincabay_application/configs/colors.dart';
 import 'package:fincabay_application/configs/text_styles.dart';
-import 'package:fincabay_application/helper_widgets/custom_text_field.dart';
 import 'package:fincabay_application/screens/custom_drawer_screen.dart';
 import 'package:fincabay_application/screens/home_dashboard/dashboard_widgets/dashboard_widgets.dart';
+import 'package:fincabay_application/screens/home_dashboard/dashboard_widgets/new_project_screen.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -61,6 +61,11 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
           ),
           iconTheme: IconThemeData(color: Colors.transparent),
         ),
+      ):selectedIndex==1?AppBar(
+        backgroundColor: bgColor,
+        leading: Builder(builder: (context)=>IconButton(onPressed: (){}, icon: Icon(Icons.menu)),
+        ),
+        title: Text("New Projects",style: barStyle,),
       ):AppBar(),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
       floatingActionButton:SizedBox(
@@ -137,7 +142,7 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
             if(selectedIndex==0)
               DashboardWidget(),
             if(selectedIndex==1)
-              Text("Acvj sdvbnv",style: titleStyle,)
+           NewProjectsScreen()
           ],
         ),
       )

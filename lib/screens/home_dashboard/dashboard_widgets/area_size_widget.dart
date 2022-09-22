@@ -1,16 +1,16 @@
 
 
 import 'package:fincabay_application/configs/colors.dart';
+import 'package:fincabay_application/models/get_all_area_unit_model.dart';
 import 'package:flutter/material.dart';
 
 import '../../../configs/text_styles.dart';
 import '../../../models/area_type_model.dart';
 
 class AreaSizeWidget extends StatelessWidget {
-  final String area;
-  final String areaType;
+  AreaUnit areaUnitModel;
   final Function()?onTap;
-   AreaSizeWidget({required this.area, required this.areaType, this.onTap});
+   AreaSizeWidget({required this.areaUnitModel, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +33,8 @@ class AreaSizeWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(area,style: labelStyle2,),
-            Text(areaType,style: TextStyle(color: lightBlackColor,fontSize: 14.0,height: 1.6),)
+            Text(areaUnitModel.name!,style: labelStyle2,),
+            // Text(areaType,style: TextStyle(color: lightBlackColor,fontSize: 14.0,height: 1.6),)
           ],
         ),
       ),
@@ -63,9 +63,9 @@ class AreaTypeWidget extends StatelessWidget {
     );
   }
 }
-class LocationWidget extends StatelessWidget {
+class LocationWidget1 extends StatelessWidget {
   final String locationName;
-  LocationWidget({required this.locationName});
+  LocationWidget1({required this.locationName});
 
   @override
   Widget build(BuildContext context) {

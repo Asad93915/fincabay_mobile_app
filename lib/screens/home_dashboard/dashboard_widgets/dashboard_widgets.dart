@@ -110,11 +110,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
               PlotWidget(),
               if(_selectedIndex==2)
                 CommercialWidget(),
-
-
-
-
-
+            
           ],
         ),
       ),

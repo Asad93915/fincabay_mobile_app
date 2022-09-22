@@ -1,7 +1,10 @@
 import 'package:fincabay_application/providers/area_size_provider.dart';
 import 'package:fincabay_application/providers/area_type_provider.dart';
+import 'package:fincabay_application/providers/cities_provider.dart';
 import 'package:fincabay_application/providers/commercial_area_type_service.dart';
+import 'package:fincabay_application/providers/get_all_area_unit_provider.dart';
 import 'package:fincabay_application/providers/plot_type_provider.dart';
+import 'package:fincabay_application/providers/user_data_provider.dart';
 import 'package:fincabay_application/screens/auth/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -19,10 +22,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (context)=>GetAllAreaUnitProvider()),
         ChangeNotifierProvider(create: (context)=>AreaSizeProvider()),
         ChangeNotifierProvider(create: (context)=>AreaTypeProvider()),
         ChangeNotifierProvider(create: (context)=>PlotTypeProvider()),
-        ChangeNotifierProvider(create: (context)=>CommercialAreaTypeProvider())
+        ChangeNotifierProvider(create: (context)=>CommercialAreaTypeProvider()),
+        ChangeNotifierProvider(create: (context)=>UserDataProvider()),
+        ChangeNotifierProvider(create: (context)=>CitiesProvider())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

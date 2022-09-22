@@ -5,6 +5,7 @@ import 'package:fincabay_application/helper_services/custom_loader.dart';
 import 'package:fincabay_application/models/commercial_area_type_model.dart';
 import 'package:fincabay_application/providers/area_type_provider.dart';
 import 'package:fincabay_application/providers/commercial_area_type_service.dart';
+import 'package:fincabay_application/utils/cities_handler.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
@@ -12,8 +13,10 @@ import 'package:provider/provider.dart';
 import '../../../configs/text_styles.dart';
 import '../../../helper_widgets/custom_browse_properties_widgets.dart';
 
+import '../../../providers/cities_provider.dart';
 import '../../../services/commercial_area_type_service.dart';
 import 'area_size_widget.dart';
+import 'location_widget.dart';
 
 class CommercialWidget extends StatefulWidget {
   const CommercialWidget({Key? key}) : super(key: key);
@@ -33,12 +36,13 @@ class _CommercialWidgetState extends State<CommercialWidget> {
 
   int _selectedType=0;
   List<String> _locationList=[
-    "DHA Phase 6","DHA Phase 5","DHA Phase 7","Bahria Town Sector C","Bahria Town Sector B","Johar Town"
+    "Lahore","Karachi","Islamabad", "Lahore","Karachi","Islamabad",
   ];
   @override
   void initState() {
     // TODO: implement initState
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      citiesHandler(context);
       _getCommercialHandler();
     });
     setState((){});
@@ -63,7 +67,7 @@ class _CommercialWidgetState extends State<CommercialWidget> {
               },
             ),
             CustomTypeWidget(
-              title: "Location",
+              title: "Cities",
               selectedColor: _selectedType == 1 ? true : false,
               onTap: () {
                 _selectedType = 1;
@@ -99,36 +103,30 @@ class _CommercialWidgetState extends State<CommercialWidget> {
             );
           }),
         if(_selectedType==1)
-          SizedBox(
-            width: double.infinity,
-            height: MediaQuery.of(context).size.height/4.5,
-            child: Center(
-              child: GridView.builder(
-                  padding: EdgeInsets.symmetric(vertical: 10.0),
-                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                      mainAxisExtent: 60.0,
-                      maxCrossAxisExtent: 100,
-                      childAspectRatio: 1.5,
-                      crossAxisSpacing: 20,
-                      mainAxisSpacing: 10
+          Consumer<CitiesProvider>(builder: (context,city,_){
+            return    SizedBox(
+              width: double.infinity,
+              height: MediaQuery.of(context).size.height/4.5,
+              child: Center(
+                child: GridView.builder(
+                    padding: EdgeInsets.symmetric(vertical: 10.0),
+                    gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                        mainAxisExtent: 60.0,
+                        maxCrossAxisExtent: 100,
+                        childAspectRatio: 1.5,
+                        crossAxisSpacing: 20,
+                        mainAxisSpacing: 10
 
-                  ),
-                  itemCount: _locationList.length,
-                  itemBuilder: (BuildContext ctx, index) {
-                    return Container(
-
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: black26,
-                        ),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      child: Text(_locationList[index],textAlign: TextAlign.center,),
-                    );
-                  }),
-            ),
-          ),
+                    ),
+                    itemCount: city.city!.length,
+                    itemBuilder: (BuildContext ctx, index) {
+                      return CitiesWidget(
+                        cities: city.city![index],
+                      );
+                    }),
+              ),
+            );
+          }),
         if(_selectedType==2)
           Consumer<AreaTypeProvider>(builder: (context,type,_){
             List<Widget> widgets=[];

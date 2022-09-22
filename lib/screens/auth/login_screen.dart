@@ -1,10 +1,12 @@
 import 'package:fincabay_application/configs/colors.dart';
+import 'package:fincabay_application/helper_services/custom_loader.dart';
 import 'package:fincabay_application/helper_services/custom_snackbar.dart';
 import 'package:fincabay_application/helper_services/navigation_services.dart';
 import 'package:fincabay_application/helper_widgets/custom_button.dart';
 import 'package:fincabay_application/helper_widgets/custom_text_field.dart';
 import 'package:fincabay_application/screens/auth/forget_password_screen.dart';
 import 'package:fincabay_application/screens/auth/registration_screen.dart';
+import 'package:fincabay_application/services/login_api_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -20,8 +22,23 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  TextEditingController _emailCont = TextEditingController();
-  TextEditingController _passwordCont = TextEditingController();
+
+  _loginHandler()async{
+    CustomLoader.showLoader(context: context);
+   var res= await LoginApiService().getLogin(context: context, userName: _emailCont.text, password: _passwordCont.text);
+   CustomLoader.hideLoader(context);
+   if(res){
+     NavigationServices.goNextAndKeepHistory(context: context, widget: HomeDashboardScreen());
+
+   }
+  }
+
+  TextEditingController _emailCont = TextEditingController(
+    text: "l.lotfy@almajed4oud.com"
+  );
+  TextEditingController _passwordCont = TextEditingController(
+    text: "Almajed4oud@123"
+  );
   FocusNode _emailFocus = FocusNode();
   FocusNode _passwordFocus = FocusNode();
 
@@ -103,8 +120,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     horizontalMargin: 6.0,
                     fontWeight: FontWeight.w800,
                     onTap: () {
-                      NavigationServices.goNextAndKeepHistory(context: context, widget: HomeDashboardScreen());
-                      // _validateLogin();
+                      if(_validateLogin()){
+                        _loginHandler();
+                        setState((){});
+                      }
                       setState(() {});
                     },
                   ),

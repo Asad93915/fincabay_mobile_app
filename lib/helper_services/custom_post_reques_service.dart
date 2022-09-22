@@ -9,12 +9,15 @@ class PostRequestService{
   Future httpPostRequest({required String url,required Map body,required BuildContext context})async{
     print("post request url $url");
     try{
-      http.Response response=await http.post(Uri.parse(url),body: json.encode(body),);
+      var headers={
+        "Content-Type":"application/json"
+      };
+      http.Response response=await http.post(Uri.parse(url),body: json.encode(body),headers: headers);
       print("post request status cose ${response.statusCode}");
       print("post request body ${response.body}");
       var jsonDecoded=json.decode(response.body);
-      if(jsonDecoded==null){
-        CustomSnackBar.failedSnackBar(context: context, message: jsonDecoded['message']);
+      if(jsonDecoded==null || jsonDecoded['ResultType']!=1){
+        CustomSnackBar.failedSnackBar(context: context, message: jsonDecoded['Message']);
         return null;
       }
       else{

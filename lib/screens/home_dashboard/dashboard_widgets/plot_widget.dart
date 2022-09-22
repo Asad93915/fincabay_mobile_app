@@ -1,8 +1,11 @@
 
 import 'package:fincabay_application/configs/text_styles.dart';
 import 'package:fincabay_application/models/plot_type_model.dart';
+import 'package:fincabay_application/providers/cities_provider.dart';
+import 'package:fincabay_application/screens/home_dashboard/dashboard_widgets/location_widget.dart';
 import 'package:fincabay_application/services/area_type_service.dart';
 import 'package:fincabay_application/services/plot_type_service.dart';
+import 'package:fincabay_application/utils/cities_handler.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -28,14 +31,13 @@ class _PlotWidgetState extends State<PlotWidget> {
     CustomLoader.hideLoader(context);
   }
   int _selectedType=0;
-  List<String> _locationList=[
-    "DHA Phase 6","DHA Phase 5","DHA Phase 7","Bahria Town Sector C","Bahria Town Sector B","Johar Town"
-  ];
+
 
   @override
   void initState() {
     // TODO: implement initState
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      citiesHandler(context);
       _plotHandler();
       setState((){});
     });
@@ -60,7 +62,7 @@ class _PlotWidgetState extends State<PlotWidget> {
               },
             ),
             CustomTypeWidget(
-              title: "Location",
+              title: "Cities",
               selectedColor: _selectedType == 1 ? true : false,
               onTap: () {
                 _selectedType = 1;
@@ -68,7 +70,7 @@ class _PlotWidgetState extends State<PlotWidget> {
               },
             ),
             CustomTypeWidget(
-              title: "Area Type",
+              title: "Area Size",
               selectedColor: _selectedType == 2 ? true : false,
               onTap: () {
                 _selectedType = 2;
@@ -94,36 +96,30 @@ class _PlotWidgetState extends State<PlotWidget> {
             );
           }),
         if(_selectedType==1)
-          SizedBox(
-            width: double.infinity,
-            height: MediaQuery.of(context).size.height/4.5,
-            child: Center(
-              child: GridView.builder(
-                  padding: EdgeInsets.symmetric(vertical: 10.0),
-                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                      mainAxisExtent: 60.0,
-                      maxCrossAxisExtent: 100,
-                      childAspectRatio: 1.5,
-                      crossAxisSpacing: 20,
-                      mainAxisSpacing: 10
+       Consumer<CitiesProvider>(builder: (context,city,_){
+         return    SizedBox(
+           width: double.infinity,
+           height: MediaQuery.of(context).size.height/4.5,
+           child: Center(
+             child: GridView.builder(
+                 padding: EdgeInsets.symmetric(vertical: 10.0),
+                 gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                     mainAxisExtent: 60.0,
+                     maxCrossAxisExtent: 100,
+                     childAspectRatio: 1.5,
+                     crossAxisSpacing: 20,
+                     mainAxisSpacing: 10
 
-                  ),
-                  itemCount: _locationList.length,
-                  itemBuilder: (BuildContext ctx, index) {
-                    return Container(
-
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.black26,
-                        ),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      child: Text(_locationList[index],textAlign: TextAlign.center,),
-                    );
-                  }),
-            ),
-          ),
+                 ),
+                 itemCount: city.city!.length,
+                 itemBuilder: (BuildContext ctx, index) {
+                   return CitiesWidget(
+                     cities: city.city![index],
+                   );
+                 }),
+           ),
+         );
+       }),
         if(_selectedType==2)
 
           Consumer<AreaTypeProvider>(builder: (context,type,_){

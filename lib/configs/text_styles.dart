@@ -24,3 +24,4 @@ const TextStyle iconStyle=TextStyle(color: lightBlackColor,fontSize: 14.0,height
 const TextStyle propertyNameStyle=TextStyle(color: Colors.green,fontSize: 14.0,fontWeight: FontWeight.w500);
 const TextStyle priceStyle=TextStyle(color: pkrColor,fontSize: 20.0,fontWeight: FontWeight.w700,height: 1.5);
 const TextStyle lessStyle=TextStyle(color: bgColor,fontSize: 14.0,fontWeight: FontWeight.w600);
+const TextStyle pKrStyle=TextStyle(color: blackColor,fontSize: 10.0,fontWeight: FontWeight.w500,);

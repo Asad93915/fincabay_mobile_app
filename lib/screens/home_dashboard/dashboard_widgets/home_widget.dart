@@ -1,15 +1,23 @@
 
 
+import 'package:fincabay_application/helper_services/custom_loader.dart';
 import 'package:fincabay_application/helper_services/navigation_services.dart';
+import 'package:fincabay_application/providers/cities_provider.dart';
+import 'package:fincabay_application/providers/get_all_area_unit_provider.dart';
+import 'package:fincabay_application/services/cities_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../helper_widgets/custom_browse_properties_widgets.dart';
+import '../../../models/cities_model.dart';
 import '../../../providers/area_size_provider.dart';
 import '../../../providers/area_type_provider.dart';
+import '../../../services/get_all_area_unit_service.dart';
+import '../../../utils/cities_handler.dart';
 import 'area_size_details_screen.dart';
 import 'area_size_widget.dart';
+import 'location_widget.dart';
 
 class HomeWidget extends StatefulWidget {
   const HomeWidget({Key? key}) : super(key: key);
@@ -20,9 +28,24 @@ class HomeWidget extends StatefulWidget {
 
 class _HomeWidgetState extends State<HomeWidget> {
   int _selectedType = 0;
-  List<String> _locationList=[
-    "DHA Phase 6","DHA Phase 5","DHA Phase 7","Bahria Town Sector C","Bahria Town Sector B","Johar Town"
-  ];
+
+_getAllAreaUnitHandler()async{
+  CustomLoader.showLoader(context: context);
+ await  GetAllAreaUnitService().getAreaUnit(context: context);
+ print("Asad");
+  CustomLoader.hideLoader(context);
+}
+  @override
+  void initState() {
+    // TODO: implement initState
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async{
+      _getAllAreaUnitHandler();
+   await  citiesHandler(context);
+      setState((){});
+    });
+    super.initState();
+
+  }
   @override
   Widget build(BuildContext context) {
     return  Column(
@@ -34,7 +57,7 @@ class _HomeWidgetState extends State<HomeWidget> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CustomTypeWidget(
-              title: "Area Size",
+              title: "Area Unit",
               selectedColor: _selectedType == 0 ? true : false,
               onTap: () {
                 _selectedType = 0;
@@ -50,7 +73,7 @@ class _HomeWidgetState extends State<HomeWidget> {
               },
             ),
             CustomTypeWidget(
-              title: "Location",
+              title: "Cities",
               selectedColor: _selectedType == 2 ? true : false,
               onTap: () {
                 _selectedType = 2;
@@ -60,16 +83,15 @@ class _HomeWidgetState extends State<HomeWidget> {
           ],
         ),
         if(_selectedType==0)
-          Consumer<AreaSizeProvider>(builder: (context,areas,_){
+          Consumer<GetAllAreaUnitProvider>(builder: (context,areas,_){
             List<Widget>widgets=[];
 
-            areas.area!.forEach((element) {
+            areas.areaUnit!.forEach((element) {
               widgets.add( AreaSizeWidget(
                 onTap: (){
                   NavigationServices.goNextAndKeepHistory(context: context, widget: AreaSizeDetailsScreen());
-                },
-                area: element.totalArea==null?"amdm":element.totalArea!,
-                areaType: element.areaType==null?"andjabd":element.areaType!,
+                }, areaUnitModel: element,
+
 
               ));
             });
@@ -99,38 +121,33 @@ class _HomeWidgetState extends State<HomeWidget> {
             );
           }),
         if(_selectedType==2)
-          SizedBox(
-            width: double.infinity,
-            height: MediaQuery.of(context).size.height/4.5,
-            child: Center(
-              child: GridView.builder(
-                  padding: EdgeInsets.symmetric(vertical: 10.0),
-                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                      mainAxisExtent: 60.0,
-                      maxCrossAxisExtent: 100,
-                      childAspectRatio: 1.5,
-                      crossAxisSpacing: 20,
-                      mainAxisSpacing: 10
+         Consumer<CitiesProvider>(builder: (context,cities,_){
+           return  SizedBox(
+             width: double.infinity,
+             height: MediaQuery.of(context).size.height/4.5,
+             child: Center(
+               child: GridView.builder(
+                   padding: EdgeInsets.symmetric(vertical: 10.0),
+                   gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                       mainAxisExtent: 60.0,
+                       maxCrossAxisExtent: 100,
+                       childAspectRatio: 1.5,
+                       crossAxisSpacing: 20,
+                       mainAxisSpacing: 10
 
-                  ),
-                  itemCount: _locationList.length,
-                  itemBuilder: (BuildContext ctx, index) {
-                    return Container(
-
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.black26,
-                        ),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      child: Text(_locationList[index],textAlign: TextAlign.center,),
-                    );
-                  }),
-            ),
-          ),
+                   ),
+                   itemCount: cities.city!.length,
+                   itemBuilder: (BuildContext ctx, index) {
+                     return CitiesWidget(
+                       cities: cities.city![index],
+                     );
+                   }),
+             ),
+           );
+         })
 
       ],
     );
   }
 }
+

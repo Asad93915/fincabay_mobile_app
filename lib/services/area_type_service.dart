@@ -13,23 +13,23 @@ class AreaTypeService{
         "message": "success",
         "data":[
           {
-            "areaType":"Houses"
+            "areaType":"3 Marla"
           },
           {
-            "areaType":"Flats"
+            "areaType":"5 Marla"
           },
           {
-            "areaType":"Upper\nPortion"
+            "areaType":"8 Marla"
           },
           {
-            "areaType":"Lower\nPortion"
+            "areaType":"10 Marla"
           },
           {
-            "areaType":"Farmhouse"
+            "areaType":"12 Marla"
           },
           {
 
-            "areaType":"Penthouse"
+            "areaType":"15 Marla"
           },
         ]
       };
