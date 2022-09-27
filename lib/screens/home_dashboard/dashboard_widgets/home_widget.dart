@@ -1,20 +1,16 @@
 
 
-import 'package:fincabay_application/helper_services/custom_loader.dart';
 import 'package:fincabay_application/helper_services/navigation_services.dart';
 import 'package:fincabay_application/providers/cities_provider.dart';
 import 'package:fincabay_application/providers/get_all_area_unit_provider.dart';
-import 'package:fincabay_application/services/cities_service.dart';
+import 'package:fincabay_application/providers/property_type_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../helper_widgets/custom_browse_properties_widgets.dart';
-import '../../../models/cities_model.dart';
-import '../../../providers/area_size_provider.dart';
-import '../../../providers/area_type_provider.dart';
-import '../../../services/get_all_area_unit_service.dart';
-import '../../../utils/cities_handler.dart';
+
+import '../../../utils/handlers.dart';
 import 'area_size_details_screen.dart';
 import 'area_size_widget.dart';
 import 'location_widget.dart';
@@ -29,17 +25,13 @@ class HomeWidget extends StatefulWidget {
 class _HomeWidgetState extends State<HomeWidget> {
   int _selectedType = 0;
 
-_getAllAreaUnitHandler()async{
-  CustomLoader.showLoader(context: context);
- await  GetAllAreaUnitService().getAreaUnit(context: context);
- print("Asad");
-  CustomLoader.hideLoader(context);
-}
+
   @override
   void initState() {
     // TODO: implement initState
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async{
-      _getAllAreaUnitHandler();
+      getAllAreaUnitHandler(context);
+      propertyTypeHandler(context);
    await  citiesHandler(context);
       setState((){});
     });
@@ -105,11 +97,11 @@ _getAllAreaUnitHandler()async{
 
           }),
         if(_selectedType==1)
-          Consumer<AreaTypeProvider>(builder: (context,type,_){
+          Consumer<PropertyTypeProvider>(builder: (context,type,_){
             List<Widget> widgets=[];
-            type.areaType!.forEach((element) {
-              widgets.add(AreaTypeWidget(
-                areaType: element,
+            type.propertyType!.forEach((element) {
+              widgets.add(PropertyTypeWidget(
+              type: element,
               ));
             });
             return Center(

@@ -1,18 +1,13 @@
 import 'package:fincabay_application/configs/text_styles.dart';
-import 'package:fincabay_application/providers/area_size_provider.dart';
 import 'package:fincabay_application/screens/home_dashboard/dashboard_widgets/home_widget.dart';
 import 'package:fincabay_application/screens/home_dashboard/dashboard_widgets/plot_widget.dart';
-import 'package:fincabay_application/services/area_size_service.dart';
-import 'package:fincabay_application/services/area_type_service.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-import '../../../configs/colors.dart';
 import '../../../helper_services/custom_loader.dart';
 import '../../../helper_widgets/custom_browse_properties_widgets.dart';
-import '../../../providers/area_type_provider.dart';
-import 'area_size_widget.dart';
+
 import 'commercial_widgets.dart';
 
 class DashboardWidget extends StatefulWidget {
@@ -26,19 +21,12 @@ class _DashboardWidgetState extends State<DashboardWidget> {
   int _selectedIndex = 0;
 
 
-  _areaSizeHandler()async{
-    CustomLoader.showLoader(context: context);
-    await AreaSizeService().getArea(context: context);
-    await AreaTypeService().getAreaType(context: context);
 
-    CustomLoader.hideLoader(context);
-  }
   @override
   void initState() {
     // TODO: implement initState
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _areaSizeHandler();
-      print(_areaSizeHandler());
+
       setState((){});
     });
     super.initState();

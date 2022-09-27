@@ -16,12 +16,14 @@ class PostRequestService{
       print("post request status cose ${response.statusCode}");
       print("post request body ${response.body}");
       var jsonDecoded=json.decode(response.body);
-      if(jsonDecoded==null || jsonDecoded['ResultType']!=1){
-        CustomSnackBar.failedSnackBar(context: context, message: jsonDecoded['Message']);
+      if(jsonDecoded==null || jsonDecoded['status']!=1){
+        CustomSnackBar.failedSnackBar(context: context, message: jsonDecoded['message']);
         return null;
       }
       else{
+        CustomSnackBar.showSnackBar(context: context, message: jsonDecoded['message']);
         return jsonDecoded;
+
       }
     }
         catch(err){

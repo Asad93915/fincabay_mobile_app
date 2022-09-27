@@ -2,10 +2,10 @@
 
 import 'package:fincabay_application/configs/colors.dart';
 import 'package:fincabay_application/models/get_all_area_unit_model.dart';
+import 'package:fincabay_application/models/property_type_model.dart';
 import 'package:flutter/material.dart';
 
 import '../../../configs/text_styles.dart';
-import '../../../models/area_type_model.dart';
 
 class AreaSizeWidget extends StatelessWidget {
   AreaUnit areaUnitModel;
@@ -41,9 +41,9 @@ class AreaSizeWidget extends StatelessWidget {
     );
   }
 }
-class AreaTypeWidget extends StatelessWidget {
-  AreaType areaType;
-  AreaTypeWidget({required this.areaType});
+class PropertyTypeWidget extends StatelessWidget {
+  PropertyType type;
+  PropertyTypeWidget({required this.type});
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +59,7 @@ class AreaTypeWidget extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(10.0),
       ),
-      child: Text(areaType.areaType!,style: labelStyle2,),
+      child: Text(type.type!,style: labelStyle2,),
     );
   }
 }

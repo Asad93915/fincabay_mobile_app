@@ -1,17 +1,17 @@
-class AreaTypeModel {
+class PropertyTypeModel {
   int? status;
   String? message;
-  List<AreaType>? data;
+  List<PropertyType>? data;
 
-  AreaTypeModel({this.status, this.message, this.data});
+  PropertyTypeModel({this.status, this.message, this.data});
 
-  AreaTypeModel.fromJson(Map<String, dynamic> json) {
+  PropertyTypeModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
     if (json['data'] != null) {
-      data = <AreaType>[];
+      data = <PropertyType>[];
       json['data'].forEach((v) {
-        data!.add(new AreaType.fromJson(v));
+        data!.add(new PropertyType.fromJson(v));
       });
     }
   }
@@ -27,19 +27,21 @@ class AreaTypeModel {
   }
 }
 
-class AreaType {
-  String? areaType;
+class PropertyType {
+  int? pTypeId;
+  String? type;
 
-  AreaType({this.areaType});
+  PropertyType({this.pTypeId, this.type});
 
-  AreaType.fromJson(Map<String, dynamic> json) {
-    areaType = json['areaType'];
+  PropertyType.fromJson(Map<String, dynamic> json) {
+    pTypeId = json['pTypeId'];
+    type = json['type'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-
-    data['areaType'] = this.areaType;
+    data['pTypeId'] = this.pTypeId;
+    data['type'] = this.type;
     return data;
   }
 }
