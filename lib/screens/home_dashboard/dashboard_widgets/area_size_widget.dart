@@ -30,10 +30,11 @@ class AreaSizeWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(10.0),
         ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(areaUnitModel.name!,style: labelStyle2,),
+
             // Text(areaType,style: TextStyle(color: lightBlackColor,fontSize: 14.0,height: 1.6),)
           ],
         ),

@@ -1,7 +1,7 @@
 
 import 'package:fincabay_application/providers/cities_provider.dart';
 import 'package:fincabay_application/providers/property_type_provider.dart';
-import 'package:fincabay_application/screens/home_dashboard/dashboard_widgets/location_widget.dart';
+import 'package:fincabay_application/screens/home_dashboard/dashboard_widgets/cities_widget.dart';
 
 import 'package:fincabay_application/utils/handlers.dart';
 import 'package:flutter/cupertino.dart';

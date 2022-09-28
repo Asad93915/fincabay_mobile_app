@@ -25,19 +25,19 @@ class _LoginScreenState extends State<LoginScreen> {
 
   _loginHandler()async{
     CustomLoader.showLoader(context: context);
-   var res= await LoginApiService().getLogin(context: context, userName: _emailCont.text, password: _passwordCont.text);
+   var res= await LoginApiService().getLogin(context: context, email: _emailCont.text, password: _passwordCont.text);
    CustomLoader.hideLoader(context);
    if(res){
-     NavigationServices.goNextAndKeepHistory(context: context, widget: HomeDashboardScreen());
+     NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: HomeDashboardScreen());
 
    }
   }
 
   TextEditingController _emailCont = TextEditingController(
-    text: "l.lotfy@almajed4oud.com"
+    text: "asadali@gmail.com"
   );
   TextEditingController _passwordCont = TextEditingController(
-    text: "Almajed4oud@123"
+    text: "Asad@123"
   );
   FocusNode _emailFocus = FocusNode();
   FocusNode _passwordFocus = FocusNode();

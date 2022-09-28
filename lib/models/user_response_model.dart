@@ -1,71 +1,96 @@
 class UserResponseModel {
-  Null? exception;
-  int? resultType;
+  int? status;
   String? message;
   UserModel? data;
-  Null? validationErrors;
 
-  UserResponseModel(
-      {this.exception,
-        this.resultType,
-        this.message,
-        this.data,
-        this.validationErrors});
+  UserResponseModel({this.status, this.message, this.data});
 
   UserResponseModel.fromJson(Map<String, dynamic> json) {
-    exception = json['Exception'];
-    resultType = json['ResultType'];
-    message = json['Message'];
-    data = json['Data'] != null ? new UserModel.fromJson(json['Data']) : null;
-    validationErrors = json['ValidationErrors'];
+    status = json['status'];
+    message = json['message'];
+    data = json['data'] != null ? new UserModel.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['Exception'] = this.exception;
-    data['ResultType'] = this.resultType;
-    data['Message'] = this.message;
+    data['status'] = this.status;
+    data['message'] = this.message;
     if (this.data != null) {
-      data['Data'] = this.data!.toJson();
+      data['data'] = this.data!.toJson();
     }
-    data['ValidationErrors'] = this.validationErrors;
     return data;
   }
 }
 
 class UserModel {
-  String? name;
-  String? userID;
-  int? empId;
-  String? token;
-  int? roleID;
-  String? roleName;
+  String? id;
+  String? userName;
+  String? normalizedUserName;
+  String? email;
+  String? normalizedEmail;
+  bool? emailConfirmed;
+  String? passwordHash;
+  String? securityStamp;
+  String? concurrencyStamp;
+  String? phoneNumber;
+  bool? phoneNumberConfirmed;
+  bool? twoFactorEnabled;
+  Null? lockoutEnd;
+  bool? lockoutEnabled;
+  int? accessFailedCount;
 
   UserModel(
-      {this.name,
-        this.userID,
-        this.empId,
-        this.token,
-        this.roleID,
-        this.roleName});
+      {this.id,
+        this.userName,
+        this.normalizedUserName,
+        this.email,
+        this.normalizedEmail,
+        this.emailConfirmed,
+        this.passwordHash,
+        this.securityStamp,
+        this.concurrencyStamp,
+        this.phoneNumber,
+        this.phoneNumberConfirmed,
+        this.twoFactorEnabled,
+        this.lockoutEnd,
+        this.lockoutEnabled,
+        this.accessFailedCount});
 
   UserModel.fromJson(Map<String, dynamic> json) {
-    name = json['Name'];
-    userID = json['UserID'];
-    empId = json['EmpId'];
-    token = json['Token'];
-    roleID = json['RoleID'];
-    roleName = json['RoleName'];
+    id = json['id'];
+    userName = json['userName'];
+    normalizedUserName = json['normalizedUserName'];
+    email = json['email'];
+    normalizedEmail = json['normalizedEmail'];
+    emailConfirmed = json['emailConfirmed'];
+    passwordHash = json['passwordHash'];
+    securityStamp = json['securityStamp'];
+    concurrencyStamp = json['concurrencyStamp'];
+    phoneNumber = json['phoneNumber'];
+    phoneNumberConfirmed = json['phoneNumberConfirmed'];
+    twoFactorEnabled = json['twoFactorEnabled'];
+    lockoutEnd = json['lockoutEnd'];
+    lockoutEnabled = json['lockoutEnabled'];
+    accessFailedCount = json['accessFailedCount'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['Name'] = this.name;
-    data['UserID'] = this.userID;
-    data['EmpId'] = this.empId;
-    data['Token'] = this.token;
-    data['RoleID'] = this.roleID;
-    data['RoleName'] = this.roleName;
+    data['id'] = this.id;
+    data['userName'] = this.userName;
+    data['normalizedUserName'] = this.normalizedUserName;
+    data['email'] = this.email;
+    data['normalizedEmail'] = this.normalizedEmail;
+    data['emailConfirmed'] = this.emailConfirmed;
+    data['passwordHash'] = this.passwordHash;
+    data['securityStamp'] = this.securityStamp;
+    data['concurrencyStamp'] = this.concurrencyStamp;
+    data['phoneNumber'] = this.phoneNumber;
+    data['phoneNumberConfirmed'] = this.phoneNumberConfirmed;
+    data['twoFactorEnabled'] = this.twoFactorEnabled;
+    data['lockoutEnd'] = this.lockoutEnd;
+    data['lockoutEnabled'] = this.lockoutEnabled;
+    data['accessFailedCount'] = this.accessFailedCount;
     return data;
   }
 }

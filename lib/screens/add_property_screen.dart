@@ -276,7 +276,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                       width: 35.0,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Colors.black12,
+                        color: black12,
                       ),
                       child: Icon(
                         Icons.photo,

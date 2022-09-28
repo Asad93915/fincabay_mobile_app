@@ -13,7 +13,7 @@ import '../../../helper_widgets/custom_browse_properties_widgets.dart';
 import '../../../utils/handlers.dart';
 import 'area_size_details_screen.dart';
 import 'area_size_widget.dart';
-import 'location_widget.dart';
+import 'cities_widget.dart';
 
 class HomeWidget extends StatefulWidget {
   const HomeWidget({Key? key}) : super(key: key);

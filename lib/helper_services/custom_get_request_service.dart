@@ -5,7 +5,7 @@ import 'package:fincabay_application/helper_services/custom_snackbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart'as http;
 class GetRequestService{
-  Future httpGetRequest({required BuildContext context, required String url})async{
+  Future httpGetRequest({required String url,required BuildContext context})async{
     print("get request url $url");
     try{
       http.Response response=await http.get(Uri.parse(url));

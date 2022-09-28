@@ -14,7 +14,7 @@ import '../../../helper_widgets/custom_browse_properties_widgets.dart';
 import '../../../providers/cities_provider.dart';
 import '../../../providers/get_all_area_unit_provider.dart';
 import 'area_size_widget.dart';
-import 'location_widget.dart';
+import 'cities_widget.dart';
 
 class CommercialWidget extends StatefulWidget {
   const CommercialWidget({Key? key}) : super(key: key);
@@ -133,7 +133,7 @@ class _CommercialWidgetState extends State<CommercialWidget> {
             return Center(
               child: Wrap(
                 alignment: WrapAlignment.start,
-                crossAxisAlignment: WrapCrossAlignment.center,
+                crossAxisAlignment: WrapCrossAlignment.start,
                 children: widgets,
               ),
             );

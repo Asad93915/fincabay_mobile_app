@@ -6,11 +6,13 @@ import 'package:fincabay_application/providers/user_data_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
+import '../configs/api_configs.dart';
+
 class LoginApiService{
-  Future getLogin({required BuildContext context,required String userName,required String password })async{
+  Future getLogin({required BuildContext context,required String email,required String password })async{
     try{
-      String loginUrl="http://172.106.228.154/DMSTest/API/Login2";
-      Map _body={"UserName":userName,"Password":password};
+
+      Map _body={"email":email,"password":password};
       var res=await PostRequestService().httpPostRequest(url: loginUrl, body: _body, context: context);
       if(res !=null){
         UserResponseModel userResponseModel=UserResponseModel.fromJson(res);
