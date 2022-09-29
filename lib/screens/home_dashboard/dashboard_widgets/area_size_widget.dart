@@ -7,10 +7,10 @@ import 'package:flutter/material.dart';
 
 import '../../../configs/text_styles.dart';
 
-class AreaSizeWidget extends StatelessWidget {
+class AreaUnitWidget extends StatelessWidget {
   AreaUnit areaUnitModel;
   final Function()?onTap;
-   AreaSizeWidget({required this.areaUnitModel, this.onTap});
+   AreaUnitWidget({required this.areaUnitModel, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +18,9 @@ class AreaSizeWidget extends StatelessWidget {
       onTap: onTap,
       child: Container(
 
+
         margin: EdgeInsets.symmetric(vertical:8.0,horizontal: 5.0),
-        padding: EdgeInsets.symmetric(vertical: 6.0),
+        padding: EdgeInsets.symmetric(vertical: 6.0,horizontal: 1.0),
         alignment: Alignment.center,
         width: MediaQuery.of(context).size.width/4.0,
         height: MediaQuery.of(context).size.height/11.2,
@@ -29,28 +30,20 @@ class AreaSizeWidget extends StatelessWidget {
           ),
           borderRadius: BorderRadius.circular(10.0),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(areaUnitModel.name!,style: labelStyle2,),
-
-            // Text(areaType,style: TextStyle(color: lightBlackColor,fontSize: 14.0,height: 1.6),)
-          ],
-        ),
+        child: Text(areaUnitModel.name!,style: labelStyle2,textAlign: TextAlign.center,overflow: TextOverflow.ellipsis,maxLines: 2,),
       ),
     );
   }
 }
 class PropertyTypeWidget extends StatelessWidget {
-  PropertyType type;
+  PropertyTypeModel type;
   PropertyTypeWidget({required this.type});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(vertical:8.0,horizontal: 5.0),
-      padding: EdgeInsets.symmetric(vertical: 8.0),
+      padding: EdgeInsets.symmetric(vertical: 8.0,horizontal: 5.0),
       alignment: Alignment.center,
       width: MediaQuery.of(context).size.width/4.0,
       height: MediaQuery.of(context).size.height/11.0,
@@ -60,7 +53,7 @@ class PropertyTypeWidget extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(10.0),
       ),
-      child: Text(type.type!,style: labelStyle2,),
+      child: Text(type.type!,style: labelStyle2,textAlign: TextAlign.center,overflow: TextOverflow.ellipsis,maxLines: 2,),
     );
   }
 }

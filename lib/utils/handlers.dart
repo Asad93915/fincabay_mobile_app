@@ -6,9 +6,9 @@ import '../services/get_all_area_unit_service.dart';
 import '../services/property_typer_service.dart';
 
 
-getAllAreaUnitHandler(BuildContext context)async{
+getAllAreaUnitHandler(BuildContext context, String categoryType)async{
   CustomLoader.showLoader(context: context);
-  await  GetAllAreaUnitService().getAreaUnit(context: context);
+  await  GetAllAreaUnitService().getAreaUnit(context: context, categoryType: '$categoryType',);
 
   print("Asad");
   CustomLoader.hideLoader(context);
@@ -19,8 +19,8 @@ citiesHandler(BuildContext context)async{
   print("Ali");
   CustomLoader.hideLoader(context);
 }
-propertyTypeHandler(BuildContext context)async{
+propertyTypeHandler(BuildContext context,String categoryType)async{
   CustomLoader.showLoader(context: context);
-  await PropertyTypeService().getPropertyType(context: context);
+  await PropertyTypeService().getPropertyType(context: context,categoryType: "$categoryType");
   CustomLoader.hideLoader(context);
 }

@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
 
+import '../../../configs/text_styles.dart';
 import '../../../helper_widgets/custom_browse_properties_widgets.dart';
 
 import '../../../providers/cities_provider.dart';
@@ -33,8 +34,9 @@ class _CommercialWidgetState extends State<CommercialWidget> {
   void initState() {
     // TODO: implement initState
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      propertyTypeHandler(context);
+      propertyTypeHandler(context,"Commercial");
       citiesHandler(context);
+      getAllAreaUnitHandler(context,'Commercial');
     });
     setState((){});
     super.initState();
@@ -78,11 +80,14 @@ class _CommercialWidgetState extends State<CommercialWidget> {
         if(_selectedType==0)
           Consumer<PropertyTypeProvider>(builder: (context,type,_){
             List<Widget> widgets=[];
-            type.propertyType!.forEach((element) {
-              widgets.add(PropertyTypeWidget(
-                type: element,
-              ));
-            });
+          type.propertyType!.isNotEmpty?  type.propertyType!.forEach((element) {
+            widgets.add(PropertyTypeWidget(
+              type: element,
+            ));
+          }):Container(
+            alignment: Alignment.center,
+            child: Text("No Property Type Available",style: labelStyle2,),
+          );
             return Center(
               child: Wrap(
                 alignment: WrapAlignment.start,
@@ -93,7 +98,7 @@ class _CommercialWidgetState extends State<CommercialWidget> {
           }),
         if(_selectedType==1)
           Consumer<CitiesProvider>(builder: (context,city,_){
-            return    SizedBox(
+            return   city.city!.isNotEmpty? SizedBox(
               width: double.infinity,
               height: MediaQuery.of(context).size.height/4.5,
               child: Center(
@@ -114,14 +119,16 @@ class _CommercialWidgetState extends State<CommercialWidget> {
                       );
                     }),
               ),
+            ):Container(
+              alignment: Alignment.center,
+              child: Text("No Cities Available",style: labelStyle2,),
             );
           }),
         if(_selectedType==2)
           Consumer<GetAllAreaUnitProvider>(builder: (context,areas,_){
             List<Widget>widgets=[];
-
-            areas.areaUnit!.forEach((element) {
-              widgets.add( AreaSizeWidget(
+            areas.areaUnit!.isNotEmpty?  areas.areaUnit!.forEach((element) {
+              widgets.add( AreaUnitWidget(
                 // onTap: (){
                 //   NavigationServices.goNextAndKeepHistory(context: context, widget: AreaSizeDetailsScreen());
                 // },
@@ -129,7 +136,9 @@ class _CommercialWidgetState extends State<CommercialWidget> {
 
 
               ));
-            });
+            }):Container(
+              child: Text("No Area Unit Available",style: labelStyle2,),
+            );
             return Center(
               child: Wrap(
                 alignment: WrapAlignment.start,

@@ -1,4 +1,5 @@
 
+import 'package:fincabay_application/configs/text_styles.dart';
 import 'package:fincabay_application/providers/cities_provider.dart';
 import 'package:fincabay_application/providers/property_type_provider.dart';
 import 'package:fincabay_application/screens/home_dashboard/dashboard_widgets/cities_widget.dart';
@@ -31,10 +32,10 @@ class _PlotWidgetState extends State<PlotWidget> {
   void initState() {
     // TODO: implement initState
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      propertyTypeHandler(context);
-      getAllAreaUnitHandler(context);
+      propertyTypeHandler(context,'Plots');
+      getAllAreaUnitHandler(context,'Plots');
       citiesHandler(context);
-      setState((){});
+
     });
     super.initState();
   }
@@ -77,14 +78,16 @@ class _PlotWidgetState extends State<PlotWidget> {
         if(_selectedType==0)
           Consumer<PropertyTypeProvider>(builder: (context,type,_){
             List<Widget> widgets=[];
-            type.propertyType!.forEach((element) {
-              widgets.add(
-                  PropertyTypeWidget(
-                    type: element,
+          type.propertyType!.isNotEmpty?  type.propertyType!.forEach((element) {
+            widgets.add(
+                PropertyTypeWidget(
+                  type: element,
 
-                  )
-              );
-            });
+                )
+            );
+          }):Container(
+            child: Text("No Property Type Available",style: labelStyle2,),
+          );
             return Center(
               child: Wrap(
                 alignment: WrapAlignment.start,
@@ -95,7 +98,7 @@ class _PlotWidgetState extends State<PlotWidget> {
           }),
         if(_selectedType==1)
        Consumer<CitiesProvider>(builder: (context,city,_){
-         return    SizedBox(
+         return    city.city!.isNotEmpty?SizedBox(
            width: double.infinity,
            height: MediaQuery.of(context).size.height/4.5,
            child: Center(
@@ -116,18 +119,23 @@ class _PlotWidgetState extends State<PlotWidget> {
                    );
                  }),
            ),
-         );
+         ):Container(
+           alignment: Alignment.center,
+           child: Text("No Cities Available",style: labelStyle2,),
+         );;
        }),
         if(_selectedType==2)
 
           Consumer<GetAllAreaUnitProvider>(builder: (context,areas,_){
             List<Widget>widgets=[];
 
-            areas.areaUnit!.forEach((element) {
-              widgets.add( AreaSizeWidget(
+            areas.areaUnit!.isNotEmpty?areas.areaUnit!.forEach((element) {
+              widgets.add( AreaUnitWidget(
                 areaUnitModel: element,
               ));
-            });
+            }):Container(
+              child: Text("No Area Unit Available",style: labelStyle2,),
+            );
             return Center(
               child: Wrap(
                 alignment: WrapAlignment.start,
