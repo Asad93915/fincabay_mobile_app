@@ -9,9 +9,9 @@ import 'package:provider/provider.dart';
 import '../configs/api_configs.dart';
 
 class GetAllAreaUnitService{
-  Future getAreaUnit({required BuildContext context,required String categoryType})async{
+  Future getAreaUnit({required BuildContext context,required  int cityId})async{
     try{
-      var res=await GetRequestService().httpGetRequest(context: context, url: gatAllAreaUnitsUrl+"category=$categoryType");
+      var res=await GetRequestService().httpGetRequest(context: context, url: gatAllAreaUnitsUrl+cityId.toString());
       if(res !=null){
         GetAllAreaUnitModel areaUnitModel=GetAllAreaUnitModel.fromJson(res);
         Provider.of<GetAllAreaUnitProvider>(context,listen: false).updateAreaUnit(

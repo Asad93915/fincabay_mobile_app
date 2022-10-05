@@ -8,14 +8,14 @@ import 'package:provider/provider.dart';
 import '../configs/text_styles.dart';
 import '../providers/location_phases_provider.dart';
 
-class LocationScreen extends StatefulWidget {
+class PhasesScreen extends StatefulWidget {
   final String cityText;
-  LocationScreen({this.cityText=""});
+  PhasesScreen({this.cityText=""});
   @override
-  State<LocationScreen> createState() => _LocationScreenState();
+  State<PhasesScreen> createState() => _PhasesScreenState();
 }
 
-class _LocationScreenState extends State<LocationScreen> {
+class _PhasesScreenState extends State<PhasesScreen> {
   // Location location;
   int? selectedIndex;
 

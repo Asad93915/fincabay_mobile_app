@@ -33,7 +33,7 @@ class _PlotWidgetState extends State<PlotWidget> {
     // TODO: implement initState
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       propertyTypeHandler(context,'Plots');
-      getAllAreaUnitHandler(context,'Plots');
+      getAllAreaUnitHandler(context,1);
       citiesHandler(context);
 
     });
@@ -50,7 +50,7 @@ class _PlotWidgetState extends State<PlotWidget> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CustomTypeWidget(
-              title: "Type",
+              title: "Cities",
               selectedColor: _selectedType == 0 ? true : false,
               onTap: () {
                 _selectedType = 0;
@@ -58,7 +58,7 @@ class _PlotWidgetState extends State<PlotWidget> {
               },
             ),
             CustomTypeWidget(
-              title: "Cities",
+              title: "Type",
               selectedColor: _selectedType == 1 ? true : false,
               onTap: () {
                 _selectedType = 1;
@@ -66,7 +66,7 @@ class _PlotWidgetState extends State<PlotWidget> {
               },
             ),
             CustomTypeWidget(
-              title: "Area Unit",
+              title: "Area",
               selectedColor: _selectedType == 2 ? true : false,
               onTap: () {
                 _selectedType = 2;
@@ -76,18 +76,46 @@ class _PlotWidgetState extends State<PlotWidget> {
           ],
         ),
         if(_selectedType==0)
+          Consumer<CitiesProvider>(builder: (context,city,_){
+            return    city.city!.isNotEmpty?SizedBox(
+              width: double.infinity,
+              height: MediaQuery.of(context).size.height/4.5,
+              child: Center(
+                child: GridView.builder(
+                    padding: EdgeInsets.symmetric(vertical: 10.0),
+                    gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                        mainAxisExtent: 60.0,
+                        maxCrossAxisExtent: 100,
+                        childAspectRatio: 1.5,
+                        crossAxisSpacing: 20,
+                        mainAxisSpacing: 10
+
+                    ),
+                    itemCount: city.city!.length,
+                    itemBuilder: (BuildContext ctx, index) {
+                      return CitiesWidget(
+                        cities: city.city![index],
+                      );
+                    }),
+              ),
+            ):Container(
+              alignment: Alignment.center,
+              child: Text("No Cities Available",style: labelStyle2,),
+            );;
+          }),
+        if(_selectedType==1)
           Consumer<PropertyTypeProvider>(builder: (context,type,_){
             List<Widget> widgets=[];
-          type.propertyType!.isNotEmpty?  type.propertyType!.forEach((element) {
-            widgets.add(
-                PropertyTypeWidget(
-                  type: element,
+            type.propertyType!.isNotEmpty?  type.propertyType!.forEach((element) {
+              widgets.add(
+                  PropertyTypeWidget(
+                    type: element,
 
-                )
+                  )
+              );
+            }):Container(
+              child: Text("No Property Type Available",style: labelStyle2,),
             );
-          }):Container(
-            child: Text("No Property Type Available",style: labelStyle2,),
-          );
             return Center(
               child: Wrap(
                 alignment: WrapAlignment.start,
@@ -96,34 +124,6 @@ class _PlotWidgetState extends State<PlotWidget> {
               ),
             );
           }),
-        if(_selectedType==1)
-       Consumer<CitiesProvider>(builder: (context,city,_){
-         return    city.city!.isNotEmpty?SizedBox(
-           width: double.infinity,
-           height: MediaQuery.of(context).size.height/4.5,
-           child: Center(
-             child: GridView.builder(
-                 padding: EdgeInsets.symmetric(vertical: 10.0),
-                 gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                     mainAxisExtent: 60.0,
-                     maxCrossAxisExtent: 100,
-                     childAspectRatio: 1.5,
-                     crossAxisSpacing: 20,
-                     mainAxisSpacing: 10
-
-                 ),
-                 itemCount: city.city!.length,
-                 itemBuilder: (BuildContext ctx, index) {
-                   return CitiesWidget(
-                     cities: city.city![index],
-                   );
-                 }),
-           ),
-         ):Container(
-           alignment: Alignment.center,
-           child: Text("No Cities Available",style: labelStyle2,),
-         );;
-       }),
         if(_selectedType==2)
 
           Consumer<GetAllAreaUnitProvider>(builder: (context,areas,_){
@@ -132,6 +132,7 @@ class _PlotWidgetState extends State<PlotWidget> {
             areas.areaUnit!.isNotEmpty?areas.areaUnit!.forEach((element) {
               widgets.add( AreaUnitWidget(
                 areaUnitModel: element,
+                
               ));
             }):Container(
               child: Text("No Area Unit Available",style: labelStyle2,),

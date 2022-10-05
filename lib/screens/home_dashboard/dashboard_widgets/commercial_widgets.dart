@@ -36,7 +36,7 @@ class _CommercialWidgetState extends State<CommercialWidget> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       propertyTypeHandler(context,"Commercial");
       citiesHandler(context);
-      getAllAreaUnitHandler(context,'Commercial');
+      getAllAreaUnitHandler(context,1008);
     });
     setState((){});
     super.initState();
@@ -52,7 +52,7 @@ class _CommercialWidgetState extends State<CommercialWidget> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CustomTypeWidget(
-              title: "Type",
+              title: "Cities",
               selectedColor: _selectedType == 0 ? true : false,
               onTap: () {
                 _selectedType = 0;
@@ -60,7 +60,7 @@ class _CommercialWidgetState extends State<CommercialWidget> {
               },
             ),
             CustomTypeWidget(
-              title: "Cities",
+              title: "Type",
               selectedColor: _selectedType == 1 ? true : false,
               onTap: () {
                 _selectedType = 1;
@@ -78,25 +78,6 @@ class _CommercialWidgetState extends State<CommercialWidget> {
           ],
         ),
         if(_selectedType==0)
-          Consumer<PropertyTypeProvider>(builder: (context,type,_){
-            List<Widget> widgets=[];
-          type.propertyType!.isNotEmpty?  type.propertyType!.forEach((element) {
-            widgets.add(PropertyTypeWidget(
-              type: element,
-            ));
-          }):Container(
-            alignment: Alignment.center,
-            child: Text("No Property Type Available",style: labelStyle2,),
-          );
-            return Center(
-              child: Wrap(
-                alignment: WrapAlignment.start,
-                crossAxisAlignment: WrapCrossAlignment.center,
-                children: widgets,
-              ),
-            );
-          }),
-        if(_selectedType==1)
           Consumer<CitiesProvider>(builder: (context,city,_){
             return   city.city!.isNotEmpty? SizedBox(
               width: double.infinity,
@@ -122,6 +103,25 @@ class _CommercialWidgetState extends State<CommercialWidget> {
             ):Container(
               alignment: Alignment.center,
               child: Text("No Cities Available",style: labelStyle2,),
+            );
+          }),
+        if(_selectedType==1)
+          Consumer<PropertyTypeProvider>(builder: (context,type,_){
+            List<Widget> widgets=[];
+            type.propertyType!.isNotEmpty?  type.propertyType!.forEach((element) {
+              widgets.add(PropertyTypeWidget(
+                type: element,
+              ));
+            }):Container(
+              alignment: Alignment.center,
+              child: Text("No Property Type Available",style: labelStyle2,),
+            );
+            return Center(
+              child: Wrap(
+                alignment: WrapAlignment.start,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: widgets,
+              ),
             );
           }),
         if(_selectedType==2)

@@ -1,5 +1,5 @@
 import 'package:fincabay_application/configs/text_styles.dart';
-import 'package:fincabay_application/screens/home_dashboard/dashboard_widgets/home_widget.dart';
+import 'package:fincabay_application/screens/home_dashboard/dashboard_widgets/residential_widget.dart';
 import 'package:fincabay_application/screens/home_dashboard/dashboard_widgets/plot_widget.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -59,7 +59,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
               children: [
                 CustomBrowsPropertyWidget(
                   icon: Icons.house_outlined,
-                  title: "Homes",
+                  title: "Residential",
                   selectedColor: _selectedIndex == 0 ? true : false,
                   onTap: () {
                     _selectedIndex = 0;

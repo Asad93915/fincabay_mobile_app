@@ -26,8 +26,9 @@ class CustomBrowsPropertyWidget extends StatelessWidget {
               Icon(
                 icon,
                 color: selectedColor == true ? bgColor : blackColor,
+                size: 20.0,
               ),
-              SizedBox(width: 5.0),
+              SizedBox(width: 3.0),
               Text(
                 title,
                 style: TextStyle(

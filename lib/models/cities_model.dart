@@ -29,19 +29,19 @@ class CitiesModel {
 
 class Cities {
   int? cityId;
-  String? name;
+  String? cityName;
 
-  Cities({this.cityId, this.name});
+  Cities({this.cityId, this.cityName});
 
   Cities.fromJson(Map<String, dynamic> json) {
     cityId = json['cityId'];
-    name = json['name'];
+    cityName = json['cityName'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['cityId'] = this.cityId;
-    data['name'] = this.name;
+    data['cityName'] = this.cityName;
     return data;
   }
 }

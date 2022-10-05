@@ -12,3 +12,8 @@ Future getString()async{
  String? token= pref.getString('token');
  return token;
 }
+Future saveUser(String userName)async{
+  SharedPreferences pref=await SharedPreferences.getInstance();
+  pref.setString('userName', userName);
+  return true;
+}

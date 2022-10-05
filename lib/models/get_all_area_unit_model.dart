@@ -28,23 +28,23 @@ class GetAllAreaUnitModel {
 }
 
 class AreaUnit {
-  int? unitId;
-  String? name;
-  String? category;
+  int? areaId;
+  String? areaName;
+  int? cityId;
 
-  AreaUnit({this.unitId, this.name, this.category});
+  AreaUnit({this.areaId, this.areaName, this.cityId});
 
   AreaUnit.fromJson(Map<String, dynamic> json) {
-    unitId = json['unitId'];
-    name = json['name'];
-    category = json['category'];
+    areaId = json['areaId'];
+    areaName = json['areaName'];
+    cityId = json['cityId'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['unitId'] = this.unitId;
-    data['name'] = this.name;
-    data['category'] = this.category;
+    data['areaId'] = this.areaId;
+    data['areaName'] = this.areaName;
+    data['cityId'] = this.cityId;
     return data;
   }
 }

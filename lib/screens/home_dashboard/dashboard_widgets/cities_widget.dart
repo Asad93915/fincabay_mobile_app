@@ -4,11 +4,12 @@ import 'package:fincabay_application/configs/colors.dart';
 import 'package:fincabay_application/helper_services/custom_loader.dart';
 import 'package:fincabay_application/helper_services/navigation_services.dart';
 import 'package:fincabay_application/providers/location_phases_provider.dart';
+import 'package:fincabay_application/screens/home_dashboard/cities_areas_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../location_screen.dart';
+import '../../phases_screen.dart';
 import '../../../models/cities_model.dart';
 import '../../../services/location_phase_service.dart';
 
@@ -44,9 +45,10 @@ class _CitiesWidgetState extends State<CitiesWidget> {
     return InkWell(
       onTap: (){
         // buildShowPhasesDialog(context);
-        NavigationServices.goNextAndKeepHistory(context: context, widget: LocationScreen(
-          cityText:widget.cities.name! ,
-        ));
+        // NavigationServices.goNextAndKeepHistory(context: context, widget: PhasesScreen(
+        //   cityText:widget.cities.cityName! ,
+        // ));
+        NavigationServices.goNextAndKeepHistory(context: context, widget: CitiesAreasScreen());
       },
       child: Container(
 
@@ -57,7 +59,7 @@ class _CitiesWidgetState extends State<CitiesWidget> {
           ),
           borderRadius: BorderRadius.circular(10.0),
         ),
-        child: Text(widget.cities.name==null?"null":widget.cities.name!,textAlign: TextAlign.center,),
+        child: Text(widget.cities.cityName==null?"null":widget.cities.cityName!,textAlign: TextAlign.center,),
       ),
     );;
   }

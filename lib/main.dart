@@ -6,6 +6,7 @@ import 'package:fincabay_application/providers/property_type_provider.dart';
 import 'package:fincabay_application/providers/registration_provider.dart';
 import 'package:fincabay_application/providers/user_data_provider.dart';
 import 'package:fincabay_application/screens/auth/login_screen.dart';
+import 'package:fincabay_application/screens/home_dashboard/cities_areas_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         home: LoginScreen(),
+        // home: CitiesAreasScreen(),
       ),
     );
   }

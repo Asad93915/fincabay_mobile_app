@@ -244,8 +244,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         ),
                         items: cities.city!.map((item) {
                           return DropdownMenuItem(
-                            value: item.name,
-                            child: Text(item.name!),
+                            value: item.cityName,
+                            child: Text(item.cityName!),
                           );
                         }).toList(),
                         onChanged: (String? newValue) {
@@ -372,8 +372,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               ),
                               items: cities.city!.map((item) {
                                 return DropdownMenuItem(
-                                  value: item.name,
-                                  child: Text(item.name!),
+                                  value: item.cityName,
+                                  child: Text(item.cityName!),
                                 );
                               }).toList(),
                               onChanged: (String? newValue) {

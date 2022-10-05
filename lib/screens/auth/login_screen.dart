@@ -124,7 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         _loginHandler();
                         setState((){});
                       }
-                      setState(() {});
+
                     },
                   ),
                   RichText(text: TextSpan(
@@ -146,7 +146,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 fontWeight: FontWeight.w800)
                         )
                       ]
-                  ),)
+                  ),),
+                  Text("OR")
 
 
                 ],
