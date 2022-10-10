@@ -4,6 +4,7 @@ import 'package:fincabay_application/helper_services/custom_snackbar.dart';
 import 'package:fincabay_application/helper_services/navigation_services.dart';
 import 'package:fincabay_application/helper_widgets/custom_button.dart';
 import 'package:fincabay_application/helper_widgets/custom_text_field.dart';
+import 'package:fincabay_application/screens/add_property_screen.dart';
 import 'package:fincabay_application/screens/auth/forget_password_screen.dart';
 import 'package:fincabay_application/screens/auth/registration_screen.dart';
 import 'package:fincabay_application/services/login_api_service.dart';
@@ -147,8 +148,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         )
                       ]
                   ),),
-                  Text("OR")
-
+                  Text("OR",style: forgotStyle,),
+               InkWell(
+                   onTap: (){
+                     NavigationServices.goNextAndKeepHistory(context: context, widget: AddPropertyScreen());
+                   },
+                   child: Text("Add Property",style: addPropStyle,))
 
                 ],
               ),

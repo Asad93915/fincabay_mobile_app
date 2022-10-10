@@ -6,16 +6,34 @@ import 'package:provider/provider.dart';
 
 
 import '../configs/text_styles.dart';
+import '../helper_services/custom_loader.dart';
 import '../providers/location_phases_provider.dart';
+import '../services/location_phase_service.dart';
 
 class PhasesScreen extends StatefulWidget {
   final String cityText;
-  PhasesScreen({this.cityText=""});
+  final int areaId;
+  PhasesScreen({this.cityText="", required this.areaId});
   @override
   State<PhasesScreen> createState() => _PhasesScreenState();
 }
 
 class _PhasesScreenState extends State<PhasesScreen> {
+  locationPhaseHandler()async{
+    CustomLoader.showLoader(context: context);
+    await LocationPhaseService().getPhase(context: context,areaId: widget.areaId);
+    CustomLoader.hideLoader(context);
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      locationPhaseHandler();
+    });
+    setState((){});
+    super.initState();
+  }
   // Location location;
   int? selectedIndex;
 
@@ -56,7 +74,7 @@ class _PhasesScreenState extends State<PhasesScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 18.0,vertical: 8.0),
           child: Consumer<LocationPhasesProvider>(builder: (context,location,_){
             return    Center(
-              child: GridView.builder(
+              child: location.phase!.isNotEmpty?GridView.builder(
                   padding: EdgeInsets.symmetric(vertical: 10.0),
                   gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                       mainAxisExtent: 40.0,
@@ -85,7 +103,10 @@ class _PhasesScreenState extends State<PhasesScreen> {
                         child: Text(location.phase![index].name!,style: pKrStyle,),
                       ),
                     );
-                  }),
+                  }):Container(
+                alignment: Alignment.center,
+                child: Text("No Phases against this loaction name exisits"),
+              ),
             );
           })
 

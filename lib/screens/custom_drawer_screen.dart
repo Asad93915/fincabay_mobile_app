@@ -4,6 +4,7 @@ import 'package:fincabay_application/configs/text_styles.dart';
 import 'package:fincabay_application/helper_services/navigation_services.dart';
 import 'package:fincabay_application/helper_widgets/drawer_item_card.dart';
 import 'package:fincabay_application/screens/add_property_screen.dart';
+import 'package:fincabay_application/screens/auth/login_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -110,6 +111,17 @@ class _CustomDrawerState extends State<CustomDrawer> {
             },
             title: "Saved Searches",
             icon: Icons.bookmark_border,
+          ),
+          Spacer(),
+          DrawerItemCard(
+            selctedColor: selectedIndex==6?true:false,
+            onTap: (){
+              selectedIndex=6;
+              NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: LoginScreen());
+              setState((){});
+            },
+            title: "LogOut",
+            icon: Icons.logout,
           ),
         ],
 

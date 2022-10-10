@@ -1,17 +1,12 @@
 
 
 import 'package:fincabay_application/configs/colors.dart';
-import 'package:fincabay_application/helper_services/custom_loader.dart';
 import 'package:fincabay_application/helper_services/navigation_services.dart';
-import 'package:fincabay_application/providers/location_phases_provider.dart';
-import 'package:fincabay_application/screens/home_dashboard/cities_areas_screen.dart';
+import 'package:fincabay_application/screens/home_dashboard/location_names_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import '../../phases_screen.dart';
 import '../../../models/cities_model.dart';
-import '../../../services/location_phase_service.dart';
+
 
 class CitiesWidget extends StatefulWidget {
   Cities cities;
@@ -22,23 +17,9 @@ class CitiesWidget extends StatefulWidget {
 }
 
 class _CitiesWidgetState extends State<CitiesWidget> {
-  locationPhaseHandler()async{
-    CustomLoader.showLoader(context: context);
-    await LocationPhaseService().getPhase(context: context);
-    CustomLoader.hideLoader(context);
-  }
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-     locationPhaseHandler();
-    });
-    setState((){});
-    super.initState();
-  }
 
-  @override
+
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +29,9 @@ class _CitiesWidgetState extends State<CitiesWidget> {
         // NavigationServices.goNextAndKeepHistory(context: context, widget: PhasesScreen(
         //   cityText:widget.cities.cityName! ,
         // ));
-        NavigationServices.goNextAndKeepHistory(context: context, widget: CitiesAreasScreen());
+        NavigationServices.goNextAndKeepHistory(context: context, widget: LocationNameScreen(
+          cityId: widget.cities.cityId!,
+        ));
       },
       child: Container(
 

@@ -8,9 +8,9 @@ import '../configs/api_configs.dart';
 import '../models/get_location_phases_model.dart';
 
 class LocationPhaseService{
-  Future getPhase({required BuildContext context})async{
+  Future getPhase({required BuildContext context,required int areaId})async{
     try{
-      var res=await GetRequestService().httpGetRequest(url: getPhasesUrl, context: context);
+      var res=await GetRequestService().httpGetRequest(url: getLocPhasesUrl+ "$areaId", context: context);
       if(res !=null){
         LocationPhasesModel locationPhase=LocationPhasesModel.fromJson(res);
         Provider.of<LocationPhasesProvider>(context,listen: false).updateLocation(

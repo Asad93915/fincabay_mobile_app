@@ -36,7 +36,7 @@ class _CommercialWidgetState extends State<CommercialWidget> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       propertyTypeHandler(context,"Commercial");
       citiesHandler(context);
-      getAllAreaUnitHandler(context,1008);
+      getAllAreaUnitHandler(context,'Commercial');
     });
     setState((){});
     super.initState();

@@ -10,11 +10,11 @@ import '../services/get_all_area_unit_service.dart';
 import '../services/property_typer_service.dart';
 
 
-getAllAreaUnitHandler(BuildContext context, int cityId)async{
+getAllAreaUnitHandler(BuildContext context, String catName)async{
   CustomLoader.showLoader(context: context);
-  await  GetAllAreaUnitService().getAreaUnit(context: context, cityId:cityId );
+  await  GetAllAreaUnitService().getAreaUnit(context: context, catName: catName);
 
-  print("city id $cityId");
+
   print("Asad");
 
   CustomLoader.hideLoader(context);

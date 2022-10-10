@@ -30,7 +30,7 @@ class AreaUnitWidget extends StatelessWidget {
           ),
           borderRadius: BorderRadius.circular(10.0),
         ),
-        child: Text(areaUnitModel.areaName!,style: labelStyle2,textAlign: TextAlign.center,overflow: TextOverflow.ellipsis,maxLines: 2,),
+        child: Text(areaUnitModel.name!,style: labelStyle2,textAlign: TextAlign.center,overflow: TextOverflow.ellipsis,maxLines: 2,),
       ),
     );
   }

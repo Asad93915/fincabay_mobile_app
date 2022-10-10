@@ -32,7 +32,7 @@ int ? cityId;
   void initState() {
     // TODO: implement initState
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      getAllAreaUnitHandler(context,1008);
+      getAllAreaUnitHandler(context,'Home');
       propertyTypeHandler(context,'Home');
      citiesHandler(context);
       setState((){});
@@ -145,7 +145,7 @@ int ? cityId;
                 onTap: (){
                   NavigationServices.goNextAndKeepHistory(context: context, widget: const AreaSizeDetailsScreen());
 
-                  getAllAreaUnitHandler(context,element.cityId!);
+                  // getAllAreaUnitHandler(context,element.cityId!);
                 }, areaUnitModel: element,
 
 

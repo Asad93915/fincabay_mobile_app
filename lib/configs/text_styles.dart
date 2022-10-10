@@ -26,3 +26,4 @@ const TextStyle priceStyle=TextStyle(color: pkrColor,fontSize: 20.0,fontWeight: 
 const TextStyle lessStyle=TextStyle(color: bgColor,fontSize: 14.0,fontWeight: FontWeight.w600);
 const TextStyle pKrStyle=TextStyle(color: blackColor,fontSize: 10.0,fontWeight: FontWeight.w500,);
 const TextStyle loginStyle=TextStyle(color: blackColor,fontWeight: FontWeight.w700,fontSize: 18.0,);
+const TextStyle addPropStyle=TextStyle(color: lightBlackColor,fontSize: 16.0,fontWeight: FontWeight.bold);

@@ -8,8 +8,11 @@ import 'package:fincabay_application/helper_widgets/custom_button.dart';
 import 'package:fincabay_application/helper_widgets/custom_drop_down.dart';
 import 'package:fincabay_application/helper_widgets/custom_text_field.dart';
 import 'package:fincabay_application/providers/cities_provider.dart';
+import 'package:fincabay_application/providers/location_name_provider.dart';
 import 'package:fincabay_application/providers/location_phases_provider.dart';
 import 'package:fincabay_application/services/add_property_service.dart';
+import 'package:fincabay_application/services/cities_service.dart';
+import 'package:fincabay_application/services/location_name_service.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +22,7 @@ import 'package:provider/provider.dart';
 import '../configs/text_styles.dart';
 import '../helper_widgets/custom_dropdown_text.dart';
 import '../helper_widgets/custom_uploading_widget.dart';
-import '../services/location_phase_service.dart';
+
 
 class AddPropertyScreen extends StatefulWidget {
   const AddPropertyScreen({super.key});
@@ -65,9 +68,10 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
   TextEditingController _regMobileCont = TextEditingController();
   int selectedIndex = 1;
 
-  locationPhaseHandler() async {
+  locationNameHandler() async {
     CustomLoader.showLoader(context: context);
-    await LocationPhaseService().getPhase(context: context);
+    await CitiesService().getAllCities(context: context);
+    await GetLocationNameService().getLocName(context: context, cityId: 1008);
     CustomLoader.hideLoader(context);
   }
 
@@ -101,7 +105,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
   void initState() {
     // TODO: implement initState
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      locationPhaseHandler();
+      locationNameHandler();
     });
     setState(() {});
     super.initState();
@@ -119,8 +123,9 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
   String? selectedArea;
 
   @override
-  updateArea(String? value) {
+  updateArea(String? value)async {
     selectedArea = value;
+
     setState(() {});
   }
 
@@ -430,8 +435,9 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                                         .center,
                                     children: [
                                       ElevatedButton.icon(
-                                        onPressed: () {
-                                          _getFromGallery();
+                                        onPressed: ()async {
+                                          // _getFromGallery();
+                                          image = (await imagePick.pickMultiImage())!;
                                           setState(() {});
                                         },
                                         icon: Icon(Icons.photo_library_rounded),
@@ -467,21 +473,56 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                                   ),
                                 ),
                               ),
-                              galleryFile != null
-                                  ? Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10.0)),
-                                margin: EdgeInsets.only(top: 10.0),
-                                child: Image.file(
-                                  File(
-                                    galleryFile!.path,
-                                  ),
-                                  fit: BoxFit.fill,
-                                  height: 100.0,
-                                  width: 100.0,
-                                ),
-                              )
-                                  : SizedBox(),
+                              (image.isNotEmpty)
+                              ?  Container(
+                                margin: EdgeInsets.only(top: 12.0),
+                                height: 100,
+                                width: double.infinity,
+                                child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    shrinkWrap: true,
+                                    itemCount: image.length,
+                                    itemBuilder: (context, index) {
+                                      print('image length ${image.length}');
+                                      return Padding(
+                                        padding:
+                                        const EdgeInsets.symmetric(horizontal: 3.0),
+                                        child: SizedBox(
+                                            height: 100,
+                                            width: 100,
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                  border:
+                                                  Border.all(color: Colors.black),
+                                                  borderRadius:
+                                                  BorderRadius.circular(10)),
+                                              child: ClipRRect(
+                                                borderRadius: BorderRadius.circular(10),
+                                                child: Image.file(
+                                                  File(image[index].path.toString()),
+                                                  fit: BoxFit.cover,
+                                                  isAntiAlias: true,
+                                                ),
+                                              ),
+                                            )),
+                                      );
+                                    }),
+                              ):SizedBox(),
+                              // galleryFile != null
+                              //     ? Container(
+                              //   decoration: BoxDecoration(
+                              //       borderRadius: BorderRadius.circular(10.0)),
+                              //   margin: EdgeInsets.only(top: 10.0),
+                              //   child: Image.file(
+                              //     File(
+                              //       galleryFile!.path,
+                              //     ),
+                              //     fit: BoxFit.fill,
+                              //     height: 100.0,
+                              //     width: 100.0,
+                              //   ),
+                              // )
+
                               cameraFile != null
                                   ? Container(
                                 margin: EdgeInsets.only(top: 10.0),
@@ -565,8 +606,8 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                             }),
                           ),
                           Expanded(
-                            child: Consumer<LocationPhasesProvider>(builder: (
-                                context, phases, _) {
+                            child: Consumer<LocationNameProvider>(builder: (
+                                context, name, _) {
                               return Container(
                                 padding: EdgeInsets.symmetric(horizontal: 5.0),
                                 margin:
@@ -588,15 +629,16 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                                       "Select Area",
                                       style: labelStyle2,
                                     ),
-                                    items: phases.phase!.map((item) {
+                                    items: name.locName!.map((item) {
                                       return DropdownMenuItem(
-                                        value: item.name,
-                                        child: Text(item.name!),
+                                        value: item.areaName,
+                                        child: Text(item.areaName!),
                                       );
                                     }).toList(),
-                                    onChanged: (String? newValue) {
+                                    onChanged: (String? newValue){
                                       if (updateArea != null) {
-                                        updateArea(newValue!);
+                                       updateArea(newValue!);
+
                                       }
                                       setState(() {});
                                     }),

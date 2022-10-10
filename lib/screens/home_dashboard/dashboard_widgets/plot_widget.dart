@@ -33,7 +33,7 @@ class _PlotWidgetState extends State<PlotWidget> {
     // TODO: implement initState
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       propertyTypeHandler(context,'Plots');
-      getAllAreaUnitHandler(context,1);
+      getAllAreaUnitHandler(context,'Plots');
       citiesHandler(context);
 
     });
