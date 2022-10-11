@@ -68,13 +68,21 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
   TextEditingController _regMobileCont = TextEditingController();
   int selectedIndex = 1;
 
-  locationNameHandler() async {
+  _getCities() async {
     CustomLoader.showLoader(context: context);
     await CitiesService().getAllCities(context: context);
-    await GetLocationNameService().getLocName(context: context, cityId: 1008);
+
     CustomLoader.hideLoader(context);
   }
 
+  _getLocNameHandler(int cityId)async{
+    CustomLoader.showLoader(context: context);
+
+    await GetLocationNameService().getLocName(context: context, cityId: cityId);
+
+    print("City $cityId");
+    CustomLoader.hideLoader(context);
+  }
   postAddressHandler() async {
     CustomLoader.showLoader(context: context);
     await AddPropertyService().addProperty(context: context,
@@ -105,7 +113,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
   void initState() {
     // TODO: implement initState
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      locationNameHandler();
+      _getCities();
     });
     setState(() {});
     super.initState();
@@ -372,6 +380,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                           }).toList(),
                           onChanged: (String? value) {
                             selectedExpiration = value!;
+
                             setState(() {});
                           },
                         ),
@@ -594,14 +603,36 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                                       return DropdownMenuItem(
                                         value: item.cityName,
                                         child: Text(item.cityName!),
+
                                       );
                                     }).toList(),
                                     onChanged: (String? newValue) {
-                                      if (updateCity != null) {
+                                      // if (updateCity != null) {
                                         updateCity(newValue!);
-                                      }
-                                      setState(() {});
-                                    }),
+                                        cities.city!.map((item) {
+                                          print("City Name ${item.cityName}");
+                                          print("newValue $newValue");
+                                          if(newValue==item.cityName){
+
+                                            if(selectedArea==null){
+                                              _getLocNameHandler(
+                                                  item.cityId!);
+                                            }
+                                            else{
+                                              selectedArea=null;
+                                              _getLocNameHandler(
+                                                  item.cityId!);
+                                            }
+                                            // cities.city!.clear();
+
+                                          }
+
+                                        }).toList();
+                                      //
+                                      // };
+                                            setState(() {});
+                                    }
+                                    ),
                               );
                             }),
                           ),
@@ -636,10 +667,10 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                                       );
                                     }).toList(),
                                     onChanged: (String? newValue){
-                                      if (updateArea != null) {
+                                      // if (updateArea != null) {
                                        updateArea(newValue!);
 
-                                      }
+                                      // }
                                       setState(() {});
                                     }),
                               );

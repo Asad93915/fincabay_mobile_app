@@ -1,19 +1,24 @@
 
 import 'package:fincabay_application/configs/colors.dart';
+import 'package:fincabay_application/helper_services/navigation_services.dart';
+import 'package:fincabay_application/screens/home_dashboard/dashboard_widgets/property_search_screen.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 
-import '../configs/text_styles.dart';
-import '../helper_services/custom_loader.dart';
-import '../providers/location_phases_provider.dart';
-import '../services/location_phase_service.dart';
+import '../../../configs/text_styles.dart';
+import '../../../helper_services/custom_loader.dart';
+import '../../../providers/location_phases_provider.dart';
+import '../../../services/location_phase_service.dart';
 
 class PhasesScreen extends StatefulWidget {
   final String cityText;
   final int areaId;
-  PhasesScreen({this.cityText="", required this.areaId});
+  final int cityId;
+
+  PhasesScreen({this.cityText="", required this.areaId, required this.cityId,});
   @override
   State<PhasesScreen> createState() => _PhasesScreenState();
 }
@@ -23,6 +28,11 @@ class _PhasesScreenState extends State<PhasesScreen> {
     CustomLoader.showLoader(context: context);
     await LocationPhaseService().getPhase(context: context,areaId: widget.areaId);
     CustomLoader.hideLoader(context);
+  }
+  _getSearch(int phaseId)async{
+      NavigationServices.goNextAndKeepHistory(context: context, widget: PropertySearchScreen(
+          cityId: widget.cityId, areaId: widget.areaId, phaseId: phaseId
+      ));
   }
 
   @override
@@ -88,6 +98,9 @@ class _PhasesScreenState extends State<PhasesScreen> {
                   itemBuilder: (BuildContext ctx, index) {
                     return  InkWell(
                       onTap: (){
+                        _getSearch(
+                          location.phase![index].phaseId!
+                        );
                         selectedIndex=index;
                         setState((){});
                       },

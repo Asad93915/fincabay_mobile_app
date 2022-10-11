@@ -8,3 +8,4 @@ const String getPropertyTypeUrl=baseUrl + "Property/GetPropertyTypesByCategory?"
 const String getLocNameUrl=baseUrl + "Property/GetAreaUnitByCityId/";
 const String getLocPhasesUrl=baseUrl + "Property/GetLocationPhaseByAreaId/";
 const String addPropertyUrl=baseUrl + "Property/AddPropertyWhileSignUp";
+const String propSearchUrl=baseUrl+ "Property/PropertySearch?";

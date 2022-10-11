@@ -3,6 +3,7 @@ import 'package:fincabay_application/providers/cities_provider.dart';
 import 'package:fincabay_application/providers/get_all_area_unit_provider.dart';
 import 'package:fincabay_application/providers/location_name_provider.dart';
 import 'package:fincabay_application/providers/location_phases_provider.dart';
+import 'package:fincabay_application/providers/property_search_provider.dart';
 import 'package:fincabay_application/providers/property_type_provider.dart';
 import 'package:fincabay_application/providers/registration_provider.dart';
 import 'package:fincabay_application/providers/user_data_provider.dart';
@@ -30,7 +31,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context)=>CitiesProvider()),
         ChangeNotifierProvider(create: (context)=>RegistrationProvider()),
         ChangeNotifierProvider(create: (context)=>LocationNameProvider()),
-        ChangeNotifierProvider(create: (context)=>LocationPhasesProvider())
+        ChangeNotifierProvider(create: (context)=>LocationPhasesProvider()),
+        ChangeNotifierProvider(create: (context)=>PropertySearchProvider())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

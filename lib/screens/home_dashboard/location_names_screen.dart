@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 
 import '../../configs/text_styles.dart';
 import '../../helper_services/navigation_services.dart';
-import '../location_phases_screen.dart';
+import 'dashboard_widgets/location_phases_screen.dart';
 
 class LocationNameScreen extends StatefulWidget {
   final int cityId;
@@ -93,6 +93,8 @@ class _LocationNameScreenState extends State<LocationNameScreen> {
                               NavigationServices.goNextAndKeepHistory(context: context, widget: PhasesScreen(
                                 cityText:"Lahore" ,
                                 areaId: location.locName![index].areaId!,
+                                cityId: widget.cityId,
+
                               ));
                             },
                             child: Container(

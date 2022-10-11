@@ -68,7 +68,7 @@ int ? cityId;
               },
             ),
             CustomTypeWidget(
-              title: "Area",
+              title: "Area Unit",
               selectedColor: _selectedType == 2 ? true : false,
               onTap: () {
                 _selectedType = 2;
