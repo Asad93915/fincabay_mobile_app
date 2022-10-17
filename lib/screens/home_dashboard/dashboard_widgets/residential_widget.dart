@@ -4,7 +4,7 @@ import 'package:fincabay_application/configs/text_styles.dart';
 import 'package:fincabay_application/helper_services/navigation_services.dart';
 import 'package:fincabay_application/models/cities_model.dart';
 import 'package:fincabay_application/providers/cities_provider.dart';
-import 'package:fincabay_application/providers/get_all_area_unit_provider.dart';
+import 'package:fincabay_application/providers/area_size_provider.dart';
 import 'package:fincabay_application/providers/property_type_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 import '../../../helper_widgets/custom_browse_properties_widgets.dart';
 
 import '../../../utils/handlers.dart';
-import 'area_size_details_screen.dart';
+import 'area_size_view_screen.dart';
 import 'area_size_widget.dart';
 import 'cities_widget.dart';
 
@@ -68,7 +68,7 @@ int ? cityId;
               },
             ),
             CustomTypeWidget(
-              title: "Area Unit",
+              title: "Area Size",
               selectedColor: _selectedType == 2 ? true : false,
               onTap: () {
                 _selectedType = 2;
@@ -114,9 +114,12 @@ int ? cityId;
             type.propertyType!.isNotEmpty?
             type.propertyType!.forEach((element) {
               widgets.add(PropertyTypeWidget(
+
                 type: element,
                 onTap: (){
-                  selectedIndex=element as int;
+                  NavigationServices.goNextAndKeepHistory(context: context, widget: AreaSizeViewScreen(
+                      areaSizeId: 0, catName: "Home", typeId: element.pTypeId!));
+
                   print("selectedIndex $selectedIndex");
                   setState((){});
 
@@ -137,13 +140,17 @@ int ? cityId;
           }),
         if(_selectedType==2)
 
-          Consumer<GetAllAreaUnitProvider>(builder: (context,areas,_){
+          Consumer<AreaSizeProvider>(builder: (context,areas,_){
             List<Widget>widgets=[];
 
             areas.areaUnit!.forEach((element) {
               areas.areaUnit!.isNotEmpty?widgets.add( AreaUnitWidget(
                 onTap: (){
-                  NavigationServices.goNextAndKeepHistory(context: context, widget: const AreaSizeDetailsScreen());
+                  NavigationServices.goNextAndKeepHistory(context: context, widget:  AreaSizeViewScreen(
+                    areaSizeId: element.id!,
+                    catName: "Home",
+                    typeId: 0,
+                  ));
 
                   // getAllAreaUnitHandler(context,element.cityId!);
                 }, areaUnitModel: element,

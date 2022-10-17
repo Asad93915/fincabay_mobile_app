@@ -3,10 +3,12 @@ import 'package:fincabay_application/configs/colors.dart';
 import 'package:fincabay_application/configs/text_styles.dart';
 import 'package:fincabay_application/helper_services/navigation_services.dart';
 import 'package:fincabay_application/helper_widgets/drawer_item_card.dart';
+import 'package:fincabay_application/models/user_response_model.dart';
 import 'package:fincabay_application/screens/add_property_screen.dart';
 import 'package:fincabay_application/screens/auth/login_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 
 class CustomDrawer extends StatefulWidget {
   const CustomDrawer({Key? key}) : super(key: key);
@@ -17,10 +19,13 @@ class CustomDrawer extends StatefulWidget {
 
 class _CustomDrawerState extends State<CustomDrawer> {
   int?selectedIndex;
+
   @override
   Widget build(BuildContext context) {
-    return Container(
 
+    final box=GetStorage();
+    UserModel userModel = UserModel.fromJson(box.read('user'));
+    return Container(
       padding: EdgeInsets.only(top: 30.0,),
       color: barColor,
       width: MediaQuery.of(context).size.width/1.4,
@@ -47,8 +52,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
                mainAxisAlignment: MainAxisAlignment.start,
                crossAxisAlignment: CrossAxisAlignment.start,
                children: [
-                 Text("Asad Ali",style: nameStyle),
-                 IconButton(onPressed: (){}, icon: Icon(Icons.arrow_forward_outlined,color: bgColor,)),
+
+
+                 Text(userModel.userName!,style: nameStyle),
+                 IconButton(onPressed: (){
+
+                 }, icon: Icon(Icons.arrow_forward_outlined,color: bgColor,)),
                ],
              ),
            ],

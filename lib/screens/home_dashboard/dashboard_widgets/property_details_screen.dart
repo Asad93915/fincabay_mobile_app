@@ -12,9 +12,15 @@ class PropertyDetailsScreen extends StatefulWidget {
   final String imageUrl;
   final String sellingAsset;
   final String price;
+  final String address;
+  final int noOfBeds;
+  final int noOfBaths;
+  final String landArea;
+  final String unit;
+  final String description;
 
   PropertyDetailsScreen(
-      {this.imageUrl = '', this.sellingAsset = '', this.price = ''});
+      {this.imageUrl = '', this.sellingAsset = '', this.price = '', required this.address, required this.noOfBeds, required this.noOfBaths, required this.landArea, required this.unit, required this.description});
 
   @override
   State<PropertyDetailsScreen> createState() => _PropertyDetailsScreenState();
@@ -115,7 +121,7 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                             width: 8.0,
                           ),
                           Text(
-                            "Bahria Town, Lahore",
+                            widget.address,
                             style: locationStyle,
                           )
                         ],
@@ -138,7 +144,7 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                                   width: 6.0,
                                 ),
                                 Text(
-                                  "4",
+                                  widget.noOfBaths.toString(),
                                   style: iconStyle,
                                 )
                               ],
@@ -157,7 +163,7 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                                   width: 6.0,
                                 ),
                                 Text(
-                                  "4",
+                                  "${widget.noOfBeds}",
                                   style: iconStyle,
                                 )
                               ],
@@ -176,7 +182,7 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                                   width: 6.0,
                                 ),
                                 Text(
-                                  "5 Marla",
+                                  "${widget.landArea} "+" ${widget.unit}",
                                   style: iconStyle,
                                 )
                               ],
@@ -226,7 +232,7 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                     child: RichText(
                         textAlign: TextAlign.justify,
                         text: TextSpan(
-                            text: "${descriptionText.substring(0,showAllText==true?null:(descriptionText.length/5).toInt())}",style: forgotStyle,
+                            text: "${widget.description.substring(0,showAllText==true?null:(widget.description.length/4).toInt())}",style: forgotStyle,
                             children: [
                               TextSpan(
                                 recognizer: TapGestureRecognizer()..onTap=(){

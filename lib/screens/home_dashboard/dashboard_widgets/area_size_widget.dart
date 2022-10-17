@@ -1,14 +1,14 @@
 
 
 import 'package:fincabay_application/configs/colors.dart';
-import 'package:fincabay_application/models/get_all_area_unit_model.dart';
+import 'package:fincabay_application/models/area_size_model.dart';
 import 'package:fincabay_application/models/property_type_model.dart';
 import 'package:flutter/material.dart';
 
 import '../../../configs/text_styles.dart';
 
 class AreaUnitWidget extends StatelessWidget {
-  AreaUnit areaUnitModel;
+  AreaSize areaUnitModel;
   final Function()?onTap;
    AreaUnitWidget({required this.areaUnitModel, this.onTap});
 

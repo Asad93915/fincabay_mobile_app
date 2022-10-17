@@ -1,8 +1,8 @@
 
 
 import 'package:fincabay_application/helper_services/custom_get_request_service.dart';
-import 'package:fincabay_application/models/get_all_area_unit_model.dart';
-import 'package:fincabay_application/providers/get_all_area_unit_provider.dart';
+import 'package:fincabay_application/models/area_size_model.dart';
+import 'package:fincabay_application/providers/area_size_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
@@ -13,8 +13,8 @@ class GetAllAreaUnitService{
     try{
       var res=await GetRequestService().httpGetRequest(context: context, url: gatAllAreaUnitsUrl+"category=$catName".toString());
       if(res !=null){
-        GetAllAreaUnitModel areaUnitModel=GetAllAreaUnitModel.fromJson(res);
-        Provider.of<GetAllAreaUnitProvider>(context,listen: false).updateAreaUnit(
+        AreaSizeModel areaUnitModel=AreaSizeModel.fromJson(res);
+        Provider.of<AreaSizeProvider>(context,listen: false).updateAreaUnit(
           newUnit: areaUnitModel.data
         );
         return true;

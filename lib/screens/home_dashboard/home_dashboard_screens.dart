@@ -1,15 +1,21 @@
 import 'package:fincabay_application/configs/colors.dart';
 import 'package:fincabay_application/configs/text_styles.dart';
+import 'package:fincabay_application/providers/get_all_properties_provider.dart';
 import 'package:fincabay_application/screens/custom_drawer_screen.dart';
 import 'package:fincabay_application/screens/home_dashboard/dashboard_widgets/dashboard_widgets.dart';
 import 'package:fincabay_application/screens/home_dashboard/dashboard_widgets/new_project_screen.dart';
+import 'package:fincabay_application/screens/home_dashboard/profile_screen.dart';
 
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../dialogs/show_will_pop_dialog.dart';
+import '../../helper_services/custom_loader.dart';
 import '../../helper_widgets/custom_bottom_app_bar_widget.dart';
+import '../../services/get_all_properties_service.dart';
+import 'get_all_properties_screen.dart';
 
 class HomeDashboardScreen extends StatefulWidget {
   const HomeDashboardScreen({Key? key}) : super(key: key);
@@ -20,7 +26,19 @@ class HomeDashboardScreen extends StatefulWidget {
 
 class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
 
-
+  _getAllPropertiesHandler()async{
+    CustomLoader.showLoader(context: context);
+    await GetAllPropertiesService().getProperties(context: context);
+    CustomLoader.hideLoader(context);
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _getAllPropertiesHandler();
+    });
+    super.initState();
+  }
 
   int selectedIndex=0;
   @override
@@ -33,7 +51,7 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
         },
         child: Scaffold(
         drawer: CustomDrawer(),
-        backgroundColor: barColor,
+        backgroundColor: selectedIndex==3?whiteColor:barColor,
         appBar:selectedIndex==0? PreferredSize(
           preferredSize: Size.fromHeight(200.0),
           child: AppBar(
@@ -69,12 +87,19 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
             ),
             iconTheme: IconThemeData(color: Colors.transparent),
           ),
-        ):selectedIndex==1?AppBar(
+        ):
+        selectedIndex==1?AppBar(
           backgroundColor: bgColor,
           leading: Builder(builder: (context)=>IconButton(onPressed: (){}, icon: Icon(Icons.menu)),
           ),
           title: Text("New Projects",style: barStyle,),
-        ):AppBar(),
+        ):
+            selectedIndex==3?AppBar(
+              backgroundColor: whiteColor,
+              iconTheme: IconThemeData(color: blackColor),
+              elevation: 0.0,
+            ):
+        AppBar(),
         floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
         floatingActionButton:SizedBox(
           height: 40.0,
@@ -97,6 +122,7 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
+
                 CustomBottomAppBarWidget(
                   icon: Icons.home,
                   label: "Home",
@@ -140,18 +166,36 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
             ),
           ),
         ),
-        body: SingleChildScrollView(
-          child: Column(
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Column(
 
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-
-              if(selectedIndex==0)
-                DashboardWidget(),
-              if(selectedIndex==1)
-             NewProjectsScreen()
-            ],
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // if(selectedIndex==0-1)
+                //   GetAllPropertiesScreen(),
+                if(selectedIndex==0)
+                  DashboardWidget(),
+                if(selectedIndex==1)
+               NewProjectsScreen(),
+                if(selectedIndex==2)
+                Consumer<GetAllPropertiesProvider>(builder: (context,property,_){
+                  return ListView.builder(
+                      shrinkWrap: true,
+                      primary: false,
+                      scrollDirection: Axis.vertical,
+                      itemCount: property.properties!.length,
+                      itemBuilder: (BuildContext,index){
+                    return GetAllPropertiesScreen(
+                      prop: property.properties![index],
+                    );
+                  });
+                }),
+                if(selectedIndex==3)
+                ProfileScreen(),
+              ],
+            ),
           ),
         )
     ),

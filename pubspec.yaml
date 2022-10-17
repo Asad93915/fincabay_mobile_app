@@ -41,6 +41,8 @@ dependencies:
   http: ^0.13.5
   google_fonts: ^3.0.1
   shared_preferences: ^2.0.15
+  flutter_sms: ^2.3.3
+  get_storage: ^2.0.3
 
 dev_dependencies:
   flutter_test:

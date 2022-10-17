@@ -9,7 +9,6 @@ import 'package:fincabay_application/helper_widgets/custom_drop_down.dart';
 import 'package:fincabay_application/helper_widgets/custom_text_field.dart';
 import 'package:fincabay_application/providers/cities_provider.dart';
 import 'package:fincabay_application/providers/location_name_provider.dart';
-import 'package:fincabay_application/providers/location_phases_provider.dart';
 import 'package:fincabay_application/services/add_property_service.dart';
 import 'package:fincabay_application/services/cities_service.dart';
 import 'package:fincabay_application/services/location_name_service.dart';
@@ -32,9 +31,9 @@ class AddPropertyScreen extends StatefulWidget {
 }
 
 class _AddPropertyScreenState extends State<AddPropertyScreen> {
-  final imagePick = ImagePicker();
-  List<XFile> image = [];
-  PickedFile? galleryFile;
+
+
+  List<XFile> galleryFile=[];
   File? imageFile;
   List<int>propertyGalleryBytes = [];
   List<int>propertyCameraBytes = [];
@@ -445,8 +444,8 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                                     children: [
                                       ElevatedButton.icon(
                                         onPressed: ()async {
-                                          // _getFromGallery();
-                                          image = (await imagePick.pickMultiImage())!;
+                                          _getFromGallery();
+
                                           setState(() {});
                                         },
                                         icon: Icon(Icons.photo_library_rounded),
@@ -482,55 +481,8 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                                   ),
                                 ),
                               ),
-                              (image.isNotEmpty)
-                              ?  Container(
-                                margin: EdgeInsets.only(top: 12.0),
-                                height: 100,
-                                width: double.infinity,
-                                child: ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    shrinkWrap: true,
-                                    itemCount: image.length,
-                                    itemBuilder: (context, index) {
-                                      print('image length ${image.length}');
-                                      return Padding(
-                                        padding:
-                                        const EdgeInsets.symmetric(horizontal: 3.0),
-                                        child: SizedBox(
-                                            height: 100,
-                                            width: 100,
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                  border:
-                                                  Border.all(color: Colors.black),
-                                                  borderRadius:
-                                                  BorderRadius.circular(10)),
-                                              child: ClipRRect(
-                                                borderRadius: BorderRadius.circular(10),
-                                                child: Image.file(
-                                                  File(image[index].path.toString()),
-                                                  fit: BoxFit.cover,
-                                                  isAntiAlias: true,
-                                                ),
-                                              ),
-                                            )),
-                                      );
-                                    }),
-                              ):SizedBox(),
-                              // galleryFile != null
-                              //     ? Container(
-                              //   decoration: BoxDecoration(
-                              //       borderRadius: BorderRadius.circular(10.0)),
-                              //   margin: EdgeInsets.only(top: 10.0),
-                              //   child: Image.file(
-                              //     File(
-                              //       galleryFile!.path,
-                              //     ),
-                              //     fit: BoxFit.fill,
-                              //     height: 100.0,
-                              //     width: 100.0,
-                              //   ),
-                              // )
+
+
 
                               cameraFile != null
                                   ? Container(
@@ -545,6 +497,32 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                                 ),
                               )
                                   : SizedBox(),
+                              galleryFile!=null?
+                                 Container(
+                                   margin: EdgeInsets.only(top: 10.0,left: 10.0,right: 10.0),
+                                   height: MediaQuery.of(context).size.height/6,
+                                   width: double.infinity,
+                                   child: ListView.builder(
+
+                                       itemCount: galleryFile.length,
+                                       shrinkWrap: true,
+                                       primary: false,
+                                       scrollDirection: Axis.horizontal,
+                                       itemBuilder: (BuildContext,index){
+                                     return Padding(
+                                       padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                                       child: ClipRRect(
+                                         borderRadius: BorderRadius.circular(10.0),
+                                         child: Image.file(
+                                           File(galleryFile[index].path),
+                                           width: 100.0,
+                                           fit: BoxFit.fill,
+                                         ),
+
+                                       ),
+                                     );
+                                   }),
+                                 ):Container()
                             ],
                           ),
                         ),
@@ -801,59 +779,6 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                         ),
 
 
-                      // To choose multiple Images
-                      // Align(
-                      //     alignment: Alignment.center,
-                      //     child: CustomButton(
-                      //       onTap: () async {
-                      //         image = (await imagePick.pickMultiImage())!;
-                      //         setState(() {});
-                      //       },
-                      //       text: 'Choose Image',
-                      //     )),
-                      // (image.isNotEmpty)
-                      //     ? SizedBox(
-                      //         height: 100,
-                      //         width: double.infinity,
-                      //         child: ListView.builder(
-                      //             scrollDirection: Axis.horizontal,
-                      //             shrinkWrap: true,
-                      //             itemCount: image.length,
-                      //             itemBuilder: (context, index) {
-                      //               print('image length ${image.length}');
-                      //               return Padding(
-                      //                 padding:
-                      //                     const EdgeInsets.symmetric(horizontal: 3.0),
-                      //                 child: SizedBox(
-                      //                     height: 100,
-                      //                     width: 100,
-                      //                     child: Container(
-                      //                       decoration: BoxDecoration(
-                      //                           border:
-                      //                               Border.all(color: Colors.black),
-                      //                           borderRadius:
-                      //                               BorderRadius.circular(10)),
-                      //                       child: ClipRRect(
-                      //                         borderRadius: BorderRadius.circular(10),
-                      //                         child: Image.file(
-                      //                           File(image[index].path.toString()),
-                      //                           fit: BoxFit.cover,
-                      //                           isAntiAlias: true,
-                      //                         ),
-                      //                       ),
-                      //                     )),
-                      //               );
-                      //             }),
-                      //       )
-                      //     : const Align(
-                      //         alignment: Alignment.bottomCenter,
-                      //         child: Card(
-                      //             child: Padding(
-                      //           padding: EdgeInsets.all(8.0),
-                      //           child: Icon(Icons.image),
-                      //         ))),
-
-
                     ],
                   ),
                 )),
@@ -898,11 +823,10 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
   }
 
   _getFromGallery() async {
-    galleryFile = await ImagePicker().getImage(source: ImageSource.gallery);
-    if (galleryFile != null) {
-      setState(() {
-        imageFile = File(galleryFile!.path);
-      });
+    galleryFile=(await ImagePicker().pickMultiImage())!;
+    if(galleryFile!=null){
+      imageFile=File(galleryFile[0].path);
+      setState((){});
     }
   }
 
@@ -914,16 +838,10 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
     }
   }
 
-  propertyGalleryImageIntoBytes() async {
-    propertyGalleryBytes = await File(galleryFile!.path).readAsBytesSync();
-    print(propertyGalleryBytes);
-    setState(() {});
-  }
-
-  pickMultipleImage() async {
-    image.forEach((element) async {
-      propertyGalleryBytes = await File(element.path).readAsBytesSync();
-      log("$propertyGalleryBytes");
+    galleryImagesBytes()async{
+    galleryFile.forEach((element) async{
+      propertyGalleryBytes=await File(element.path).readAsBytesSync();
+      print(propertyGalleryBytes);
     });
-  }
+    }
 }

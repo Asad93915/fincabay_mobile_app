@@ -5,6 +5,7 @@ import 'package:fincabay_application/models/user_response_model.dart';
 import 'package:fincabay_application/providers/user_data_provider.dart';
 import 'package:fincabay_application/utils/local_storage_services.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
 
 import '../configs/api_configs.dart';
@@ -20,6 +21,10 @@ class LoginApiService{
         Provider.of<UserDataProvider>(context,listen: false).updateUserData(
           newUser: userResponseModel.data
         );
+
+        final box=GetStorage();
+        box.write('user', userResponseModel.data!.toJson());
+
 
 
         return true;

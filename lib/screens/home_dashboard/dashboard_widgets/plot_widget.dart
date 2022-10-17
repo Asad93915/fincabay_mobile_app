@@ -10,10 +10,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 
+import '../../../helper_services/navigation_services.dart';
 import '../../../helper_widgets/custom_browse_properties_widgets.dart';
 
-import '../../../providers/get_all_area_unit_provider.dart';
+import '../../../providers/area_size_provider.dart';
 
+import 'area_size_view_screen.dart';
 import 'area_size_widget.dart';
 
 class PlotWidget extends StatefulWidget {
@@ -66,7 +68,7 @@ class _PlotWidgetState extends State<PlotWidget> {
               },
             ),
             CustomTypeWidget(
-              title: "Area",
+              title: "Area Size",
               selectedColor: _selectedType == 2 ? true : false,
               onTap: () {
                 _selectedType = 2;
@@ -109,6 +111,14 @@ class _PlotWidgetState extends State<PlotWidget> {
             type.propertyType!.isNotEmpty?  type.propertyType!.forEach((element) {
               widgets.add(
                   PropertyTypeWidget(
+                    onTap: (){
+                      NavigationServices.goNextAndKeepHistory(context: context, widget: AreaSizeViewScreen(
+                          areaSizeId: 0,
+                          catName: "Plots",
+                          typeId: element.pTypeId!));
+
+
+                    },
                     type: element,
 
                   )
@@ -126,13 +136,24 @@ class _PlotWidgetState extends State<PlotWidget> {
           }),
         if(_selectedType==2)
 
-          Consumer<GetAllAreaUnitProvider>(builder: (context,areas,_){
+          Consumer<AreaSizeProvider>(builder: (context,areas,_){
             List<Widget>widgets=[];
 
             areas.areaUnit!.isNotEmpty?areas.areaUnit!.forEach((element) {
-              widgets.add( AreaUnitWidget(
-                areaUnitModel: element,
-                
+              widgets.add( InkWell(
+                onTap: (){
+                  NavigationServices.goNextAndKeepHistory(context: context, widget:  AreaSizeViewScreen(
+                    areaSizeId: element.id!,
+                    catName: "Plots",
+                    typeId: 0,
+                  ));
+
+                },
+
+                child: AreaUnitWidget(
+                  areaUnitModel: element,
+
+                ),
               ));
             }):Container(
               child: Text("No Area Unit Available",style: labelStyle2,),

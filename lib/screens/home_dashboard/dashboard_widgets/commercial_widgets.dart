@@ -10,10 +10,12 @@ import 'package:provider/provider.dart';
 
 
 import '../../../configs/text_styles.dart';
+import '../../../helper_services/navigation_services.dart';
 import '../../../helper_widgets/custom_browse_properties_widgets.dart';
 
 import '../../../providers/cities_provider.dart';
-import '../../../providers/get_all_area_unit_provider.dart';
+import '../../../providers/area_size_provider.dart';
+import 'area_size_view_screen.dart';
 import 'area_size_widget.dart';
 import 'cities_widget.dart';
 
@@ -68,7 +70,7 @@ class _CommercialWidgetState extends State<CommercialWidget> {
               },
             ),
             CustomTypeWidget(
-              title: "Area Unit",
+              title: "Area Size",
               selectedColor: _selectedType == 2 ? true : false,
               onTap: () {
                 _selectedType = 2;
@@ -110,6 +112,12 @@ class _CommercialWidgetState extends State<CommercialWidget> {
             List<Widget> widgets=[];
             type.propertyType!.isNotEmpty?  type.propertyType!.forEach((element) {
               widgets.add(PropertyTypeWidget(
+                onTap: (){
+                  NavigationServices.goNextAndKeepHistory(context: context, widget: AreaSizeViewScreen(
+                      areaSizeId: 0, catName: "Commercial", typeId: element.pTypeId!));
+                  setState((){});
+
+                },
                 type: element,
               ));
             }):Container(
@@ -125,13 +133,18 @@ class _CommercialWidgetState extends State<CommercialWidget> {
             );
           }),
         if(_selectedType==2)
-          Consumer<GetAllAreaUnitProvider>(builder: (context,areas,_){
+          Consumer<AreaSizeProvider>(builder: (context,areas,_){
             List<Widget>widgets=[];
             areas.areaUnit!.isNotEmpty?  areas.areaUnit!.forEach((element) {
               widgets.add( AreaUnitWidget(
-                // onTap: (){
-                //   NavigationServices.goNextAndKeepHistory(context: context, widget: AreaSizeDetailsScreen());
-                // },
+                onTap: (){
+                  NavigationServices.goNextAndKeepHistory(context: context, widget:  AreaSizeViewScreen(
+                    areaSizeId: element.id!,
+                    catName: "Commercial",
+                    typeId: 0,
+                  ));
+
+                },
                 areaUnitModel: element,
 
 

@@ -1,17 +1,17 @@
-class GetAllAreaUnitModel {
+class AreaSizeModel {
   int? status;
   String? message;
-  List<AreaUnit>? data;
+  List<AreaSize>? data;
 
-  GetAllAreaUnitModel({this.status, this.message, this.data});
+  AreaSizeModel({this.status, this.message, this.data});
 
-  GetAllAreaUnitModel.fromJson(Map<String, dynamic> json) {
+  AreaSizeModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
     if (json['data'] != null) {
-      data = <AreaUnit>[];
+      data = <AreaSize>[];
       json['data'].forEach((v) {
-        data!.add(new AreaUnit.fromJson(v));
+        data!.add(new AreaSize.fromJson(v));
       });
     }
   }
@@ -27,14 +27,14 @@ class GetAllAreaUnitModel {
   }
 }
 
-class AreaUnit {
+class AreaSize {
   int? id;
   String? name;
   String? category;
 
-  AreaUnit({this.id, this.name, this.category});
+  AreaSize({this.id, this.name, this.category});
 
-  AreaUnit.fromJson(Map<String, dynamic> json) {
+  AreaSize.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     category = json['category'];
