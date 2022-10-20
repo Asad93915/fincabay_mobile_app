@@ -1,19 +1,21 @@
 
-import 'package:fincabay_application/providers/area_size_view_provider.dart';
-import 'package:fincabay_application/providers/cities_provider.dart';
-import 'package:fincabay_application/providers/area_size_provider.dart';
-import 'package:fincabay_application/providers/get_all_properties_provider.dart';
-import 'package:fincabay_application/providers/location_name_provider.dart';
-import 'package:fincabay_application/providers/location_phases_provider.dart';
-import 'package:fincabay_application/providers/property_search_provider.dart';
-import 'package:fincabay_application/providers/property_type_provider.dart';
-import 'package:fincabay_application/providers/registration_provider.dart';
-import 'package:fincabay_application/providers/user_data_provider.dart';
-import 'package:fincabay_application/screens/auth/login_screen.dart';
+import 'package:fincabay_application/Agents_module/providers/agent_properties_provider.dart';
+import 'package:fincabay_application/customer_module/screens/home_dashboard/home_dashboard_screens.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'auth/screens/login_screen.dart';
+import 'auth/provider/registration_provider.dart';
+import 'auth/provider/user_data_provider.dart';
+import 'customer_module/providers/area_size_provider.dart';
+import 'customer_module/providers/area_size_view_provider.dart';
+import 'customer_module/providers/cities_provider.dart';
+import 'customer_module/providers/get_all_properties_provider.dart';
+import 'customer_module/providers/location_name_provider.dart';
+import 'customer_module/providers/location_phases_provider.dart';
+import 'customer_module/providers/property_search_provider.dart';
+import 'customer_module/providers/property_type_provider.dart';
 
 void main() {
   GetStorage.init();
@@ -37,7 +39,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context)=>LocationPhasesProvider()),
         ChangeNotifierProvider(create: (context)=>PropertySearchProvider()),
         ChangeNotifierProvider(create: (context)=>GetAllPropertiesProvider()),
-        ChangeNotifierProvider(create: (context)=>AreaSizeViewProvider())
+        ChangeNotifierProvider(create: (context)=>AreaSizeViewProvider()),
+        //Agents
+        ChangeNotifierProvider(create: (context)=>AgentPropertiesProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -50,7 +54,10 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         home: LoginScreen(),
-        // home: CitiesAreasScreen(),
+        // home: HomeDashboardScreen(),
+        // home: AgentHomeScreen(),
+
+
       ),
     );
   }

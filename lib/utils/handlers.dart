@@ -1,15 +1,11 @@
-import 'package:fincabay_application/providers/cities_provider.dart';
-import 'package:fincabay_application/providers/user_data_provider.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
+import '../customer_module/services/area_size_service.dart';
+import '../customer_module/services/area_size_view_service.dart';
+import '../customer_module/services/cities_service.dart';
+import '../customer_module/services/property_typer_service.dart';
 import '../helper_services/custom_loader.dart';
-import '../services/area_size_view_service.dart';
-import '../services/cities_service.dart';
-import '../services/area_size_service.dart';
-import '../services/property_typer_service.dart';
-
 
 getAllAreaUnitHandler(BuildContext context, String catName)async{
   CustomLoader.showLoader(context: context);

@@ -11,3 +11,9 @@ const String getLocPhasesUrl=baseUrl + "Property/GetLocationPhaseByAreaId/";
 const String addPropertyUrl=baseUrl + "Property/AddPropertyWhileSignUp";
 const String propSearchUrl=baseUrl+ "Property/PropertySearch?";
 const String getAllPropUrl=baseUrl + "Property/GetProperty";
+
+
+//Agents
+
+const String agentAddPropUrl=baseUrl + "Agent/PropertyAddByAgent";
+const String manageAgentPropUrl=baseUrl + "Agent/GetAgentPropertiesByAgentId?";

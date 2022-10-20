@@ -28,3 +28,4 @@ const TextStyle pKrStyle=TextStyle(color: blackColor,fontSize: 10.0,fontWeight: 
 const TextStyle loginStyle=TextStyle(color: blackColor,fontWeight: FontWeight.w700,fontSize: 18.0,);
 const TextStyle addPropStyle=TextStyle(color: lightBlackColor,fontSize: 16.0,fontWeight: FontWeight.bold);
 const TextStyle profileStyle=TextStyle(fontSize: 24.0,fontWeight: FontWeight.bold,color: blackColor);
+const TextStyle contactStyle=TextStyle(color: blackColor,fontSize: 14.0,fontWeight: FontWeight.w600);
