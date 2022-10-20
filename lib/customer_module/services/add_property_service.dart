@@ -50,7 +50,10 @@ class AddPropertyService {
       };
       var res = await PostRequestService()
           .httpPostRequest(url: addPropertyUrl, body: _body, context: context);
+      print("Is Login $isLogin");
+      print("Is Signup $isSignup");
       if (res != null) {
+
         print("Property Added Successfully");
         return true;
       } else {

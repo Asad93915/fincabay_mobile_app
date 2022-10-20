@@ -117,7 +117,9 @@ CustomButton(
              //
              // isSelected=false;
               if(isSelected==true){
-                NavigationServices.goNextAndKeepHistory(context: context, widget: AddPropertyScreen());
+                NavigationServices.goNextAndKeepHistory(context: context, widget: AddPropertyScreen(
+                  isSelected:false,
+                ));
 
               }
               else{

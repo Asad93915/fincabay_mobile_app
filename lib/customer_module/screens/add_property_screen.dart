@@ -23,7 +23,8 @@ import '../services/location_name_service.dart';
 
 
 class AddPropertyScreen extends StatefulWidget {
-  const AddPropertyScreen({super.key});
+ final bool isSelected;
+  AddPropertyScreen({this.isSelected=true});
 
   @override
   State<AddPropertyScreen> createState() => _AddPropertyScreenState();
@@ -102,8 +103,9 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
         name: _regNameCont.text,
         signUpAs: selectedWhoIAm,
 
-        isLogin: selectedIndex == 0 ? true : false,
-        isSignup: selectedIndex == 1 ? true : false);
+        isLogin: widget.isSelected==false?true:selectedIndex == 0 ? true : false,
+        isSignup: widget.isSelected==true?selectedIndex == 1 ? true : false:false
+    );
     CustomLoader.hideLoader(context);
   }
 
@@ -662,120 +664,128 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                         controller: _addressCont,
                         inputAction: TextInputAction.done,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      if(widget.isSelected==true)
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Expanded(
-                            child: CustomButton(
-                              horizontalMargin: 5.0,
-                              text: "Log In",
-                              verticalMargin: 5.0,
-                              bgColor: selectedIndex == 0 ? postColor : Colors
-                                  .transparent,
-                              onTap: () {
-                                selectedIndex = 0;
-                                setState(() {});
-                              },
-                            ),
-                          ),
-                          Expanded(child: CustomButton(
-                            horizontalMargin: 5.0,
-                            verticalMargin: 5.0,
-                            bgColor: selectedIndex == 1 ? postColor : Colors
-                                .grey,
-                            text: "Register Now",
-                            onTap: () {
-                              selectedIndex = 1;
-                              setState(() {});
-                            },
-                          ))
-                        ],
-                      ),
-                      if(selectedIndex == 0)
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 4.0, vertical: 10.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("Login Now", style: loginStyle,),
-                              SizedBox(height: 10.0,),
-                              CustomTextField(
-                                hintText: "Email Address",
-                                controller: _emailCont,
-                                inputType: TextInputType.emailAddress,
-                                inputAction: TextInputAction.next,
-                              ),
-                              CustomTextField(
-                                hintText: "Password",
-                                controller: _passwordCont,
-                                inputType: TextInputType.visiblePassword,
-
-                              ),
-                            ],
-                          ),
-                        ),
-                      if(selectedIndex == 1)
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 4.0, vertical: 10.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Register Yoursself", style: loginStyle,),
-                              SizedBox(height: 10.0,),
-                              CustomDropDown(
-                                borderColor: selectedWhoIAm.isEmpty
-                                    ? lightBlackColor
-                                    : bgColor,
-                                child: DropdownButton(
-                                  isExpanded: true,
-                                  underline: SizedBox(),
-                                  hint: Text(selectedWhoIAm.isEmpty
-                                      ? "I'M a"
-                                      : selectedWhoIAm),
-                                  items: whoIamList.map((item) {
-                                    return DropdownMenuItem(
-                                      value: item,
-                                      child: Text(item),
-                                    );
-                                  }).toList(),
-                                  onChanged: (String? value) {
-                                    selectedWhoIAm = value!;
+                              Expanded(
+                                child: CustomButton(
+                                  horizontalMargin: 5.0,
+                                  text: "Log In",
+                                  verticalMargin: 5.0,
+                                  bgColor: selectedIndex == 0 ? postColor : Colors
+                                      .transparent,
+                                  onTap: () {
+                                    selectedIndex = 0;
                                     setState(() {});
                                   },
                                 ),
                               ),
-                              CustomTextField(
-                                hintText: "Enter Your Name",
-                                controller: _regNameCont,
-                                inputAction: TextInputAction.next,
-                              ),
-                              CustomTextField(
-                                hintText: "Email Address",
-                                inputType: TextInputType.emailAddress,
-                                controller: _emailCont,
-                                inputAction: TextInputAction.next,
-                              ),
-                              CustomTextField(
-                                hintText: "Mobile",
-                                controller: _regMobileCont,
-                                inputType: TextInputType.phone,
-                                charLength: 11,
-                                inputAction: TextInputAction.next,
-                              ),
-
-                              CustomTextField(
-                                hintText: "Password",
-                                inputType: TextInputType.visiblePassword,
-                                controller: _passwordCont,
-                              ),
+                              Expanded(child: CustomButton(
+                                horizontalMargin: 5.0,
+                                verticalMargin: 5.0,
+                                bgColor: selectedIndex == 1 ? postColor : Colors
+                                    .grey,
+                                text: "Register Now",
+                                onTap: () {
+                                  selectedIndex = 1;
+                                  setState(() {});
+                                },
+                              ))
                             ],
                           ),
-                        ),
+
+                          if(selectedIndex == 0)
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 4.0, vertical: 10.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("Login Now", style: loginStyle,),
+                                  SizedBox(height: 10.0,),
+                                  CustomTextField(
+                                    hintText: "Email Address",
+                                    controller: _emailCont,
+                                    inputType: TextInputType.emailAddress,
+                                    inputAction: TextInputAction.next,
+                                  ),
+                                  CustomTextField(
+                                    hintText: "Password",
+                                    controller: _passwordCont,
+                                    inputType: TextInputType.visiblePassword,
+
+                                  ),
+                                ],
+                              ),
+                            ),
+                          if(selectedIndex == 1)
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 4.0, vertical: 10.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("Register Yoursself", style: loginStyle,),
+                                  SizedBox(height: 10.0,),
+                                  CustomDropDown(
+                                    borderColor: selectedWhoIAm.isEmpty
+                                        ? lightBlackColor
+                                        : bgColor,
+                                    child: DropdownButton(
+                                      isExpanded: true,
+                                      underline: SizedBox(),
+                                      hint: Text(selectedWhoIAm.isEmpty
+                                          ? "I'M a"
+                                          : selectedWhoIAm),
+                                      items: whoIamList.map((item) {
+                                        return DropdownMenuItem(
+                                          value: item,
+                                          child: Text(item),
+                                        );
+                                      }).toList(),
+                                      onChanged: (String? value) {
+                                        selectedWhoIAm = value!;
+                                        setState(() {});
+                                      },
+                                    ),
+                                  ),
+                                  CustomTextField(
+                                    hintText: "Enter Your Name",
+                                    controller: _regNameCont,
+                                    inputAction: TextInputAction.next,
+                                  ),
+                                  CustomTextField(
+                                    hintText: "Email Address",
+                                    inputType: TextInputType.emailAddress,
+                                    controller: _emailCont,
+                                    inputAction: TextInputAction.next,
+                                  ),
+                                  CustomTextField(
+                                    hintText: "Mobile",
+                                    controller: _regMobileCont,
+                                    inputType: TextInputType.phone,
+                                    charLength: 11,
+                                    inputAction: TextInputAction.next,
+                                  ),
+
+                                  CustomTextField(
+                                    hintText: "Password",
+                                    inputType: TextInputType.visiblePassword,
+                                    controller: _passwordCont,
+                                  ),
+                                ],
+                              ),
+                            ),
+                        ],
+                      )
 
 
                     ],
