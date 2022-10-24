@@ -1,7 +1,7 @@
-
 import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
+import 'package:fincabay_application/Agents_module/services/agents_add_property_service.dart';
 import 'package:fincabay_application/configs/colors.dart';
 import 'package:fincabay_application/helper_services/custom_loader.dart';
 import 'package:fincabay_application/helper_widgets/custom_button.dart';
@@ -23,8 +23,9 @@ import '../services/location_name_service.dart';
 
 
 class AddPropertyScreen extends StatefulWidget {
- final bool isSelected;
-  AddPropertyScreen({this.isSelected=true});
+  final bool isSelected;
+
+  AddPropertyScreen({this.isSelected = true});
 
   @override
   State<AddPropertyScreen> createState() => _AddPropertyScreenState();
@@ -33,7 +34,7 @@ class AddPropertyScreen extends StatefulWidget {
 class _AddPropertyScreenState extends State<AddPropertyScreen> {
 
 
-  List<XFile> galleryFile=[];
+  List<XFile> galleryFile = [];
   File? imageFile;
   List<int>propertyGalleryBytes = [];
   List<int>propertyCameraBytes = [];
@@ -74,7 +75,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
     CustomLoader.hideLoader(context);
   }
 
-  _getLocNameHandler(int cityId)async{
+  _getLocNameHandler(int cityId) async {
     CustomLoader.showLoader(context: context);
 
     await GetLocationNameService().getLocName(context: context, cityId: cityId);
@@ -82,29 +83,49 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
     print("City $cityId");
     CustomLoader.hideLoader(context);
   }
+
+  // postAddressHandler() async {
+  //   CustomLoader.showLoader(context: context);
+  //   await AddPropertyService().addProperty(context: context,
+  //       propertyTitle: _propTitleCont.text,
+  //       content: _contentCont.text,
+  //       propType: selectedProperty,
+  //       propPurpose: selectedPurpose,
+  //       price: _priceCont.text,
+  //       landArea: _landAreaCont.text,
+  //       unit: selectedUnit,
+  //       noOfBeds: _noOfBedsCont.text,
+  //       noOfBaths: _noOfBathsCont.text,
+  //       expiryDate: _expiryCont.text,
+  //       city: _selectedCity!,
+  //       area: selectedArea!,
+  //       detailAddress: _addressCont.text,
+  //       email: _emailCont.text,
+  //       password: _passwordCont.text,
+  //       name: _regNameCont.text,
+  //       signUpAs: selectedWhoIAm,
+  //
+  //       isLogin: widget.isSelected==false?true:selectedIndex == 0 ? true : false,
+  //       isSignup: widget.isSelected==true?selectedIndex == 1 ? true : false:false
+  //   );
+  //   CustomLoader.hideLoader(context);
+  // }
   postAddressHandler() async {
     CustomLoader.showLoader(context: context);
-    await AddPropertyService().addProperty(context: context,
-        propertyTitle: _propTitleCont.text,
+    await AgentsAddPropertyService().addAgentProperty(context: context,
+        propTitle: _propTitleCont.text,
         content: _contentCont.text,
-        propType: selectedProperty,
-        propPurpose: selectedPurpose,
+        propertyType: selectedProperty,
+        purpose: selectedPurpose,
         price: _priceCont.text,
         landArea: _landAreaCont.text,
         unit: selectedUnit,
         noOfBeds: _noOfBedsCont.text,
         noOfBaths: _noOfBathsCont.text,
-        expiryDate: _expiryCont.text,
+        expiryDate: selectedExpiration,
         city: _selectedCity!,
-        area: selectedArea!,
-        detailAddress: _addressCont.text,
-        email: _emailCont.text,
-        password: _passwordCont.text,
-        name: _regNameCont.text,
-        signUpAs: selectedWhoIAm,
-
-        isLogin: widget.isSelected==false?true:selectedIndex == 0 ? true : false,
-        isSignup: widget.isSelected==true?selectedIndex == 1 ? true : false:false
+        area:selectedArea!,
+        detailsAddress: _addressCont.text
     );
     CustomLoader.hideLoader(context);
   }
@@ -131,7 +152,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
   String? selectedArea;
 
   @override
-  updateArea(String? value)async {
+  updateArea(String? value) async {
     selectedArea = value;
 
     setState(() {});
@@ -444,7 +465,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                                         .center,
                                     children: [
                                       ElevatedButton.icon(
-                                        onPressed: ()async {
+                                        onPressed: () async {
                                           _getFromGallery();
 
                                           setState(() {});
@@ -484,7 +505,6 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                               ),
 
 
-
                               cameraFile != null
                                   ? Container(
                                 margin: EdgeInsets.only(top: 10.0),
@@ -497,33 +517,45 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                                   width: 100.0,
                                 ),
                               )
-                                  : SizedBox(),
-                              galleryFile!=null?
-                                 Container(
-                                   margin: EdgeInsets.only(top: 10.0,left: 10.0,right: 10.0),
-                                   height: MediaQuery.of(context).size.height/6,
-                                   width: double.infinity,
-                                   child: ListView.builder(
+                                  : Container(
+                                color: bgColor,
+                              ),
+                              galleryFile.isNotEmpty ?
+                              Container(
 
-                                       itemCount: galleryFile.length,
-                                       shrinkWrap: true,
-                                       primary: false,
-                                       scrollDirection: Axis.horizontal,
-                                       itemBuilder: (BuildContext,index){
-                                     return Padding(
-                                       padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                                       child: ClipRRect(
-                                         borderRadius: BorderRadius.circular(10.0),
-                                         child: Image.file(
-                                           File(galleryFile[index].path),
-                                           width: 100.0,
-                                           fit: BoxFit.fill,
-                                         ),
+                                margin: EdgeInsets.only(
+                                    top: 10.0, left: 10.0, right: 10.0),
+                                height: MediaQuery
+                                    .of(context)
+                                    .size
+                                    .height / 6,
+                                width: double.infinity,
+                                child: ListView.builder(
 
-                                       ),
-                                     );
-                                   }),
-                                 ):Container()
+                                    itemCount: galleryFile.length,
+                                    shrinkWrap: true,
+                                    primary: false,
+                                    scrollDirection: Axis.horizontal,
+                                    itemBuilder: (BuildContext, index) {
+                                      return Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 5.0),
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(
+                                              10.0),
+                                          child: Image.file(
+                                            File(galleryFile[index].path),
+                                            width: 100.0,
+                                            fit: BoxFit.fill,
+                                          ),
+
+                                        ),
+                                      );
+                                    }),
+                              ) : Container(color:
+                              Colors.red
+                                ,
+                              )
                             ],
                           ),
                         ),
@@ -587,31 +619,29 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                                     }).toList(),
                                     onChanged: (String? newValue) {
                                       // if (updateCity != null) {
-                                        updateCity(newValue!);
-                                        cities.city!.map((item) {
-                                          print("City Name ${item.cityName}");
-                                          print("newValue $newValue");
-                                          if(newValue==item.cityName){
-
-                                            if(selectedArea==null){
-                                              _getLocNameHandler(
-                                                  item.cityId!);
-                                            }
-                                            else{
-                                              selectedArea=null;
-                                              _getLocNameHandler(
-                                                  item.cityId!);
-                                            }
-                                            // cities.city!.clear();
-
+                                      updateCity(newValue!);
+                                      cities.city!.map((item) {
+                                        print("City Name ${item.cityName}");
+                                        print("newValue $newValue");
+                                        if (newValue == item.cityName) {
+                                          if (selectedArea == null) {
+                                            _getLocNameHandler(
+                                                item.cityId!);
                                           }
+                                          else {
+                                            selectedArea = null;
+                                            _getLocNameHandler(
+                                                item.cityId!);
+                                          }
+                                          // cities.city!.clear();
 
-                                        }).toList();
+                                        }
+                                      }).toList();
                                       //
                                       // };
-                                            setState(() {});
+                                      setState(() {});
                                     }
-                                    ),
+                                ),
                               );
                             }),
                           ),
@@ -645,9 +675,9 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                                         child: Text(item.areaName!),
                                       );
                                     }).toList(),
-                                    onChanged: (String? newValue){
+                                    onChanged: (String? newValue) {
                                       // if (updateArea != null) {
-                                       updateArea(newValue!);
+                                      updateArea(newValue!);
 
                                       // }
                                       setState(() {});
@@ -664,128 +694,133 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                         controller: _addressCont,
                         inputAction: TextInputAction.done,
                       ),
-                      if(widget.isSelected==true)
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                child: CustomButton(
+                      if(widget.isSelected == true)
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: CustomButton(
+                                    horizontalMargin: 5.0,
+                                    text: "Log In",
+                                    verticalMargin: 5.0,
+                                    bgColor: selectedIndex == 0
+                                        ? postColor
+                                        : Colors
+                                        .transparent,
+                                    onTap: () {
+                                      selectedIndex = 0;
+                                      setState(() {});
+                                    },
+                                  ),
+                                ),
+                                Expanded(child: CustomButton(
                                   horizontalMargin: 5.0,
-                                  text: "Log In",
                                   verticalMargin: 5.0,
-                                  bgColor: selectedIndex == 0 ? postColor : Colors
-                                      .transparent,
+                                  bgColor: selectedIndex == 1
+                                      ? postColor
+                                      : Colors
+                                      .grey,
+                                  text: "Register Now",
                                   onTap: () {
-                                    selectedIndex = 0;
+                                    selectedIndex = 1;
                                     setState(() {});
                                   },
+                                ))
+                              ],
+                            ),
+
+                            if(selectedIndex == 0)
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 4.0, vertical: 10.0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text("Login Now", style: loginStyle,),
+                                    SizedBox(height: 10.0,),
+                                    CustomTextField(
+                                      hintText: "Email Address",
+                                      controller: _emailCont,
+                                      inputType: TextInputType.emailAddress,
+                                      inputAction: TextInputAction.next,
+                                    ),
+                                    CustomTextField(
+                                      hintText: "Password",
+                                      controller: _passwordCont,
+                                      inputType: TextInputType.visiblePassword,
+
+                                    ),
+                                  ],
                                 ),
                               ),
-                              Expanded(child: CustomButton(
-                                horizontalMargin: 5.0,
-                                verticalMargin: 5.0,
-                                bgColor: selectedIndex == 1 ? postColor : Colors
-                                    .grey,
-                                text: "Register Now",
-                                onTap: () {
-                                  selectedIndex = 1;
-                                  setState(() {});
-                                },
-                              ))
-                            ],
-                          ),
-
-                          if(selectedIndex == 0)
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 4.0, vertical: 10.0),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text("Login Now", style: loginStyle,),
-                                  SizedBox(height: 10.0,),
-                                  CustomTextField(
-                                    hintText: "Email Address",
-                                    controller: _emailCont,
-                                    inputType: TextInputType.emailAddress,
-                                    inputAction: TextInputAction.next,
-                                  ),
-                                  CustomTextField(
-                                    hintText: "Password",
-                                    controller: _passwordCont,
-                                    inputType: TextInputType.visiblePassword,
-
-                                  ),
-                                ],
-                              ),
-                            ),
-                          if(selectedIndex == 1)
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 4.0, vertical: 10.0),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text("Register Yoursself", style: loginStyle,),
-                                  SizedBox(height: 10.0,),
-                                  CustomDropDown(
-                                    borderColor: selectedWhoIAm.isEmpty
-                                        ? lightBlackColor
-                                        : bgColor,
-                                    child: DropdownButton(
-                                      isExpanded: true,
-                                      underline: SizedBox(),
-                                      hint: Text(selectedWhoIAm.isEmpty
-                                          ? "I'M a"
-                                          : selectedWhoIAm),
-                                      items: whoIamList.map((item) {
-                                        return DropdownMenuItem(
-                                          value: item,
-                                          child: Text(item),
-                                        );
-                                      }).toList(),
-                                      onChanged: (String? value) {
-                                        selectedWhoIAm = value!;
-                                        setState(() {});
-                                      },
+                            if(selectedIndex == 1)
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 4.0, vertical: 10.0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Register Yoursself", style: loginStyle,),
+                                    SizedBox(height: 10.0,),
+                                    CustomDropDown(
+                                      borderColor: selectedWhoIAm.isEmpty
+                                          ? lightBlackColor
+                                          : bgColor,
+                                      child: DropdownButton(
+                                        isExpanded: true,
+                                        underline: SizedBox(),
+                                        hint: Text(selectedWhoIAm.isEmpty
+                                            ? "I'M a"
+                                            : selectedWhoIAm),
+                                        items: whoIamList.map((item) {
+                                          return DropdownMenuItem(
+                                            value: item,
+                                            child: Text(item),
+                                          );
+                                        }).toList(),
+                                        onChanged: (String? value) {
+                                          selectedWhoIAm = value!;
+                                          setState(() {});
+                                        },
+                                      ),
                                     ),
-                                  ),
-                                  CustomTextField(
-                                    hintText: "Enter Your Name",
-                                    controller: _regNameCont,
-                                    inputAction: TextInputAction.next,
-                                  ),
-                                  CustomTextField(
-                                    hintText: "Email Address",
-                                    inputType: TextInputType.emailAddress,
-                                    controller: _emailCont,
-                                    inputAction: TextInputAction.next,
-                                  ),
-                                  CustomTextField(
-                                    hintText: "Mobile",
-                                    controller: _regMobileCont,
-                                    inputType: TextInputType.phone,
-                                    charLength: 11,
-                                    inputAction: TextInputAction.next,
-                                  ),
+                                    CustomTextField(
+                                      hintText: "Enter Your Name",
+                                      controller: _regNameCont,
+                                      inputAction: TextInputAction.next,
+                                    ),
+                                    CustomTextField(
+                                      hintText: "Email Address",
+                                      inputType: TextInputType.emailAddress,
+                                      controller: _emailCont,
+                                      inputAction: TextInputAction.next,
+                                    ),
+                                    CustomTextField(
+                                      hintText: "Mobile",
+                                      controller: _regMobileCont,
+                                      inputType: TextInputType.phone,
+                                      charLength: 11,
+                                      inputAction: TextInputAction.next,
+                                    ),
 
-                                  CustomTextField(
-                                    hintText: "Password",
-                                    inputType: TextInputType.visiblePassword,
-                                    controller: _passwordCont,
-                                  ),
-                                ],
+                                    CustomTextField(
+                                      hintText: "Password",
+                                      inputType: TextInputType.visiblePassword,
+                                      controller: _passwordCont,
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                        ],
-                      )
+                          ],
+                        )
 
 
                     ],
@@ -832,10 +867,10 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
   }
 
   _getFromGallery() async {
-    galleryFile=(await ImagePicker().pickMultiImage())!;
-    if(galleryFile!=null){
-      imageFile=File(galleryFile[0].path);
-      setState((){});
+    galleryFile = (await ImagePicker().pickMultiImage())!;
+    if (galleryFile != null) {
+      imageFile = File(galleryFile[0].path);
+      setState(() {});
     }
   }
 
@@ -847,10 +882,10 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
     }
   }
 
-    galleryImagesBytes()async{
-    galleryFile.forEach((element) async{
-      propertyGalleryBytes=await File(element.path).readAsBytesSync();
+  galleryImagesBytes() async {
+    galleryFile.forEach((element) async {
+      propertyGalleryBytes = await File(element.path).readAsBytesSync();
       print(propertyGalleryBytes);
     });
-    }
+  }
 }

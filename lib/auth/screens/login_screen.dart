@@ -34,8 +34,8 @@ class _LoginScreenState extends State<LoginScreen> {
    CustomLoader.hideLoader(context);
    if(res){
      setVisitorView(true);
-     NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: HomeDashboardScreen());
-     //  NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: AgentHomeScreen());
+     // NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: HomeDashboardScreen());
+      NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: AgentHomeScreen());
 
    }
   }

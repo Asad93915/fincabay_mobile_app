@@ -29,3 +29,5 @@ const TextStyle loginStyle=TextStyle(color: blackColor,fontWeight: FontWeight.w7
 const TextStyle addPropStyle=TextStyle(color: lightBlackColor,fontSize: 16.0,fontWeight: FontWeight.bold);
 const TextStyle profileStyle=TextStyle(fontSize: 24.0,fontWeight: FontWeight.bold,color: blackColor);
 const TextStyle contactStyle=TextStyle(color: blackColor,fontSize: 14.0,fontWeight: FontWeight.w600);
+const TextStyle userStyle=TextStyle(color: blackColor,fontWeight: FontWeight.w700,fontSize: 18.0,height: 2.0);
+const TextStyle noStyle=TextStyle(fontSize: 13.0);

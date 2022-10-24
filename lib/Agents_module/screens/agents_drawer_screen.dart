@@ -1,4 +1,4 @@
-import 'package:fincabay_application/Agents_module/screens/agency_staff_screen.dart';
+import 'package:fincabay_application/Agents_module/screens/staff/agency_staff_screen.dart';
 import 'package:fincabay_application/Agents_module/screens/agents_add_property_screen.dart';
 import 'package:fincabay_application/Agents_module/screens/update_agent_profile_screen.dart';
 import 'package:fincabay_application/auth/screens/login_screen.dart';

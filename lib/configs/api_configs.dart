@@ -17,3 +17,6 @@ const String getAllPropUrl=baseUrl + "Property/GetProperty";
 
 const String agentAddPropUrl=baseUrl + "Agent/PropertyAddByAgent";
 const String manageAgentPropUrl=baseUrl + "Agent/GetAgentPropertiesByAgentId?";
+const String getStaffUrl=baseUrl + "Accounts/GetAllStaffMembersByAgentId?";
+const String delStaffUrl=baseUrl + "Accounts/StaffUserDelete?";
+const String editStaffUrl=baseUrl + "Accounts/UpdateStaffMember";

@@ -33,5 +33,15 @@ class CustomSnackBar{
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
+  static void showTopSnackBar({required BuildContext context,required String message})
+  {
+    ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
+      content: Text('$message'),
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: Colors.green[700],
+      duration: Duration(milliseconds: 1150),
 
+
+    ));
+  }
 }
