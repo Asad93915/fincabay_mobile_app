@@ -6,7 +6,8 @@ import '../configs/colors.dart';
 
 class CustomUploadingWidget extends StatelessWidget {
   final String suggestionText;
-   CustomUploadingWidget({this.suggestionText=""});
+  final bool icon;
+   CustomUploadingWidget({this.suggestionText="",  this.icon=false});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class CustomUploadingWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Icon(CupertinoIcons.check_mark, color: bgColor, size: 15.0),
+          Icon(icon==false?CupertinoIcons.check_mark:Icons.check_circle, color: bgColor, size: 15.0),
           SizedBox(width: 12.0,),
           Expanded(child: Text(
             suggestionText, style:TextStyle(color: lightBlackColor,fontSize: 11.0,height: 1.2),))

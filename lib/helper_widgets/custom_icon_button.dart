@@ -19,6 +19,7 @@ class CustomIconButton extends StatelessWidget {
   final double circularBorder;
   final Color borderColor;
   final IconData? icon;
+  final Color iconColor;
 
   CustomIconButton(
       {this.onTap,
@@ -32,7 +33,7 @@ class CustomIconButton extends StatelessWidget {
         this.verticalMargin=0.0,
         this.bgColor=blueColor,
         this.circularBorder=10.0,
-        this.borderColor=Colors.transparent, this.icon
+        this.borderColor=Colors.transparent, this.icon, this.iconColor=whiteColor
       });
 
   static const Color blueColor=Color(0xFF29489C);
@@ -49,7 +50,7 @@ class CustomIconButton extends StatelessWidget {
               side: BorderSide(color: borderColor)
           )
       ),
-        icon: Icon(icon),
+        icon: Icon(icon,color: iconColor,),
         onPressed: onTap,
         label: Text(text!,style: TextStyle(fontSize: fontSize,fontWeight: fontWeight,color: textColor,),),)
     );

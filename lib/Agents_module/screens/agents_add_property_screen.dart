@@ -122,6 +122,8 @@ class _AgentsAddPropertyScreenState extends State<AgentsAddPropertyScreen> {
                 backgroundColor: postColor,
                 leading: IconButton(
                   onPressed: () {
+                    Navigator.pop(context);
+                    setState((){});
                     // NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: HomeDashboardScreen());
                   },
                   icon: Icon(

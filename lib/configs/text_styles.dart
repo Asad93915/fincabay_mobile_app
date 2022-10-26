@@ -31,3 +31,4 @@ const TextStyle profileStyle=TextStyle(fontSize: 24.0,fontWeight: FontWeight.bol
 const TextStyle contactStyle=TextStyle(color: blackColor,fontSize: 14.0,fontWeight: FontWeight.w600);
 const TextStyle userStyle=TextStyle(color: blackColor,fontWeight: FontWeight.w700,fontSize: 18.0,height: 2.0);
 const TextStyle noStyle=TextStyle(fontSize: 13.0);
+const TextStyle sellStyle=TextStyle(color: blackColor,fontSize: 14.0,fontWeight: FontWeight.bold);

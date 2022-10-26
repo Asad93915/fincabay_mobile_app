@@ -88,7 +88,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   List<String> _signingUpAsList = [
     "Property Owner",
     "Agent/Broker",
-    "Buyer/visitor"
+    "Buyer/visitor",
   ];
   bool _isChecked = false;
 
@@ -240,7 +240,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         underline: SizedBox(),
                         value: _selectedCity,
                         hint: Text(
-                          "--Select City--",
+                          _selectedCity==null?"--Select City--":_selectedCity!,
                           style: labelStyle2,
                         ),
                         items: cities.city!.map((item) {
@@ -248,7 +248,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             value: item.cityName,
                             child: Text(item.cityName!),
                           );
-                        }).toList(),
+
+                        }).toSet().toList(),
                         onChanged: (String? newValue) {
                           print("Asad");
                           if (updateCity != null) {
@@ -368,10 +369,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               underline: SizedBox(),
                               value: _selectedDealCity,
                               hint: Text(
-                                "--Select City--",
+                                _selectedCity==null?"--Select City--":_selectedCity!,
                                 style: labelStyle2,
                               ),
-                              items: cities.city!.map((item) {
+                              items: cities.city!.toSet().map((item) {
                                 return DropdownMenuItem(
                                   value: item.cityName,
                                   child: Text(item.cityName!),
