@@ -94,7 +94,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   registrationHandler() async {
     CustomLoader.showLoader(context: context);
-    bool res = await RegistrationService().registerUser(
+    var res = await RegistrationService().registerUser(
         context: context,
         userName: nameCont.text,
         email: emailCont.text,
@@ -114,11 +114,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         serviceDescription: descriptionCont.text);
     CustomLoader.hideLoader(context);
     if (res) {
+
       NavigationServices.goNextAndKeepHistory(
           context: context, widget: LoginScreen());
     }
   }
 
+  bool _isPassword=true;
+  bool _isConfirmPassword=true;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -163,6 +166,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   headerText: "Password",
                   controller: passwordCont,
                   focusNode: passwordFocus,
+                  obscureText: _isPassword,
+                  suffixIcon: _isPassword==true?Icons.visibility:Icons.visibility_off,
+                  suffixOnTap: (){
+                    _isPassword =! _isPassword;
+                    setState((){});
+                  },
                   inputType: TextInputType.visiblePassword,
                   inputAction: TextInputAction.next,
                 ),
@@ -170,6 +179,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   headerText: "Confirm Password",
                   controller: confirmPasswordCont,
                   focusNode: confirmPasswordFocus,
+                  obscureText: _isConfirmPassword,
+                  suffixIcon: _isConfirmPassword==true?Icons.visibility:Icons.visibility_off,
+                  suffixOnTap: (){
+                    _isConfirmPassword =! _isConfirmPassword;
+                    setState((){});
+                  },
                   inputType: TextInputType.visiblePassword,
                   inputAction: TextInputAction.next,
                 ),
@@ -243,13 +258,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           _selectedCity==null?"--Select City--":_selectedCity!,
                           style: labelStyle2,
                         ),
-                        items: cities.city!.map((item) {
+                        items: cities.city!.toSet().map((item) {
                           return DropdownMenuItem(
                             value: item.cityName,
                             child: Text(item.cityName!),
                           );
 
-                        }).toSet().toList(),
+                        }).toList(),
                         onChanged: (String? newValue) {
                           print("Asad");
                           if (updateCity != null) {
@@ -476,7 +491,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     );
   }
 
-  validateRegistration() {
+ validateRegistration() {
     if (nameCont.text.isEmpty) {
       CustomSnackBar.failedSnackBar(
           context: context, message: "User Name is Empty");

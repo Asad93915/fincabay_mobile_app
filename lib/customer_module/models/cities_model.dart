@@ -1,3 +1,5 @@
+import 'package:equatable/equatable.dart';
+
 class CitiesModel {
   int? status;
   String? message;
@@ -27,7 +29,7 @@ class CitiesModel {
   }
 }
 
-class Cities {
+class Cities extends Equatable {
   int? cityId;
   String? cityName;
 
@@ -44,4 +46,8 @@ class Cities {
     data['cityName'] = this.cityName;
     return data;
   }
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [cityName];
 }

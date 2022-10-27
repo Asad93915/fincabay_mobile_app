@@ -7,12 +7,14 @@ import 'package:fincabay_application/helper_services/custom_loader.dart';
 import 'package:fincabay_application/helper_widgets/custom_button.dart';
 import 'package:fincabay_application/helper_widgets/custom_drop_down.dart';
 import 'package:fincabay_application/helper_widgets/custom_text_field.dart';
+import 'package:fincabay_application/utils/Functions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../../configs/text_styles.dart';
+import '../../helper_services/custom_snackbar.dart';
 import '../../helper_widgets/custom_dropdown_text.dart';
 import '../../helper_widgets/custom_uploading_widget.dart';
 import '../providers/cities_provider.dart';
@@ -62,10 +64,15 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
 
   TextEditingController _emailCont = TextEditingController();
   TextEditingController _passwordCont = TextEditingController();
-
   TextEditingController _regNameCont = TextEditingController();
-
   TextEditingController _regMobileCont = TextEditingController();
+
+  FocusNode _emailFocus = FocusNode();
+  FocusNode _passwordFocus = FocusNode();
+  FocusNode _regNameFocus = FocusNode();
+  FocusNode _regMobileFocus = FocusNode();
+
+
   int selectedIndex = 1;
 
   _getCities() async {
@@ -86,32 +93,34 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
 
   // postAddressHandler() async {
   //   CustomLoader.showLoader(context: context);
-  //   await AddPropertyService().addProperty(context: context,
-  //       propertyTitle: _propTitleCont.text,
-  //       content: _contentCont.text,
-  //       propType: selectedProperty,
-  //       propPurpose: selectedPurpose,
-  //       price: _priceCont.text,
-  //       landArea: _landAreaCont.text,
-  //       unit: selectedUnit,
-  //       noOfBeds: _noOfBedsCont.text,
-  //       noOfBaths: _noOfBathsCont.text,
-  //       expiryDate: _expiryCont.text,
-  //       city: _selectedCity!,
-  //       area: selectedArea!,
-  //       detailAddress: _addressCont.text,
-  //       email: _emailCont.text,
-  //       password: _passwordCont.text,
-  //       name: _regNameCont.text,
-  //       signUpAs: selectedWhoIAm,
   //
-  //       isLogin: widget.isSelected==false?true:selectedIndex == 0 ? true : false,
-  //       isSignup: widget.isSelected==true?selectedIndex == 1 ? true : false:false
-  //   );
   //   CustomLoader.hideLoader(context);
   // }
   postAddressHandler() async {
     CustomLoader.showLoader(context: context);
+    widget.isSelected==true?
+    await AddPropertyService().addProperty(context: context,
+              propertyTitle: _propTitleCont.text,
+              content: _contentCont.text,
+              propType: selectedProperty,
+              propPurpose: selectedPurpose,
+              price: _priceCont.text,
+              landArea: _landAreaCont.text,
+              unit: selectedUnit,
+              noOfBeds: _noOfBedsCont.text,
+              noOfBaths: _noOfBathsCont.text,
+              expiryDate: _expiryCont.text,
+              city: _selectedCity!,
+              area: selectedArea!,
+              detailAddress: _addressCont.text,
+              email: _emailCont.text,
+              password: _passwordCont.text,
+              name: _regNameCont.text,
+              signUpAs: selectedWhoIAm,
+
+              isLogin: selectedIndex == 0 ? true : false,
+              isSignup: selectedIndex == 1 ? true : false,
+          ):
     await AgentsAddPropertyService().addAgentProperty(context: context,
         propTitle: _propTitleCont.text,
         content: _contentCont.text,
@@ -167,6 +176,15 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
   TextEditingController _expiryCont = TextEditingController();
   TextEditingController _addressCont = TextEditingController();
 
+  FocusNode _propTitleFocus = FocusNode();
+  FocusNode _contentFocus = FocusNode();
+  FocusNode _priceFocus = FocusNode();
+  FocusNode _landAreaFocus = FocusNode();
+  FocusNode _noOfBedsFocus = FocusNode();
+  FocusNode _noOfBathsFocus = FocusNode();
+  FocusNode _expiryFocus = FocusNode();
+  FocusNode _addressFocus = FocusNode();
+bool isShow=true;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -221,11 +239,13 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                       CustomTextField(
                         headerText: "Property Title",
                         controller: _propTitleCont,
+                        focusNode: _propTitleFocus,
                         inputAction: TextInputAction.next,
                       ),
                       CustomTextField(
                         headerText: "Content",
                         controller: _contentCont,
+                        focusNode: _contentFocus,
                         inputAction: TextInputAction.next,
                         maxLine: 3,
                       ),
@@ -306,6 +326,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                       CustomTextField(
                         headerText: "Price",
                         controller: _priceCont,
+                        focusNode: _priceFocus,
                         inputType: TextInputType.number,
                         inputAction: TextInputAction.next,
                       ),
@@ -331,6 +352,8 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                         children: [
                           Expanded(child: CustomTextField(
                             controller: _landAreaCont,
+                            focusNode: _landAreaFocus,
+                            inputType: TextInputType.number,
                             inputAction: TextInputAction.next,
                           )),
                           Expanded(
@@ -358,7 +381,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                           )
                         ],
                       ),
-                      Row(
+                      isShow==true?Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -367,6 +390,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                                 inputAction: TextInputAction.next,
                                 inputType: TextInputType.number,
                                 headerText: "No. of Beds",
+                                focusNode: _noOfBedsFocus,
                                 charLength: 2,
                                 controller: _noOfBedsCont,
                                 suffixIcon: Icons.bed_outlined,
@@ -375,12 +399,13 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                               child: CustomTextField(
                                 inputType: TextInputType.number,
                                 headerText: "No. of Baths",
+                                focusNode: _noOfBathsFocus,
                                 controller: _noOfBathsCont,
                                 suffixIcon: Icons.bathtub_outlined,
                                 inputAction: TextInputAction.next,
                               )),
                         ],
-                      ),
+                      ):SizedBox(),
                       CustomDropDownText(
                         text: "Expire After",
                       ),
@@ -610,7 +635,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                                       "Select City",
                                       style: labelStyle2,
                                     ),
-                                    items: cities.city!.map((item) {
+                                    items: cities.city!.toSet().map((item) {
                                       return DropdownMenuItem(
                                         value: item.cityName,
                                         child: Text(item.cityName!),
@@ -692,6 +717,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                         headerText: "Details Address",
                         maxLine: 3,
                         controller: _addressCont,
+                        focusNode: _addressFocus,
                         inputAction: TextInputAction.done,
                       ),
                       if(widget.isSelected == true)
@@ -714,6 +740,8 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                                         .transparent,
                                     onTap: () {
                                       selectedIndex = 0;
+                                      // _emailCont.clear();
+                                      // _passwordCont.clear();
                                       setState(() {});
                                     },
                                   ),
@@ -728,6 +756,8 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                                   text: "Register Now",
                                   onTap: () {
                                     selectedIndex = 1;
+                                    // _emailCont.clear();
+                                    // _passwordCont.clear();
                                     setState(() {});
                                   },
                                 ))
@@ -747,11 +777,13 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                                     CustomTextField(
                                       hintText: "Email Address",
                                       controller: _emailCont,
+                                      focusNode: _emailFocus,
                                       inputType: TextInputType.emailAddress,
                                       inputAction: TextInputAction.next,
                                     ),
                                     CustomTextField(
                                       hintText: "Password",
+                                      focusNode: _passwordFocus,
                                       controller: _passwordCont,
                                       inputType: TextInputType.visiblePassword,
 
@@ -794,17 +826,20 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                                     ),
                                     CustomTextField(
                                       hintText: "Enter Your Name",
+                                      focusNode: _regNameFocus,
                                       controller: _regNameCont,
                                       inputAction: TextInputAction.next,
                                     ),
                                     CustomTextField(
                                       hintText: "Email Address",
                                       inputType: TextInputType.emailAddress,
+                                      focusNode: _emailFocus,
                                       controller: _emailCont,
                                       inputAction: TextInputAction.next,
                                     ),
                                     CustomTextField(
                                       hintText: "Mobile",
+                                      focusNode: _regMobileFocus,
                                       controller: _regMobileCont,
                                       inputType: TextInputType.phone,
                                       charLength: 11,
@@ -812,6 +847,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                                     ),
 
                                     CustomTextField(
+                                      focusNode: _passwordFocus,
                                       hintText: "Password",
                                       inputType: TextInputType.visiblePassword,
                                       controller: _passwordCont,
@@ -854,9 +890,11 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                 onTap: () {
                   // await propertyGalleryImageIntoBytes();
                   // await pickMultipleImage();
+                if(_addPropValidation()){
                   postAddressHandler(
 
                   );
+                }
                 },
               ),
             ],
@@ -887,5 +925,115 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
       propertyGalleryBytes = await File(element.path).readAsBytesSync();
       print(propertyGalleryBytes);
     });
+  }
+
+  _addPropValidation(){
+    if(_propTitleCont.text.isEmpty){
+      CustomSnackBar.failedSnackBar(context: context, message: "Enter Property Title");
+      _propTitleFocus.requestFocus();
+      return false;
+    }
+    else if(_contentCont.text.isEmpty){
+      CustomSnackBar.failedSnackBar(context: context, message: "Enter Property Description");
+      _contentFocus.requestFocus();
+      return false;
+    }
+    else if(selectedProperty.isEmpty){
+      CustomSnackBar.failedSnackBar(context: context, message: "Selected Property Type");
+    }
+    else if(selectedPurpose.isEmpty){
+      CustomSnackBar.failedSnackBar(context: context, message: "Selected Property Purpose");
+    }
+
+    else if(_priceCont.text.isEmpty){
+      CustomSnackBar.failedSnackBar(context: context, message: "Enter Property Price");
+      _priceFocus.requestFocus();
+      return false;
+    }
+    else if(_landAreaCont.text.isEmpty){
+      CustomSnackBar.failedSnackBar(context: context, message: "Enter Total Land");
+      _landAreaFocus.requestFocus();
+      return false;
+    }
+    else if(selectedUnit.isEmpty){
+      CustomSnackBar.failedSnackBar(context: context, message: "Selected Property Unit");
+    }
+
+    else if(_noOfBedsCont.text.isEmpty){
+      CustomSnackBar.failedSnackBar(context: context, message: "Enter No Of Beds");
+      _noOfBedsFocus.requestFocus();
+      return false;
+    }
+    else if(_noOfBathsCont.text.isEmpty){
+      CustomSnackBar.failedSnackBar(context: context, message: "Enter No Of Baths");
+      _noOfBathsFocus.requestFocus();
+      return false;
+    }
+    else if(selectedExpiration.isEmpty){
+      CustomSnackBar.failedSnackBar(context: context, message: "Selected Expiration Date");
+    }
+    else if(_selectedCity==null){
+      CustomSnackBar.failedSnackBar(context: context, message: "Selected City");
+    }
+    else if(_addressCont.text.isEmpty){
+      CustomSnackBar.failedSnackBar(context: context, message: "Enter Addrss Details");
+      _addressFocus.requestFocus();
+      return false;
+    }
+    print("Selected Index $selectedIndex");
+
+
+    if(widget.isSelected==true){
+      if(selectedIndex==0){
+        if (_emailCont.text.isEmpty || !validateEmail(_emailCont.text)) {
+          CustomSnackBar.failedSnackBar(
+              context: context, message: "Enter Valid Email Address");
+          _emailFocus.requestFocus();
+          return false;
+        }
+        else if(_passwordCont.text.length<8){
+          CustomSnackBar.failedSnackBar(context: context, message: "Enter valid Password");
+
+          _passwordFocus.requestFocus();
+          return false;
+        }
+        else{
+          return true;
+        }
+      }
+
+      else if(selectedIndex==1){
+        if(selectedWhoIAm.isEmpty){
+          CustomSnackBar.failedSnackBar(context: context, message: "Select Who I am");
+          return false;
+        }
+        else if(_regNameCont.text.isEmpty){
+          CustomSnackBar.failedSnackBar(context: context, message: "Enter Your Name");
+          _regNameFocus.requestFocus();
+          return false;
+
+        }
+        else if (_emailCont.text.isEmpty || !validateEmail(_emailCont.text)) {
+          CustomSnackBar.failedSnackBar(
+              context: context, message: "Enter Valid Email Address");
+          _emailFocus.requestFocus();
+          return false;
+        }
+        else if(_passwordCont.text.length<8){
+          CustomSnackBar.failedSnackBar(context: context, message: "Enter valid Password");
+
+          _passwordFocus.requestFocus();
+          return false;
+        }
+        else{
+          return true;
+        }
+      }
+
+    }
+    else{
+      return true;
+    }
+
   }
 }

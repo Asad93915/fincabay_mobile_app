@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 import '../../../configs/text_styles.dart';
 import '../../customer_module/screens/add_property_screen.dart';
 import '../../customer_module/screens/home_dashboard/home_dashboard_screens.dart';
+import '../../utils/Functions.dart';
 import '../../utils/variable_storage.dart';
 
 
@@ -34,14 +35,14 @@ class _LoginScreenState extends State<LoginScreen> {
    CustomLoader.hideLoader(context);
    if(res){
      setVisitorView(true);
-     // NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: HomeDashboardScreen());
-      NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: AgentHomeScreen());
+     NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: HomeDashboardScreen());
+     //  NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: AgentHomeScreen());
 
    }
   }
 
   TextEditingController _emailCont = TextEditingController(
-    text: "alitoor@gmail.com"
+    text: "asad@gmail.com"
   );
   TextEditingController _passwordCont = TextEditingController(
     text: "Asad123@"
@@ -183,15 +184,15 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   _validateLogin() {
-    if (_emailCont.text.isEmpty || !_validateEmail(_emailCont.text)) {
+    if (_emailCont.text.isEmpty || !validateEmail(_emailCont.text)) {
       CustomSnackBar.failedSnackBar(
           context: context, message: "Email is Invalid");
       _emailFocus.requestFocus();
       return false;
     }
-    else if (_passwordCont.text.isEmpty) {
+    else if (_passwordCont.text.isEmpty || !validatePassword(_passwordCont.text)) {
       CustomSnackBar.failedSnackBar(
-          context: context, message: "Password is Invalid");
+          context: context, message: "Password must be must be Minimum 1 Upper case Minimum 1 lowercase Minimum 1 Numeric Number Minimum 1 Special Character Common Allow Character");
       _passwordFocus.requestFocus();
       return false;
     }
@@ -199,18 +200,6 @@ class _LoginScreenState extends State<LoginScreen> {
       return true;
     }
   }
-  bool _validateEmail(String text) {
-    if (text.isEmpty) {
-      return false;
-    }
 
-    if (RegExp(
-        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-        .hasMatch(text)) {
-      return true;
-    } else {
-      return false;
-    }
-  }
 }
 
