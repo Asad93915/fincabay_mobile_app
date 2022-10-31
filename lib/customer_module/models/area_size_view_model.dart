@@ -59,8 +59,8 @@ class AreaSizeView {
   bool? isRejected;
   bool? isPending;
   String? userId;
-  String? userName;
-  Null? userEmail;
+  String? userEmail;
+  Null? signUpUserEmail;
   Null? userPassword;
   Null? signUpUserName;
   Null? mobile;
@@ -100,8 +100,8 @@ class AreaSizeView {
         this.isRejected,
         this.isPending,
         this.userId,
-        this.userName,
         this.userEmail,
+        this.signUpUserEmail,
         this.userPassword,
         this.signUpUserName,
         this.mobile,
@@ -141,8 +141,8 @@ class AreaSizeView {
     isRejected = json['isRejected'];
     isPending = json['isPending'];
     userId = json['userId'];
-    userName = json['userName'];
     userEmail = json['userEmail'];
+    signUpUserEmail = json['signUpUserEmail'];
     userPassword = json['userPassword'];
     signUpUserName = json['signUpUserName'];
     mobile = json['mobile'];
@@ -184,8 +184,8 @@ class AreaSizeView {
     data['isRejected'] = this.isRejected;
     data['isPending'] = this.isPending;
     data['userId'] = this.userId;
-    data['userName'] = this.userName;
     data['userEmail'] = this.userEmail;
+    data['signUpUserEmail'] = this.signUpUserEmail;
     data['userPassword'] = this.userPassword;
     data['signUpUserName'] = this.signUpUserName;
     data['mobile'] = this.mobile;

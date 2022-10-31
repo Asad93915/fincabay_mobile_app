@@ -7,12 +7,12 @@ import 'package:provider/provider.dart';
 import '../../../dialogs/show_will_pop_dialog.dart';
 import '../../../helper_services/custom_loader.dart';
 import '../../../helper_widgets/custom_bottom_app_bar_widget.dart';
-import '../../providers/get_all_properties_provider.dart';
-import '../../services/get_all_properties_service.dart';
+import '../../providers/get_user_properties_provider.dart';
+import '../../services/get_user_properties_service.dart';
 import '../../cusomer_drawer_screen.dart';
 import 'dashboard_widgets/dashboard_widgets.dart';
 import 'dashboard_widgets/new_project_screen.dart';
-import 'get_all_properties_screen.dart';
+import 'get_user_properties_screen.dart';
 
 class HomeDashboardScreen extends StatefulWidget {
   const HomeDashboardScreen({Key? key}) : super(key: key);
@@ -23,21 +23,12 @@ class HomeDashboardScreen extends StatefulWidget {
 
 class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
 
-  _getAllPropertiesHandler()async{
-    CustomLoader.showLoader(context: context);
-    await GetAllPropertiesService().getProperties(context: context);
-    CustomLoader.hideLoader(context);
-  }
-  @override
-  void initState() {
-    // TODO: implement initState
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _getAllPropertiesHandler();
-    });
-    super.initState();
-  }
 
   int selectedIndex=0;
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return
@@ -91,6 +82,12 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
           ),
           title: Text("New Projects",style: barStyle,),
         ):
+            selectedIndex==2?AppBar(
+              backgroundColor: bgColor,
+              leading: Builder(builder: (context)=>IconButton(onPressed: (){}, icon: Icon(Icons.menu)),
+              ),
+              title: Text("My Properties",style: barStyle,),
+            ):
             selectedIndex==3?AppBar(
               backgroundColor: whiteColor,
               iconTheme: IconThemeData(color: blackColor),
@@ -177,18 +174,8 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
                 if(selectedIndex==1)
                NewProjectsScreen(),
                 if(selectedIndex==2)
-                Consumer<GetAllPropertiesProvider>(builder: (context,property,_){
-                  return ListView.builder(
-                      shrinkWrap: true,
-                      primary: false,
-                      scrollDirection: Axis.vertical,
-                      itemCount: property.properties!.length,
-                      itemBuilder: (BuildContext,index){
-                    return GetAllPropertiesScreen(
-                      prop: property.properties![index],
-                    );
-                  });
-                }),
+                  Center(child: Text("Under Progress")),
+                  // GetUserPropertiesScreen(),
                 if(selectedIndex==3)
                 ProfileScreen(),
               ],

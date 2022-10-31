@@ -1,18 +1,17 @@
-
-class GetAllPropertiesModel {
+class GetUserPropertiesModel {
   int? status;
   String? message;
-  List<AllProperties>? data;
+  List<UserProperties>? data;
 
-  GetAllPropertiesModel({this.status, this.message, this.data});
+  GetUserPropertiesModel({this.status, this.message, this.data});
 
-  GetAllPropertiesModel.fromJson(Map<String, dynamic> json) {
+  GetUserPropertiesModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
     if (json['data'] != null) {
-      data = <AllProperties>[];
+      data = <UserProperties>[];
       json['data'].forEach((v) {
-        data!.add(new AllProperties.fromJson(v));
+        data!.add(new UserProperties.fromJson(v));
       });
     }
   }
@@ -28,7 +27,7 @@ class GetAllPropertiesModel {
   }
 }
 
-class AllProperties {
+class UserProperties {
   int? id;
   String? propertyTitle;
   String? category;
@@ -60,8 +59,8 @@ class AllProperties {
   bool? isRejected;
   bool? isPending;
   String? userId;
-  String? userName;
-  Null? userEmail;
+  String? userEmail;
+  Null? signUpUserEmail;
   Null? userPassword;
   Null? signUpUserName;
   Null? mobile;
@@ -69,7 +68,7 @@ class AllProperties {
   bool? isLogin;
   bool? isSignUp;
 
-  AllProperties(
+  UserProperties(
       {this.id,
         this.propertyTitle,
         this.category,
@@ -101,8 +100,8 @@ class AllProperties {
         this.isRejected,
         this.isPending,
         this.userId,
-        this.userName,
         this.userEmail,
+        this.signUpUserEmail,
         this.userPassword,
         this.signUpUserName,
         this.mobile,
@@ -110,7 +109,7 @@ class AllProperties {
         this.isLogin,
         this.isSignUp});
 
-  AllProperties.fromJson(Map<String, dynamic> json) {
+  UserProperties.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     propertyTitle = json['propertyTitle'];
     category = json['category'];
@@ -142,8 +141,8 @@ class AllProperties {
     isRejected = json['isRejected'];
     isPending = json['isPending'];
     userId = json['userId'];
-    userName = json['userName'];
     userEmail = json['userEmail'];
+    signUpUserEmail = json['signUpUserEmail'];
     userPassword = json['userPassword'];
     signUpUserName = json['signUpUserName'];
     mobile = json['mobile'];
@@ -185,8 +184,8 @@ class AllProperties {
     data['isRejected'] = this.isRejected;
     data['isPending'] = this.isPending;
     data['userId'] = this.userId;
-    data['userName'] = this.userName;
     data['userEmail'] = this.userEmail;
+    data['signUpUserEmail'] = this.signUpUserEmail;
     data['userPassword'] = this.userPassword;
     data['signUpUserName'] = this.signUpUserName;
     data['mobile'] = this.mobile;

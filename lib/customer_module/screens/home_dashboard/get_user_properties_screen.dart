@@ -1,23 +1,95 @@
 
+import 'package:fincabay_application/auth/provider/user_data_provider.dart';
 import 'package:fincabay_application/helper_widgets/custom_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sms/flutter_sms.dart';
+import 'package:provider/provider.dart';
 
 import '../../../configs/colors.dart';
 import '../../../configs/text_styles.dart';
+import '../../../helper_services/custom_loader.dart';
 import '../../../helper_widgets/house_details.dart';
-import '../../models/get_all_properties_model.dart';
-class GetAllPropertiesScreen extends StatefulWidget {
-  AllProperties prop;
+import '../../models/get_user_properties_model.dart';
+import '../../providers/get_user_properties_provider.dart';
+import '../../services/get_user_properties_service.dart';
 
-  GetAllPropertiesScreen({required this.prop});
+class GetUserPropertiesScreen extends StatefulWidget {
+  final String userEmail;
+   GetUserPropertiesScreen({required this.userEmail});
 
   @override
-  State<GetAllPropertiesScreen> createState() => _GetAllPropertiesScreenState();
+  State<GetUserPropertiesScreen> createState() => _GetUserPropertiesScreenState();
 }
 
-class _GetAllPropertiesScreenState extends State<GetAllPropertiesScreen> {
+class _GetUserPropertiesScreenState extends State<GetUserPropertiesScreen> {
+  _getUserPropertiesHandler()async{
+    CustomLoader.showLoader(context: context);
+    await GetUserPropertiesService().getProperties(context: context, userEmail:widget.userEmail);
+    CustomLoader.hideLoader(context);
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _getUserPropertiesHandler();
+
+    });
+    super.initState();
+  }
+  @override
+  Widget build(BuildContext context) {
+    return   Scaffold(
+      appBar: AppBar(
+        backgroundColor: bgColor,
+        title: Text("My Properties",style: barStyle,),
+      ),
+      body: Consumer<GetUserPropertiesProvider>(builder: (context,property,_){
+        return property.properties!=null?ListView.builder(
+            shrinkWrap: true,
+            primary: false,
+            scrollDirection: Axis.vertical,
+            itemCount: property.properties!.length,
+            itemBuilder: (BuildContext,index){
+              return GetUserPropertiesWidget(
+                prop: property.properties![index],
+              );
+            }):Container(
+          child: Text("No Property Exsists"),
+        );
+      }),
+    );
+  }
+}
+
+
+class GetUserPropertiesWidget extends StatefulWidget {
+
+
+  UserProperties prop;
+
+  GetUserPropertiesWidget({required this.prop});
+
+  @override
+  State<GetUserPropertiesWidget> createState() => _GetUserPropertiesWidgetState();
+}
+
+
+class _GetUserPropertiesWidgetState extends State<GetUserPropertiesWidget> {
+  // _getAllPropertiesHandler()async{
+  //   CustomLoader.showLoader(context: context);
+  //   await GetAllPropertiesService().getProperties(context: context);
+  //   CustomLoader.hideLoader(context);
+  // }
+  // @override
+  // void initState() {
+  //   // TODO: implement initState
+  //   WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+  //     _getAllPropertiesHandler();
+  //   });
+  //   super.initState();
+  // }
+
   String message =
       "Hey Asad, I am using Fincabay.com app please call me on this number";
 
@@ -185,3 +257,5 @@ class _GetAllPropertiesScreenState extends State<GetAllPropertiesScreen> {
     print(_result);
   }
 }
+
+

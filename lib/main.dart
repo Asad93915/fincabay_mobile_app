@@ -12,7 +12,7 @@ import 'auth/provider/user_data_provider.dart';
 import 'customer_module/providers/area_size_provider.dart';
 import 'customer_module/providers/area_size_view_provider.dart';
 import 'customer_module/providers/cities_provider.dart';
-import 'customer_module/providers/get_all_properties_provider.dart';
+import 'customer_module/providers/get_user_properties_provider.dart';
 import 'customer_module/providers/location_name_provider.dart';
 import 'customer_module/providers/location_phases_provider.dart';
 import 'customer_module/providers/property_search_provider.dart';
@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context)=>LocationNameProvider()),
         ChangeNotifierProvider(create: (context)=>LocationPhasesProvider()),
         ChangeNotifierProvider(create: (context)=>PropertySearchProvider()),
-        ChangeNotifierProvider(create: (context)=>GetAllPropertiesProvider()),
+        ChangeNotifierProvider(create: (context)=>GetUserPropertiesProvider()),
         ChangeNotifierProvider(create: (context)=>AreaSizeViewProvider()),
         //Agents
         ChangeNotifierProvider(create: (context)=>AgentPropertiesProvider()),

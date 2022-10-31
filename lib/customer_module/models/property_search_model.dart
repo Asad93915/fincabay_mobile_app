@@ -30,7 +30,7 @@ class PropertySearchModel {
 class PropertySearch {
   int? id;
   String? propertyTitle;
-  Null? category;
+  String? category;
   String? content;
   String? propertyType;
   int? pTypeId;
@@ -42,7 +42,7 @@ class PropertySearch {
   String? expireAfter;
   String? uploadImage;
   String? imageByPath;
-  Null? uploadVideo;
+  String? uploadVideo;
   String? videoByPath;
   String? city;
   int? cityId;
@@ -59,12 +59,12 @@ class PropertySearch {
   bool? isRejected;
   bool? isPending;
   String? userId;
-  String? userName;
-  Null? userEmail;
-  Null? userPassword;
-  Null? signUpUserName;
-  Null? mobile;
-  Null? signUpAs;
+  String? userEmail;
+  String? signUpUserEmail;
+  String? userPassword;
+  String? signUpUserName;
+  String? mobile;
+  String? signUpAs;
   bool? isLogin;
   bool? isSignUp;
 
@@ -100,8 +100,8 @@ class PropertySearch {
         this.isRejected,
         this.isPending,
         this.userId,
-        this.userName,
         this.userEmail,
+        this.signUpUserEmail,
         this.userPassword,
         this.signUpUserName,
         this.mobile,
@@ -141,8 +141,8 @@ class PropertySearch {
     isRejected = json['isRejected'];
     isPending = json['isPending'];
     userId = json['userId'];
-    userName = json['userName'];
     userEmail = json['userEmail'];
+    signUpUserEmail = json['signUpUserEmail'];
     userPassword = json['userPassword'];
     signUpUserName = json['signUpUserName'];
     mobile = json['mobile'];
@@ -184,8 +184,8 @@ class PropertySearch {
     data['isRejected'] = this.isRejected;
     data['isPending'] = this.isPending;
     data['userId'] = this.userId;
-    data['userName'] = this.userName;
     data['userEmail'] = this.userEmail;
+    data['signUpUserEmail'] = this.signUpUserEmail;
     data['userPassword'] = this.userPassword;
     data['signUpUserName'] = this.signUpUserName;
     data['mobile'] = this.mobile;

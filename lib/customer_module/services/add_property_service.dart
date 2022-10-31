@@ -41,7 +41,7 @@ class AddPropertyService {
         "city": city,
         "area": area,
         "detailAddress": detailAddress,
-        "userEmail": email,
+        "signUpUserEmail": email,
         "userPassword": password,
         "signUpAs": signUpAs,
         "signUpUserName": name,

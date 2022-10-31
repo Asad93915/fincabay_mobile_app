@@ -96,8 +96,10 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
   //
   //   CustomLoader.hideLoader(context);
   // }
+
   postAddressHandler() async {
     CustomLoader.showLoader(context: context);
+
     widget.isSelected==true?
     await AddPropertyService().addProperty(context: context,
               propertyTitle: _propTitleCont.text,
@@ -107,8 +109,8 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
               price: _priceCont.text,
               landArea: _landAreaCont.text,
               unit: selectedUnit,
-              noOfBeds: _noOfBedsCont.text,
-              noOfBaths: _noOfBathsCont.text,
+              noOfBeds: selectedProperty=='Homes'?_noOfBedsCont.text:"0",
+              noOfBaths: selectedProperty=="Homes"?_noOfBathsCont.text:'0',
               expiryDate: _expiryCont.text,
               city: _selectedCity!,
               area: selectedArea!,
@@ -143,6 +145,8 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
   void initState() {
     // TODO: implement initState
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+
+      print("Is Selected ${widget.isSelected}");
       _getCities();
     });
     setState(() {});
@@ -184,7 +188,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
   FocusNode _noOfBathsFocus = FocusNode();
   FocusNode _expiryFocus = FocusNode();
   FocusNode _addressFocus = FocusNode();
-bool isShow=true;
+bool isShow=false;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -289,7 +293,25 @@ bool isShow=true;
                                   );
                                 }).toList(),
                                 onChanged: (String? value) {
+
                                   selectedProperty = value!;
+                                  if(selectedProperty.contains('Homes')){
+                                   isShow=true;
+                                  }
+                                  else{
+                                    isShow=false;
+                                    print("Hamza S/O ASAD");
+
+                                  }
+
+
+
+                                  // value=='Homes'?isShow=true:false;
+                                  // print("Is Show $isShow");
+                                  // print("Selected Property $selectedProperty");
+                                  // print("Property Value $value");
+
+
                                   setState(() {});
                                 },
                               ),
@@ -381,7 +403,8 @@ bool isShow=true;
                           )
                         ],
                       ),
-                      isShow==true?Row(
+                      isShow==true?
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -958,8 +981,8 @@ bool isShow=true;
     else if(selectedUnit.isEmpty){
       CustomSnackBar.failedSnackBar(context: context, message: "Selected Property Unit");
     }
-
-    else if(_noOfBedsCont.text.isEmpty){
+    if(isShow==true){
+     if(_noOfBedsCont.text.isEmpty){
       CustomSnackBar.failedSnackBar(context: context, message: "Enter No Of Beds");
       _noOfBedsFocus.requestFocus();
       return false;
@@ -969,6 +992,10 @@ bool isShow=true;
       _noOfBathsFocus.requestFocus();
       return false;
     }
+
+
+    }
+
     else if(selectedExpiration.isEmpty){
       CustomSnackBar.failedSnackBar(context: context, message: "Selected Expiration Date");
     }
