@@ -1,23 +1,31 @@
+import 'dart:convert';
+
 import 'package:fincabay_application/Agents_module/screens/agents_home_screen.dart';
+import 'package:fincabay_application/app_localization.dart';
 import 'package:fincabay_application/auth/screens/forget_password_screen.dart';
 import 'package:fincabay_application/auth/screens/registration_screen.dart';
 
 import 'package:fincabay_application/auth/services/login_api_service.dart';
 import 'package:fincabay_application/configs/colors.dart';
+import 'package:fincabay_application/constants.dart';
 import 'package:fincabay_application/helper_services/custom_loader.dart';
 import 'package:fincabay_application/helper_services/custom_snackbar.dart';
 import 'package:fincabay_application/helper_services/navigation_services.dart';
 import 'package:fincabay_application/helper_widgets/custom_button.dart';
 import 'package:fincabay_application/helper_widgets/custom_text_field.dart';
+import 'package:fincabay_application/utils/local_storage_services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../configs/text_styles.dart';
 import '../../customer_module/screens/add_property_screen.dart';
 import '../../customer_module/screens/home_dashboard/home_dashboard_screens.dart';
 import '../../utils/Functions.dart';
 import '../../utils/variable_storage.dart';
+import '../models/user_response_model.dart';
+import '../provider/user_data_provider.dart';
 
 
 class LoginScreen extends StatefulWidget {
@@ -35,8 +43,9 @@ class _LoginScreenState extends State<LoginScreen> {
    CustomLoader.hideLoader(context);
    if(res){
      setVisitorView(true);
-     NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: HomeDashboardScreen());
-     //  NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: AgentHomeScreen());
+
+     // NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: HomeDashboardScreen());
+      NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: AgentHomeScreen());
 
    }
   }
@@ -86,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Image.asset(
                     "assets/images/fincabay_logo.jpg", height: 100.0,),
                   Text(
-                    "Welcome To Fincabay",
+                    "${AppLocalizations.of(context)!.translate(WELCOME).toString()}",
                     style: titleStyle,
                   ),
                   CustomTextField(

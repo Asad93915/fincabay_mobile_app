@@ -50,7 +50,6 @@ class _GetStaffWidgetState extends State<GetStaffWidget> {
               mainAxisAlignment:MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
                 Expanded(child: Text("Address",style: contactStyle,),flex: 2,),
                 Expanded(child: Text("Mobile No",style: contactStyle),flex: 1,),
               ],

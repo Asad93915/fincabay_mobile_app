@@ -1,8 +1,10 @@
 
 import 'package:fincabay_application/Agents_module/providers/agent_properties_provider.dart';
 import 'package:fincabay_application/Agents_module/providers/staff_member_provider.dart';
+import 'package:fincabay_application/app_localization.dart';
 import 'package:fincabay_application/customer_module/screens/home_dashboard/home_dashboard_screens.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -20,13 +22,26 @@ import 'customer_module/providers/property_type_provider.dart';
 
 void main() {
   GetStorage.init();
-  runApp(const MyApp());
+  runApp( MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class MyApp extends StatefulWidget {
+   MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  Locale _locale = Locale('en', '');
+
+  void setLocale(Locale value) {
+    setState(() {
+      _locale = value;
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -55,15 +70,26 @@ class MyApp extends StatelessWidget {
           ),
           primarySwatch: Colors.blue,
         ),
-        // home: LoginScreen(),
-        home: HomeDashboardScreen(),
+
+        supportedLocales: [
+          Locale('en',''),
+          Locale('ur','')
+        ],
+        localizationsDelegates: [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        locale: _locale,
+
+        home: LoginScreen(),
+        // home: HomeDashboardScreen(),
         // home: AgentHomeScreen(),
 
 
       ),
     );
   }
-
 }
 
 

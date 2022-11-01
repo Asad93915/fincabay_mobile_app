@@ -1,20 +1,20 @@
 class AgentPropertiesModel {
   int? id;
   String? propertyTitle;
-  String? category;
+  Null? category;
   String? content;
   String? propertyType;
   int? pTypeId;
   String? purpose;
   String? landArea;
-  String? unit;
+  Null? unit;
   int? noOfBeds;
   int? noOfBaths;
   String? expireAfter;
   Null? uploadImage;
-  String? imageByPath;
+  Null? imageByPath;
   Null? uploadVideo;
-  String? videoByPath;
+  Null? videoByPath;
   String? city;
   int? cityId;
   String? area;
@@ -23,15 +23,15 @@ class AgentPropertiesModel {
   int? areaId;
   String? detailAddress;
   double? amount;
-  String? description;
-  String? propertyStatus;
-  String? propertySize;
+  Null? description;
+  Null? propertyStatus;
+  Null? propertySize;
   bool? isApproved;
   bool? isRejected;
   bool? isPending;
   String? userId;
-  String? userName;
-  Null? userEmail;
+  String? userEmail;
+  Null? signUpUserEmail;
   Null? userPassword;
   Null? signUpUserName;
   Null? mobile;
@@ -71,8 +71,8 @@ class AgentPropertiesModel {
         this.isRejected,
         this.isPending,
         this.userId,
-        this.userName,
         this.userEmail,
+        this.signUpUserEmail,
         this.userPassword,
         this.signUpUserName,
         this.mobile,
@@ -112,8 +112,8 @@ class AgentPropertiesModel {
     isRejected = json['isRejected'];
     isPending = json['isPending'];
     userId = json['userId'];
-    userName = json['userName'];
     userEmail = json['userEmail'];
+    signUpUserEmail = json['signUpUserEmail'];
     userPassword = json['userPassword'];
     signUpUserName = json['signUpUserName'];
     mobile = json['mobile'];
@@ -155,8 +155,8 @@ class AgentPropertiesModel {
     data['isRejected'] = this.isRejected;
     data['isPending'] = this.isPending;
     data['userId'] = this.userId;
-    data['userName'] = this.userName;
     data['userEmail'] = this.userEmail;
+    data['signUpUserEmail'] = this.signUpUserEmail;
     data['userPassword'] = this.userPassword;
     data['signUpUserName'] = this.signUpUserName;
     data['mobile'] = this.mobile;

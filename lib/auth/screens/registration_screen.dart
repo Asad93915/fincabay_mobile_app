@@ -517,7 +517,49 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           context: context, message: "Enter Mobile Number");
       noFocus.requestFocus();
       return false;
-    } else {
+    }
+    if(_isChecked==true){
+      if(agencyNameCont.text.isEmpty){
+        CustomSnackBar.failedSnackBar(context: context, message: "Enter Agency Name");
+        agencyNameFocus.requestFocus();
+        return false;
+      }
+      else if(_selectedDealCity==null){
+        CustomSnackBar.failedSnackBar(context: context, message: "Select Delaer City");
+        return false;
+      }
+      else if(dealerNoCont.text.isEmpty){
+        CustomSnackBar.failedSnackBar(context: context, message: "Enter Dealer Number");
+        dealerNoFocus.requestFocus();
+        return false;
+      }
+      else if(companyPhoneCont.text.isEmpty){
+        CustomSnackBar.failedSnackBar(context: context, message: "Enter Company Number");
+        companyPhoneFocus.requestFocus();
+        return false;
+      }
+      else if(companyFaxCont.text.isEmpty){
+        CustomSnackBar.failedSnackBar(context: context, message: "Enter Company Fax");
+        companyFaxFocus.requestFocus();
+        return false;
+      }
+      else if(companyEmailCont.text.isEmpty){
+        CustomSnackBar.failedSnackBar(context: context, message: "Enter Company Email Address");
+        companyEmailFocus.requestFocus();
+        return false;
+      }
+      else if(descriptionCont.text.isEmpty){
+        CustomSnackBar.failedSnackBar(context: context, message: "Enter Service Description");
+        descriptionFocus.requestFocus();
+        return false;
+      }
+      else{
+        return true;
+      }
+    }
+
+
+    else {
       return true;
     }
   }

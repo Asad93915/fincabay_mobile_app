@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 
 import '../../../configs/api_configs.dart';
 import '../../utils/local_storage_services.dart';
+import '../../utils/variable_storage.dart';
 import '../models/user_response_model.dart';
 import '../provider/user_data_provider.dart';
 
@@ -27,6 +28,7 @@ class LoginApiService{
         );
 
         LocaleStorageServices().saveUser(userResponseModel.data!.email!);
+
         final box=GetStorage();
         box.write('user', userResponseModel.data!.toJson());
 

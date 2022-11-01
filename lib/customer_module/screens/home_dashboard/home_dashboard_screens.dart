@@ -35,7 +35,7 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
 
       WillPopScope(
         onWillPop: ()async{
-          return await showPopDialog(context);
+          return await showWillPopDialog(context);
         },
         child: Scaffold(
         drawer: CustomDrawer(),

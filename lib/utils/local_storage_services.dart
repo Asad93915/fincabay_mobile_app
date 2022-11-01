@@ -14,6 +14,8 @@ class LocaleStorageServices{
     String? token= pref.getString('token');
     return token;
   }
+
+
   Future saveUser(String email)async{
     SharedPreferences pref=await SharedPreferences.getInstance();
     pref.setString('email', email);

@@ -15,5 +15,4 @@ Future getVisitorView()async{
     return false;
   }
   return pref.getBool('selected');
-
 }

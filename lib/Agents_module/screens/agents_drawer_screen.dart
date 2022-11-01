@@ -1,11 +1,13 @@
 import 'package:fincabay_application/Agents_module/screens/staff/agency_staff_screen.dart';
 import 'package:fincabay_application/Agents_module/screens/agents_add_property_screen.dart';
 import 'package:fincabay_application/Agents_module/screens/update_agent_profile_screen.dart';
+import 'package:fincabay_application/auth/models/user_response_model.dart';
 import 'package:fincabay_application/auth/screens/login_screen.dart';
 import 'package:fincabay_application/configs/colors.dart';
 import 'package:fincabay_application/helper_services/navigation_services.dart';
 import 'package:fincabay_application/helper_widgets/drawer_item_card.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 
 import '../../configs/text_styles.dart';
 import '../../helper_widgets/manage_prop_drawer_widget.dart';
@@ -21,9 +23,12 @@ class AgentsDrawer extends StatefulWidget {
 }
 
 class _AgentsDrawerState extends State<AgentsDrawer> {
+
   int? selectedIndex;
   @override
   Widget build(BuildContext context) {
+    final box=GetStorage();
+    UserModel user=UserModel.fromJson(box.read('user'));
  return  widget.isSelected==false?Container(
       padding: EdgeInsets.only(top: 30.0,left: 12.0),
       color: barColor,
@@ -47,7 +52,7 @@ class _AgentsDrawerState extends State<AgentsDrawer> {
             children: [
 
 
-              Text("Asad Ali",style: nameStyle),
+              Text("${user.userName}",style: nameStyle),
               IconButton(onPressed: (){
 
               }, icon: Icon(Icons.arrow_forward_outlined,color: bgColor,)),
@@ -91,7 +96,10 @@ class _AgentsDrawerState extends State<AgentsDrawer> {
             selctedColor:selectedIndex==3?true:false ,
             title: "Update Profile",
             onTap: (){
-              NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: UpdateAgentProfileScreen());
+              NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: UpdateAgentProfileScreen(
+                userName:user.userName! ,
+                userEmail: user.email!,
+              ));
               selectedIndex=3;
               setState((){});
             },

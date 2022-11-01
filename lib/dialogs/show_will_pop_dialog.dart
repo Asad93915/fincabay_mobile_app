@@ -2,7 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-showPopDialog(BuildContext context) {
+showWillPopDialog(BuildContext context) {
   showCupertinoModalPopup(
       context: context,
       builder: (context) =>
