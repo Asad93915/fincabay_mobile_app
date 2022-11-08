@@ -18,8 +18,7 @@ class EditStaffMemberDialog extends StatefulWidget {
   final String mobileNo;
   final String email;
   final int id;
-  final String agentStaffId;
-  final String agentId;
+  final String agentEmail;
 
   EditStaffMemberDialog(
       {required this.contactName,
@@ -27,8 +26,7 @@ class EditStaffMemberDialog extends StatefulWidget {
       required this.address,
       required this.mobileNo,
       required this.email,
-      required this.agentStaffId,
-      required this.agentId,
+      required this.agentEmail,
       required this.id});
 
   @override
@@ -46,12 +44,11 @@ class _EditStaffMemberDialogState extends State<EditStaffMemberDialog> {
     await EditStaffMemberService().editStaff(
         context: context,
         contactName: contact ?? widget.contactName,
-        email: "customer@gmail.com",
+        email: widget.email,
         password: password ?? widget.password,
         address: address ?? widget.address,
         mobileNo: no ?? widget.mobileNo,
-        agentStaffId: widget.agentStaffId,
-        agentId: widget.agentId,
+        agentEmail: widget.agentEmail,
         id: widget.id
     );
     CustomLoader.hideLoader(context);

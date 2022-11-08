@@ -13,3 +13,4 @@ const Color barColor=Color(0xFFF7F7F7);
 const Color black26=Colors.black26;
 const Color drawerColor=Color(0xFFBECDDB);
 const Color black12=Colors.black12;
+const Color redColor=Colors.red;

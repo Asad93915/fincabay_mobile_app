@@ -18,6 +18,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../configs/text_styles.dart';
 import '../../customer_module/screens/add_property_screen.dart';
@@ -43,15 +44,17 @@ class _LoginScreenState extends State<LoginScreen> {
    CustomLoader.hideLoader(context);
    if(res){
      setVisitorView(true);
+   LocaleStorageServices().saveRoleName(Provider.of<UserDataProvider>(context,listen: false).user!.roleName!);
 
-     // NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: HomeDashboardScreen());
-      NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: AgentHomeScreen());
+     Provider.of<UserDataProvider>(context,listen: false).user!.roleName=="Customer"?
+     NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: HomeDashboardScreen())
+      : Provider.of<UserDataProvider>(context,listen: false).user!.roleName=="Agent"?NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: AgentHomeScreen()):null;
 
    }
   }
 
   TextEditingController _emailCont = TextEditingController(
-    text: "asad@gmail.com"
+    text: "testuser4@gmail.com"
   );
   TextEditingController _passwordCont = TextEditingController(
     text: "Asad123@"
@@ -94,10 +97,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   Image.asset(
                     "assets/images/fincabay_logo.jpg", height: 100.0,),
-                  Text(
-                    "${AppLocalizations.of(context)!.translate(WELCOME).toString()}",
-                    style: titleStyle,
-                  ),
+                  Text("Welcome To Fincabay!"),
+                  // Text(
+                  //   "${AppLocalizations.of(context)!.translate(WELCOME).toString()}",
+                  //   style: titleStyle,
+                  // ),
                   CustomTextField(
                     // hintText:"Email Address",
                     inputType: TextInputType.emailAddress,
@@ -168,7 +172,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   Text("OR",style: forgotStyle,),
                InkWell(
                    onTap: (){
-                     NavigationServices.goNextAndKeepHistory(context: context, widget: AddPropertyScreen());
+                     NavigationServices.goNextAndKeepHistory(context: context, widget: AddPropertyScreen(
+                       userEmail: "",
+                     ));
                    },
                    child: Text("Add Property",style: addPropStyle,))
 
@@ -199,9 +205,9 @@ class _LoginScreenState extends State<LoginScreen> {
       _emailFocus.requestFocus();
       return false;
     }
-    else if (_passwordCont.text.isEmpty || !validatePassword(_passwordCont.text)) {
+    else if (_passwordCont.text.isEmpty ) {
       CustomSnackBar.failedSnackBar(
-          context: context, message: "Password must be must be Minimum 1 Upper case Minimum 1 lowercase Minimum 1 Numeric Number Minimum 1 Special Character Common Allow Character");
+          context: context, message: "Enter Valid Password");
       _passwordFocus.requestFocus();
       return false;
     }
@@ -209,6 +215,7 @@ class _LoginScreenState extends State<LoginScreen> {
       return true;
     }
   }
+
 
 }
 

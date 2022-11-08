@@ -8,11 +8,11 @@ import 'package:flutter/cupertino.dart';
 
 import '../../configs/api_configs.dart';
 class DeleteAgencyStaffService{
-  Future deleteStaff({required BuildContext context,required String agentStaffId})async{
+  Future deleteStaff({required BuildContext context,required int staffId})async{
     try{
-      var res=await GetRequestService().httpGetRequest(url: delStaffUrl+"Id=$agentStaffId", context: context);
+      var res=await GetRequestService().httpGetRequest(url: delStaffUrl+"$staffId", context: context);
       if(res!=null){
-        print("Agent Id $agentStaffId");
+        print("Agent Id $staffId");
         print("Staff Deleted Successfully");
         return true;
       }

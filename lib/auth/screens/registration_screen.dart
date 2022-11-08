@@ -5,9 +5,11 @@ import 'package:fincabay_application/helper_services/custom_loader.dart';
 import 'package:fincabay_application/helper_services/custom_snackbar.dart';
 import 'package:fincabay_application/helper_services/navigation_services.dart';
 import 'package:fincabay_application/helper_widgets/custom_button.dart';
+import 'package:fincabay_application/helper_widgets/custom_drop_down.dart';
 import 'package:fincabay_application/helper_widgets/custom_text_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:provider/provider.dart';
 
@@ -15,8 +17,6 @@ import '../../customer_module/providers/cities_provider.dart';
 import '../../helper_widgets/custom_dropdown_text.dart';
 import '../../utils/handlers.dart';
 import 'login_screen.dart';
-
-
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({Key? key}) : super(key: key);
@@ -90,20 +90,23 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     "Agent/Broker",
     "Buyer/visitor",
   ];
+
+  String selectedRole="";
+  List<String> _rolesList=["Customer","Agent"];
   bool _isChecked = false;
 
   registrationHandler() async {
     CustomLoader.showLoader(context: context);
-    var res = await RegistrationService().registerUser(
+  await RegistrationService().registerUser(
         context: context,
         userName: nameCont.text,
         email: emailCont.text,
         mobileNo: mobileNoCont.text,
         password: passwordCont.text,
-        phone: phoneCont.text,
         city: _selectedCity.toString(),
         country: _selectedCountry,
         signingUpAs: _selectedSigningUp,
+        roleName: selectedRole,
         isAgent: _isChecked,
         agencyName: agencyNameCont.text,
         dealCity: _selectedDealCity.toString(),
@@ -113,15 +116,15 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         companyEmail: companyEmailCont.text,
         serviceDescription: descriptionCont.text);
     CustomLoader.hideLoader(context);
-    if (res) {
-
-      NavigationServices.goNextAndKeepHistory(
-          context: context, widget: LoginScreen());
-    }
+    // if (res) {
+    //   NavigationServices.goNextAndKeepHistory(
+    //       context: context, widget: LoginScreen());
+    // }
   }
 
-  bool _isPassword=true;
-  bool _isConfirmPassword=true;
+  bool _isPassword = true;
+  bool _isConfirmPassword = true;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -167,10 +170,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   controller: passwordCont,
                   focusNode: passwordFocus,
                   obscureText: _isPassword,
-                  suffixIcon: _isPassword==true?Icons.visibility:Icons.visibility_off,
-                  suffixOnTap: (){
-                    _isPassword =! _isPassword;
-                    setState((){});
+                  suffixIcon: _isPassword == true
+                      ? Icons.visibility
+                      : Icons.visibility_off,
+                  suffixOnTap: () {
+                    _isPassword = !_isPassword;
+                    setState(() {});
                   },
                   inputType: TextInputType.visiblePassword,
                   inputAction: TextInputAction.next,
@@ -180,10 +185,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   controller: confirmPasswordCont,
                   focusNode: confirmPasswordFocus,
                   obscureText: _isConfirmPassword,
-                  suffixIcon: _isConfirmPassword==true?Icons.visibility:Icons.visibility_off,
-                  suffixOnTap: (){
-                    _isConfirmPassword =! _isConfirmPassword;
-                    setState((){});
+                  suffixIcon: _isConfirmPassword == true
+                      ? Icons.visibility
+                      : Icons.visibility_off,
+                  suffixOnTap: () {
+                    _isConfirmPassword = !_isConfirmPassword;
+                    setState(() {});
                   },
                   inputType: TextInputType.visiblePassword,
                   inputAction: TextInputAction.next,
@@ -226,14 +233,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     initialCountryCode: "PK",
                   ),
                 ),
-                CustomTextField(
-                  headerText: "Phone",
-                  controller: phoneCont,
-                  focusNode: phoneFocus,
-                  inputType: TextInputType.phone,
-                  inputAction: TextInputAction.next,
-                  charLength: 13,
-                ),
+
                 CustomDropDownText(
                   text: "City",
                 ),
@@ -255,7 +255,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         underline: SizedBox(),
                         value: _selectedCity,
                         hint: Text(
-                          _selectedCity==null?"--Select City--":_selectedCity!,
+                          _selectedCity == null
+                              ? "--Select City--"
+                              : _selectedCity!,
                           style: labelStyle2,
                         ),
                         items: cities.city!.toSet().map((item) {
@@ -263,7 +265,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             value: item.cityName,
                             child: Text(item.cityName!),
                           );
-
                         }).toList(),
                         onChanged: (String? newValue) {
                           print("Asad");
@@ -342,6 +343,28 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         setState(() {});
                       }),
                 ),
+                CustomDropDownText(
+                  text: "Select Role",
+                ),
+                CustomDropDown(
+                  borderColor: selectedRole.isEmpty?lightBlackColor:bgColor,
+                  child: DropdownButton(
+
+                    isExpanded: true,
+                    underline: SizedBox(),
+                    hint: Text(selectedRole.isEmpty? "-- Select Role --":selectedRole),
+                    items: _rolesList.map((item){
+                      return DropdownMenuItem(
+                        value: item,
+                        child: Text(item),
+                      );
+                    }).toList(),
+                    onChanged: (String? value){
+                      selectedRole=value!;
+                      setState((){});
+                    },
+                  ),
+                ),
                 CheckboxListTile(
                   contentPadding: EdgeInsets.all(0.0),
                   controlAffinity: ListTileControlAffinity.leading,
@@ -384,7 +407,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               underline: SizedBox(),
                               value: _selectedDealCity,
                               hint: Text(
-                                _selectedCity==null?"--Select City--":_selectedCity!,
+                                _selectedCity == null
+                                    ? "--Select City--"
+                                    : _selectedCity!,
                                 style: labelStyle2,
                               ),
                               items: cities.city!.toSet().map((item) {
@@ -414,7 +439,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           keyboardType: TextInputType.number,
                           style: countryStyle,
                           textInputAction: TextInputAction.next,
-                          // controller: _phoneNoCont,
+                          controller: dealerNoCont,
+                          focusNode: dealerNoFocus,
                           autovalidateMode: AutovalidateMode.disabled,
                           // focusNode: _phoneFocus,
                           decoration: InputDecoration(
@@ -491,7 +517,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     );
   }
 
- validateRegistration() {
+  validateRegistration() {
     if (nameCont.text.isEmpty) {
       CustomSnackBar.failedSnackBar(
           context: context, message: "User Name is Empty");
@@ -518,48 +544,45 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       noFocus.requestFocus();
       return false;
     }
-    if(_isChecked==true){
-      if(agencyNameCont.text.isEmpty){
-        CustomSnackBar.failedSnackBar(context: context, message: "Enter Agency Name");
+    if (_isChecked == true) {
+      if (agencyNameCont.text.isEmpty) {
+        CustomSnackBar.failedSnackBar(
+            context: context, message: "Enter Agency Name");
         agencyNameFocus.requestFocus();
         return false;
-      }
-      else if(_selectedDealCity==null){
-        CustomSnackBar.failedSnackBar(context: context, message: "Select Delaer City");
+      } else if (_selectedDealCity == null) {
+        CustomSnackBar.failedSnackBar(
+            context: context, message: "Select Dealer City");
         return false;
-      }
-      else if(dealerNoCont.text.isEmpty){
-        CustomSnackBar.failedSnackBar(context: context, message: "Enter Dealer Number");
+      } else if (dealerNoCont.text.isEmpty) {
+        CustomSnackBar.failedSnackBar(
+            context: context, message: "Enter Dealer Number");
         dealerNoFocus.requestFocus();
         return false;
-      }
-      else if(companyPhoneCont.text.isEmpty){
-        CustomSnackBar.failedSnackBar(context: context, message: "Enter Company Number");
+      } else if (companyPhoneCont.text.isEmpty) {
+        CustomSnackBar.failedSnackBar(
+            context: context, message: "Enter Company Number");
         companyPhoneFocus.requestFocus();
         return false;
-      }
-      else if(companyFaxCont.text.isEmpty){
-        CustomSnackBar.failedSnackBar(context: context, message: "Enter Company Fax");
+      } else if (companyFaxCont.text.isEmpty) {
+        CustomSnackBar.failedSnackBar(
+            context: context, message: "Enter Company Fax");
         companyFaxFocus.requestFocus();
         return false;
-      }
-      else if(companyEmailCont.text.isEmpty){
-        CustomSnackBar.failedSnackBar(context: context, message: "Enter Company Email Address");
+      } else if (companyEmailCont.text.isEmpty) {
+        CustomSnackBar.failedSnackBar(
+            context: context, message: "Enter Company Email Address");
         companyEmailFocus.requestFocus();
         return false;
-      }
-      else if(descriptionCont.text.isEmpty){
-        CustomSnackBar.failedSnackBar(context: context, message: "Enter Service Description");
+      } else if (descriptionCont.text.isEmpty) {
+        CustomSnackBar.failedSnackBar(
+            context: context, message: "Enter Service Description");
         descriptionFocus.requestFocus();
         return false;
-      }
-      else{
+      } else {
         return true;
       }
-    }
-
-
-    else {
+    } else {
       return true;
     }
   }

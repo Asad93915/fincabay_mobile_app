@@ -26,4 +26,17 @@ class LocaleStorageServices{
     return user;
   }
 
+  /////On the base of User Role
+  Future saveRoleName(String userRole)async{
+    SharedPreferences pref=await SharedPreferences.getInstance();
+    pref.setString('userRole', userRole);
+    return true;
+  }
+  Future getRoleName()async{
+    SharedPreferences pref=await SharedPreferences.getInstance();
+    return  pref.getString('userRole');
+
+  }
+
+
 }

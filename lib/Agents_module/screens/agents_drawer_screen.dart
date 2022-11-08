@@ -52,7 +52,14 @@ class _AgentsDrawerState extends State<AgentsDrawer> {
             children: [
 
 
-              Text("${user.userName}",style: nameStyle),
+              Expanded(
+                child
+                    : Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 9.0),
+                  child: Text(user.userName!,style: nameStyle),
+                ),
+                flex: 1,
+              ),
               IconButton(onPressed: (){
 
               }, icon: Icon(Icons.arrow_forward_outlined,color: bgColor,)),
@@ -121,7 +128,9 @@ class _AgentsDrawerState extends State<AgentsDrawer> {
             icon: Icons.logout,
 
             title: "Logout",
-            onTap: (){
+            onTap: ()async{
+              Navigator.of(context);
+              await box.remove('user');
               NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: LoginScreen());
 
               setState((){});

@@ -29,8 +29,9 @@ class _CitiesWidgetState extends State<CitiesWidget> {
         // NavigationServices.goNextAndKeepHistory(context: context, widget: PhasesScreen(
         //   cityText:widget.cities.cityName! ,
         // ));
-        NavigationServices.goNextAndKeepHistory(context: context, widget: LocationNameScreen(
+        NavigationServices.goNextAndKeepHistory(context: context, widget: AreaNameScreen(
           cityId: widget.cities.cityId!,
+          cityName: widget.cities.cityName!,
         ));
       },
       child: Container(

@@ -23,7 +23,7 @@ class GetStaffWidget extends StatefulWidget {
 class _GetStaffWidgetState extends State<GetStaffWidget> {
   delStaffHandler()async{
     CustomLoader.showLoader(context: context);
-    await DeleteAgencyStaffService().deleteStaff(context: context, agentStaffId: widget.staffMember.agentStaffId!);
+    await DeleteAgencyStaffService().deleteStaff(context: context, staffId: widget.staffMember.id!);
     CustomLoader.hideLoader(context);
   }
   @override
@@ -110,8 +110,7 @@ class _GetStaffWidgetState extends State<GetStaffWidget> {
         mobileNo: widget.staffMember.mobile!,
         email: widget.staffMember.email!,
         id:widget.staffMember.id!,
-        agentId: widget.staffMember.agentId!,
-        agentStaffId: widget.staffMember.agentStaffId!,
+        agentEmail: widget.staffMember.agentEmail!,
       );
     });
   }

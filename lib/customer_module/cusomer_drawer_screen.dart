@@ -78,7 +78,14 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(userModel!.userName!,style: nameStyle),
+                            Expanded(
+                                child
+                                : Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 9.0),
+                                  child: Text(userModel!.userName!,style: nameStyle),
+                                ),
+                            flex: 1,
+                            ),
                             IconButton(
                                 onPressed: () {},
                                 icon: Icon(
@@ -136,6 +143,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     widget: AddPropertyScreen(
 
                       isSelected: false,
+                      userEmail: userModel!.email!,
                     ));
               } else {
                 isLogin = false;
@@ -190,11 +198,16 @@ class _CustomDrawerState extends State<CustomDrawer> {
           DrawerItemCard(
             selctedColor: selectedIndex == 6 ? true : false,
             onTap: () async {
+              await box.remove('user');
               selectedIndex = 6;
+
+
               SharedPreferences pref = await SharedPreferences.getInstance();
               pref.clear();
+
               NavigationServices.goNextAndDoNotKeepHistory(
                   context: context, widget: LoginScreen());
+              print("User Name ${userModel!.userName!}");
               setState(() {});
             },
             title: "LogOut",

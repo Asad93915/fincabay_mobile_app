@@ -8,16 +8,17 @@ import '../../providers/location_name_provider.dart';
 import '../../services/location_name_service.dart';
 import 'dashboard_widgets/location_phases_screen.dart';
 
-class LocationNameScreen extends StatefulWidget {
+class AreaNameScreen extends StatefulWidget {
   final int cityId;
+  final String cityName;
 
-  LocationNameScreen({required this.cityId});
+  AreaNameScreen({required this.cityId,required this.cityName});
 
   @override
-  State<LocationNameScreen> createState() => _LocationNameScreenState();
+  State<AreaNameScreen> createState() => _AreaNameScreenState();
 }
 
-class _LocationNameScreenState extends State<LocationNameScreen> {
+class _AreaNameScreenState extends State<AreaNameScreen> {
   _getLocationName() async {
     CustomLoader.showLoader(context: context);
     await GetLocationNameService()
@@ -90,7 +91,7 @@ class _LocationNameScreenState extends State<LocationNameScreen> {
                           return InkWell(
                             onTap: (){
                               NavigationServices.goNextAndKeepHistory(context: context, widget: PhasesScreen(
-                                cityText:"Lahore" ,
+                                cityText:widget.cityName ,
                                 areaId: location.locName![index].areaId!,
                                 cityId: widget.cityId,
 
@@ -111,7 +112,7 @@ class _LocationNameScreenState extends State<LocationNameScreen> {
                           );
                         })
                     : Container(
-                        child: Text("No Location Name added against this city"),
+                        child: Text("No Area Name added against this city"),
                       );
               },
             ),
@@ -123,9 +124,10 @@ class _LocationNameScreenState extends State<LocationNameScreen> {
             // border: Border.all(color: black12,width: 1.0)
             ),
         child: Text(
-          "LAHORE",
+          "${widget.cityName}",
+          maxLines: 1,
           style: TextStyle(
-              fontSize: 91.0,
+              fontSize: 50.0,
               color: Color(0xFFD1E4F0),
               fontWeight: FontWeight.w500,
               height: 0.5),

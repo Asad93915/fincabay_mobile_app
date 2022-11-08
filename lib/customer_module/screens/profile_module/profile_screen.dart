@@ -1,7 +1,9 @@
 
 import 'package:fincabay_application/configs/colors.dart';
 import 'package:fincabay_application/customer_module/models/get_user_properties_model.dart';
-import 'package:fincabay_application/customer_module/screens/home_dashboard/get_user_properties_screen.dart';
+import 'package:fincabay_application/customer_module/screens/profile_module/about_us_screen.dart';
+import 'package:fincabay_application/customer_module/screens/profile_module/get_user_properties_screen.dart';
+import 'package:fincabay_application/customer_module/screens/profile_module/profile_settings_screen.dart';
 import 'package:fincabay_application/helper_widgets/custom_button.dart';
 import 'package:fincabay_application/utils/variable_storage.dart';
 import 'package:flutter/cupertino.dart';
@@ -60,7 +62,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     CustomProfileWidget(
                       profileText: "Profile\nSettings",
                       icon: Icons.settings,
-                      onTap: (){},
+                      onTap: (){
+                        NavigationServices.goNextAndKeepHistory(context: context, widget: ProfileSettingsScreen());
+                      },
                       selectedColor: false,
                     ),
                     CustomProfileWidget(
@@ -117,7 +121,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
 
                         CustomButton(
-                          onTap: (){},
+                          onTap: (){
+                            NavigationServices.goNextAndKeepHistory(context: context, widget: AddPropertyScreen(
+                              isSelected: false,
+                              userEmail: user.email!,
+                            ));
+                          },
                           height: 40.0,
                           bgColor: postColor,
                           verticalMargin: 12.0,
@@ -159,12 +168,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 trailing: Image.asset("assets/icons/account_icon.png"),
               ),
           ListTile(
+            onTap: (){
+              NavigationServices.goNextAndKeepHistory(context: context, widget: AboutUSScreen());
+            },
             leading: Icon(Icons.phone),
             title: Text("Contact Us"),
             trailing: Icon(Icons.arrow_forward_ios),
           ),
           Divider(),
-          TextButton.icon(onPressed: (){}, icon: Icon(Icons.logout), label: Text("Log Out"))
+          TextButton.icon(onPressed: (){
+            NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: LoginScreen());
+
+          }, icon: Icon(Icons.logout), label: Text("Log Out"))
 
         ],
       ),

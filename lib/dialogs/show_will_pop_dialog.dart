@@ -3,10 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 showWillPopDialog(BuildContext context) {
-  showCupertinoModalPopup(
-      context: context,
-      builder: (context) =>
-          Padding(
+
+      return    Padding(
             padding:
             const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10),
             child: Card(
@@ -28,6 +26,7 @@ showWillPopDialog(BuildContext context) {
                     children: [
                       TextButton(
                           onPressed: () {
+                            print("No");
                             Navigator.pop(context);
                           },
                           child: Text('No')),
@@ -35,6 +34,7 @@ showWillPopDialog(BuildContext context) {
                       TextButton(
                           onPressed: () {
                             Navigator.of(context).pop(true);
+                            print("Yes");
                           },
                           child: Text('Yes')),
                     ],
@@ -42,5 +42,5 @@ showWillPopDialog(BuildContext context) {
                 ]),
               ),
             ),
-          ));
+          );
 }

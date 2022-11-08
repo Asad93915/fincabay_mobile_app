@@ -60,6 +60,7 @@ class _PropertySearchScreenState extends State<PropertySearchScreen> {
               return InkWell(
                 onTap: (){
                   NavigationServices.goNextAndKeepHistory(context: context, widget: PropertyDetailsScreen(
+                    imageUrl: search.propSearch![index].uploadImage==null?"assets/images/property_image.jpg":search.propSearch![index].uploadImage!,
                       address: search.propSearch![index].detailAddress!,
                       noOfBeds: search.propSearch![index].noOfBeds!,
                       noOfBaths: search.propSearch![index].noOfBaths!,

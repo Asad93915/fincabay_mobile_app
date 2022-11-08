@@ -13,7 +13,7 @@ const TextStyle propertyStyle=TextStyle(color: blackColor, fontSize: 15.0, heigh
 const TextStyle ddStyle=TextStyle(color: blackColor, fontSize: 16.0);
 const TextStyle passwordStyle=TextStyle(color: blackColor,fontWeight: FontWeight.bold,fontSize: 28.0,height: 2.2);
 const TextStyle logoStyle=TextStyle(fontSize: 20.0,fontWeight: FontWeight.bold,color: blackColor,height: 2.0);
-const TextStyle nameStyle=TextStyle(color: bgColor,fontSize: 18.0,fontWeight: FontWeight.w700,height: 2.0);
+const TextStyle nameStyle=TextStyle(color: bgColor,fontSize: 18.0,fontWeight: FontWeight.w700,height: 1.2);
 const TextStyle pkrStyle=TextStyle(color: blackColor,fontSize: 16.0,fontWeight: FontWeight.w500,height: 1.6);
 const TextStyle addressStyle=TextStyle(color: blackColor,fontSize: 16.0,fontWeight: FontWeight.w500,);
 const TextStyle houseStyle=TextStyle(color: black26,fontSize: 14.0,height: 1.5);
@@ -32,3 +32,5 @@ const TextStyle contactStyle=TextStyle(color: blackColor,fontSize: 14.0,fontWeig
 const TextStyle userStyle=TextStyle(color: blackColor,fontWeight: FontWeight.w700,fontSize: 18.0,height: 2.0);
 const TextStyle noStyle=TextStyle(fontSize: 13.0);
 const TextStyle sellStyle=TextStyle(color: blackColor,fontSize: 14.0,fontWeight: FontWeight.bold);
+const TextStyle accountsStyle=TextStyle(color: lightBlackColor,fontSize: 16.0,height: 2.5);
+

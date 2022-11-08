@@ -1,7 +1,6 @@
 import 'package:fincabay_application/Agents_module/providers/agent_properties_provider.dart';
 import 'package:fincabay_application/Agents_module/services/agent_properties_service.dart';
 import 'package:fincabay_application/auth/provider/user_data_provider.dart';
-import 'package:fincabay_application/customer_module/cusomer_drawer_screen.dart';
 import 'package:fincabay_application/dialogs/show_will_pop_dialog.dart';
 import 'package:fincabay_application/helper_services/custom_loader.dart';
 import 'package:fincabay_application/helper_services/navigation_services.dart';
@@ -29,16 +28,15 @@ class _ManageAgentPropertiesScreenState
     CustomLoader.showLoader(context: context);
     await ManageAgentPropertiesService().getAgentProp(
         context: context,
-        userId: Provider.of<UserDataProvider>(context, listen: false)
+        agentEmail: Provider.of<UserDataProvider>(context, listen: false)
             .user!
-            .id
-            .toString());
+            .email!);
     CustomLoader.hideLoader(context);
   }
 
-  List<AgentPropertiesModel> data = [];
-  List<AgentPropertiesModel> rentList = [];
-  List<AgentPropertiesModel> saleList = [];
+  List<AgentProperties> data = [];
+  List<AgentProperties> rentList = [];
+  List<AgentProperties> saleList = [];
 
   @override
   void initState() {
@@ -112,7 +110,7 @@ class _ManageAgentPropertiesScreenState
                         height: MediaQuery.of(context).size.height/4.0,
                         width: double.infinity,
                         child: ListView.builder(
-                            itemCount: saleList.length,
+                            itemCount: prop.getProperties!.length,
                             shrinkWrap: true,
                             primary: false,
                             scrollDirection: Axis.horizontal,

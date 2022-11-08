@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:fincabay_application/Agents_module/services/agents_add_property_service.dart';
+import 'package:fincabay_application/auth/provider/user_data_provider.dart';
 import 'package:fincabay_application/configs/colors.dart';
 import 'package:fincabay_application/customer_module/services/location_name_service.dart';
 import 'package:fincabay_application/dialogs/show_will_pop_dialog.dart';
@@ -119,7 +120,8 @@ class _AgentsAddPropertyScreenState extends State<AgentsAddPropertyScreen> {
         expiryDate: selectedExpiration,
         city: _selectedCity!,
         area: selectedArea!,
-        detailsAddress: _addressCont.text);
+        detailsAddress: _addressCont.text,
+        userEmail: Provider.of<UserDataProvider>(context,listen: false).user!.email!);
     CustomLoader.hideLoader(context);
   }
 

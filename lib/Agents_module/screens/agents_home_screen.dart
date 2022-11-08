@@ -17,12 +17,21 @@ class AgentHomeScreen extends StatefulWidget {
 }
 
 class _AgentHomeScreenState extends State<AgentHomeScreen> {
+
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async{
-        return await showWillPopDialog(context);
-      },
+
+        onWillPop: ()async{
+          final shouldPop=await showCupertinoModalPopup(
+              context: context, builder: (context){
+                return showWillPopDialog(context);
+          });
+          return shouldPop!;
+        },
+
+
       child: Scaffold(
         drawer: AgentsDrawer(),
         appBar: AppBar(

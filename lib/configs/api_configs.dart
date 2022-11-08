@@ -16,7 +16,7 @@ const String getUserPropUrl=baseUrl + "Property/GetPropertyByEmail?";
 //Agents
 
 const String agentAddPropUrl=baseUrl + "Agent/PropertyAddByAgent";
-const String manageAgentPropUrl=baseUrl + "Agent/GetAgentPropertiesByAgentId?";
-const String getStaffUrl=baseUrl + "Accounts/GetAllStaffMembersByAgentId?";
-const String delStaffUrl=baseUrl + "Accounts/StaffUserDelete?";
+const String manageAgentPropUrl=baseUrl + "Agent/GetAgentPropertiesByAgentEmail?";
+const String getStaffUrl=baseUrl + "Accounts/GetAllStaffMembersByAgentEmail?";
+const String delStaffUrl=baseUrl + "Accounts/StaffUserDelete/";
 const String editStaffUrl=baseUrl + "Accounts/UpdateStaffMember";

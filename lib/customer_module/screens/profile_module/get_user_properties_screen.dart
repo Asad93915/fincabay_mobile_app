@@ -42,22 +42,29 @@ class _GetUserPropertiesScreenState extends State<GetUserPropertiesScreen> {
     return   Scaffold(
       appBar: AppBar(
         backgroundColor: bgColor,
-        title: Text("My Properties",style: barStyle,),
+        title: Text("My Properties",style: barStyle,)),
+
+      body: RefreshIndicator(
+        onRefresh: () {
+      return    _getUserPropertiesHandler();
+        },
+        child: Consumer<GetUserPropertiesProvider>(builder: (context,property,_){
+          return property.properties!.isNotEmpty?ListView.builder(
+              shrinkWrap: true,
+              primary: false,
+              physics: AlwaysScrollableScrollPhysics(),
+              scrollDirection: Axis.vertical,
+              itemCount: property.properties!.length,
+              itemBuilder: (BuildContext,index){
+                return GetUserPropertiesWidget(
+                  prop: property.properties![index],
+                );
+              }):Container(
+            alignment: Alignment.center,
+            child: Text("No Property Exsists",style: addressStyle,),
+          );
+        }),
       ),
-      body: Consumer<GetUserPropertiesProvider>(builder: (context,property,_){
-        return property.properties!=null?ListView.builder(
-            shrinkWrap: true,
-            primary: false,
-            scrollDirection: Axis.vertical,
-            itemCount: property.properties!.length,
-            itemBuilder: (BuildContext,index){
-              return GetUserPropertiesWidget(
-                prop: property.properties![index],
-              );
-            }):Container(
-          child: Text("No Property Exsists"),
-        );
-      }),
     );
   }
 }
@@ -152,7 +159,7 @@ class _GetUserPropertiesWidgetState extends State<GetUserPropertiesWidget> {
                     ),
                     SizedBox(
                       width: MediaQuery.of(context).size.width / 1.8,
-                      child: Row(
+                      child: widget.prop.propertyType=="Homes"?Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -166,10 +173,31 @@ class _GetUserPropertiesWidgetState extends State<GetUserPropertiesWidget> {
                           ),
                           HouseDetails(
                             icon: Icons.grid_view,
-                            title: "6",
+                            title: "${widget.prop.landArea}",
                           ),
                         ],
-                      ),
+                      ):
+                      widget.prop.propertyType=="Plots"?Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Image.asset("assets/icons/marla_icon.png",height: 25.0,width: 25.0,fit: BoxFit.fill,),
+                          Container(
+                              margin: EdgeInsets.symmetric(horizontal: 10.0,vertical: 2.0),
+                              child: Text("${widget.prop.landArea! }"+" "+"${widget.prop.unit}"))
+                        ],
+                      ):
+                      widget.prop.propertyType=="Commercial"?Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Image.asset("assets/icons/marla_icon.png",height: 25.0,width: 25.0,fit: BoxFit.fill,),
+                          Container(
+                              margin: EdgeInsets.symmetric(horizontal: 10.0,vertical: 2.0),
+                              child: Text("${widget.prop.landArea! }"+" "+"${widget.prop.unit}"))
+                        ],
+                      ):SizedBox()
+
                     ),
                     SizedBox(
                       width: MediaQuery.of(context).size.width / 1.7,

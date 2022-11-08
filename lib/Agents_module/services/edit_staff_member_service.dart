@@ -12,8 +12,7 @@ class EditStaffMemberService {
       required String address,
       required String mobileNo,
       required final int id,
-      required String agentStaffId,
-      required String agentId}) async {
+      required String agentEmail}) async {
     try {
       Map _body = {
         "contactPerson": contactName,
@@ -22,8 +21,7 @@ class EditStaffMemberService {
         "mobile": mobileNo,
         "address": address,
         "id": id,
-        "agentStaffId": agentStaffId,
-        "agentId": agentId
+        "agentEmail": agentEmail
       };
       var res = await PostRequestService()
           .httpPostRequest(url: editStaffUrl, body: _body, context: context);

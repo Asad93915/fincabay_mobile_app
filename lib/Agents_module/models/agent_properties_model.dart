@@ -1,20 +1,49 @@
 class AgentPropertiesModel {
+  int? status;
+  String? message;
+  List<AgentProperties>? data;
+
+  AgentPropertiesModel({this.status, this.message, this.data});
+
+  AgentPropertiesModel.fromJson(Map<String, dynamic> json) {
+    status = json['status'];
+    message = json['message'];
+    if (json['data'] != null) {
+      data = <AgentProperties>[];
+      json['data'].forEach((v) {
+        data!.add(new AgentProperties.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['status'] = this.status;
+    data['message'] = this.message;
+    if (this.data != null) {
+      data['data'] = this.data!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class AgentProperties {
   int? id;
   String? propertyTitle;
-  Null? category;
+  String? category;
   String? content;
   String? propertyType;
   int? pTypeId;
   String? purpose;
   String? landArea;
-  Null? unit;
+  String? unit;
   int? noOfBeds;
   int? noOfBaths;
   String? expireAfter;
   Null? uploadImage;
-  Null? imageByPath;
+  String? imageByPath;
   Null? uploadVideo;
-  Null? videoByPath;
+  String? videoByPath;
   String? city;
   int? cityId;
   String? area;
@@ -23,9 +52,9 @@ class AgentPropertiesModel {
   int? areaId;
   String? detailAddress;
   double? amount;
-  Null? description;
-  Null? propertyStatus;
-  Null? propertySize;
+  String? description;
+  String? propertyStatus;
+  String? propertySize;
   bool? isApproved;
   bool? isRejected;
   bool? isPending;
@@ -39,7 +68,7 @@ class AgentPropertiesModel {
   bool? isLogin;
   bool? isSignUp;
 
-  AgentPropertiesModel(
+  AgentProperties(
       {this.id,
         this.propertyTitle,
         this.category,
@@ -80,7 +109,7 @@ class AgentPropertiesModel {
         this.isLogin,
         this.isSignUp});
 
-  AgentPropertiesModel.fromJson(Map<String, dynamic> json) {
+  AgentProperties.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     propertyTitle = json['propertyTitle'];
     category = json['category'];

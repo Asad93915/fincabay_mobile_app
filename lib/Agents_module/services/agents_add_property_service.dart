@@ -20,7 +20,9 @@ class AgentsAddPropertyService {
       required String expiryDate,
       required String city,
       required String area,
-      required String detailsAddress}) async {
+      required String detailsAddress,
+      required String userEmail,
+      }) async {
     try {
       Map _body = {
         "propertyTitle": propTitle,
@@ -35,7 +37,8 @@ class AgentsAddPropertyService {
         "expireAfter": expiryDate,
         "city": city,
         "area": area,
-        "detailAddress": detailsAddress
+        "detailAddress": detailsAddress,
+        "signUpUserEmail":userEmail
       };
       var res=await PostRequestService().httpPostRequest(url: agentAddPropUrl, body: _body, context: context);
       if(res!=null){

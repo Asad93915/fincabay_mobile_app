@@ -110,7 +110,7 @@ class _PhasesScreenState extends State<PhasesScreen> {
                             borderRadius: BorderRadius.circular(10.0),
                             border: Border.all(color: black12)
                         ),
-                        child: Text(location.phase![index].name!,style: pKrStyle,),
+                        child: Text(location.phase![index].name!,style: pKrStyle,textAlign: TextAlign.center,),
                       ),
                     );
                   }):Container(
@@ -123,12 +123,19 @@ class _PhasesScreenState extends State<PhasesScreen> {
       ),
       bottomNavigationBar: Container(
         alignment: Alignment.center,
-        height: kToolbarHeight *1.5,
+        height: kToolbarHeight * 1.5,
         decoration: BoxDecoration(
           // border: Border.all(color: black12,width: 1.0)
         ),
-        child: Text(widget.cityText,style: TextStyle(fontSize: 91.0,color: Color(0xFFD1E4F0),fontWeight: FontWeight.w500,height: 0.5),),
-
+        child: Text(
+          "${widget.cityText}",
+          maxLines: 1,
+          style: TextStyle(
+              fontSize: 50.0,
+              color: Color(0xFFD1E4F0),
+              fontWeight: FontWeight.w500,
+              height: 0.5),
+        ),
       ),
     );
   }

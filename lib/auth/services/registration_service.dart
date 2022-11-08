@@ -13,11 +13,10 @@ class RegistrationService {
       required String email,
       required String mobileNo,
       required String password,
-      required String phone,
       required String city,
       required String country,
       required String signingUpAs,
-
+      required String roleName,
       required bool isAgent,
       required String agencyName,
       required String dealCity,
@@ -30,14 +29,14 @@ class RegistrationService {
       }) async {
     try {
       Map _body = {
-        "name": userName,
-        "emailAdress": email,
-        "mobileNumber": mobileNo,
+        "userName": userName,
+        "email": email,
+        "phoneNumber": mobileNo,
         "password": password,
-        "phone": phone,
         "city": city,
         "country": country,
         "signing_up": signingUpAs,
+        "roleName" :roleName,
         "isAgent": isAgent,
         "agency_Name":agencyName,
         "deal_City":dealCity,

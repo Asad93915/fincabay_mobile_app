@@ -7,9 +7,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
 class GetStaffMemberService{
-  Future getStaff({required BuildContext context,required String agentId})async{
+  Future getStaff({required BuildContext context,required String agentEmail})async{
     try{
-      var res=await GetRequestService().httpGetRequest(url: getStaffUrl+"AgentId=$agentId", context: context);
+      var res=await GetRequestService().httpGetRequest(url: getStaffUrl+"AgentEmail=$agentEmail", context: context);
       if(res !=null){
         AllStaffMemberModel staffMember=AllStaffMemberModel.fromJson(res);
         Provider.of<GetStaffProvider>(context,listen: false).updateStafMember(
