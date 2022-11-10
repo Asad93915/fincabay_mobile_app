@@ -63,7 +63,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       profileText: "Profile\nSettings",
                       icon: Icons.settings,
                       onTap: (){
-                        NavigationServices.goNextAndKeepHistory(context: context, widget: ProfileSettingsScreen());
+                        NavigationServices.goNextAndKeepHistory(context: context, widget: ProfileSettingsScreen(
+                          userName: user.name!,
+                          password: user.password!,
+                          mobileNo: user.phoneNumber!,
+                          userId: user.id!,
+                          userRole: user.roleName!,
+                          email: user.email!,
+                        ));
                       },
                       selectedColor: false,
                     ),

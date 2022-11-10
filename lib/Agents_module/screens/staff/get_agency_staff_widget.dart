@@ -14,6 +14,7 @@ import '../../../utils/handlers.dart';
 
 class GetStaffWidget extends StatefulWidget {
   StaffMember staffMember;
+
    GetStaffWidget({required this.staffMember});
 
   @override
@@ -87,7 +88,7 @@ class _GetStaffWidgetState extends State<GetStaffWidget> {
                 InkWell(
                     onTap: ()async{
                      await delStaffHandler();
-                     getStaffMemberHandler(context);
+                     getStaffMemberHandler(context,widget.staffMember.email!);
                     },
                     child: Icon(Icons.delete,color: bgColor,))
               ],

@@ -1,6 +1,8 @@
 import 'package:fincabay_application/configs/colors.dart';
 import 'package:fincabay_application/configs/text_styles.dart';
+import 'package:fincabay_application/customer_module/screens/home_dashboard/dashboard_widgets/favourites_screen.dart';
 import 'package:fincabay_application/customer_module/screens/home_dashboard/home_dashboard_screens.dart';
+import 'package:fincabay_application/customer_module/screens/profile_module/profile_screen.dart';
 import 'package:fincabay_application/helper_services/custom_loader.dart';
 import 'package:fincabay_application/helper_services/navigation_services.dart';
 import 'package:fincabay_application/helper_widgets/custom_button.dart';
@@ -149,6 +151,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 isLogin = false;
                 setVisitorView(isLogin);
                 print('is Selected $isLogin');
+
                 NavigationServices.goNextAndKeepHistory(
                     context: context, widget: LoginScreen());
               }
@@ -180,7 +183,11 @@ class _CustomDrawerState extends State<CustomDrawer> {
             selctedColor: selectedIndex == 4 ? true : false,
             onTap: () {
               selectedIndex = 4;
-              setState(() {});
+              setState(() {
+                NavigationServices.goNextAndKeepHistory(context: context, widget: FavouritesScreen(
+                  isShow: true,
+                ));
+              });
             },
             title: "Favourites",
             icon: CupertinoIcons.heart,
@@ -194,12 +201,22 @@ class _CustomDrawerState extends State<CustomDrawer> {
             title: "Saved Searches",
             icon: Icons.bookmark_border,
           ),
+          // DrawerItemCard(
+          //   selctedColor: selectedIndex == 6 ? true : false,
+          //   onTap: () {
+          //     selectedIndex = 6;
+          //     NavigationServices.goNextAndKeepHistory(context: context, widget: ProfileScreen());
+          //     setState(() {});
+          //   },
+          //   title: "User Profile",
+          //   icon: Icons.person,
+          // ),
           Spacer(),
           DrawerItemCard(
-            selctedColor: selectedIndex == 6 ? true : false,
+            selctedColor: selectedIndex == 7 ? true : false,
             onTap: () async {
               await box.remove('user');
-              selectedIndex = 6;
+              selectedIndex = 7;
 
 
               SharedPreferences pref = await SharedPreferences.getInstance();

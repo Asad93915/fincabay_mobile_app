@@ -93,7 +93,9 @@ class _AgentsDrawerState extends State<AgentsDrawer> {
             selctedColor:selectedIndex==2?true:false ,
             title: "Manage Property",
             onTap: (){
-              NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: ManageAgentPropertiesScreen());
+              NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: ManageAgentPropertiesScreen(
+                agentEmail: user.email!,
+              ));
               selectedIndex=2;
               setState((){});
             },
@@ -104,8 +106,14 @@ class _AgentsDrawerState extends State<AgentsDrawer> {
             title: "Update Profile",
             onTap: (){
               NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: UpdateAgentProfileScreen(
-                userName:user.userName! ,
+                userName:user.name! ,
                 userEmail: user.email!,
+                mobileNo: user.phoneNumber!,
+                agencyName: "user.agencyName",
+                compFax: "user.companyFax!",
+                serviceDescription: "user.servicesDescription!",
+                city: user.city!,
+
               ));
               selectedIndex=3;
               setState((){});
@@ -116,7 +124,8 @@ class _AgentsDrawerState extends State<AgentsDrawer> {
             selctedColor:selectedIndex==4?true:false ,
             title: "Agency Staff",
             onTap: (){
-              NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: AgencyStaffScreen());
+              NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: AgencyStaffScreen(
+                agentEmail: user.email!,));
               selectedIndex=4;
               setState((){});
             },

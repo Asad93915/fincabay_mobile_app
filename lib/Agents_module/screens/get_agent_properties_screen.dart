@@ -17,6 +17,8 @@ import '../models/agent_properties_model.dart';
 import 'agents_drawer_screen.dart';
 
 class ManageAgentPropertiesScreen extends StatefulWidget {
+  final String agentEmail;
+  ManageAgentPropertiesScreen({required this.agentEmail});
   @override
   State<ManageAgentPropertiesScreen> createState() =>
       _ManageAgentPropertiesScreenState();
@@ -28,9 +30,8 @@ class _ManageAgentPropertiesScreenState
     CustomLoader.showLoader(context: context);
     await ManageAgentPropertiesService().getAgentProp(
         context: context,
-        agentEmail: Provider.of<UserDataProvider>(context, listen: false)
-            .user!
-            .email!);
+        agentEmail: widget.agentEmail
+    );
     CustomLoader.hideLoader(context);
   }
 

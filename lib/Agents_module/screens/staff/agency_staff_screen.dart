@@ -16,7 +16,8 @@ import 'package:provider/provider.dart';
 
 import '../../../helper_widgets/custom_button.dart';
 class AgencyStaffScreen extends StatefulWidget {
-  const AgencyStaffScreen({Key? key}) : super(key: key);
+  final String agentEmail;
+  AgencyStaffScreen({ required this.agentEmail}) ;
 
   @override
   State<AgencyStaffScreen> createState() => _AgencyStaffScreenState();
@@ -29,7 +30,7 @@ class _AgencyStaffScreenState extends State<AgencyStaffScreen> {
   void initState() {
     // TODO: implement initState
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      getStaffMemberHandler(context);
+      getStaffMemberHandler(context,widget.agentEmail);
     });
     super.initState();
   }
@@ -52,7 +53,7 @@ class _AgencyStaffScreenState extends State<AgencyStaffScreen> {
         body: RefreshIndicator(
 
           onRefresh: (){
-          return  getStaffMemberHandler(context);
+          return  getStaffMemberHandler(context,widget.agentEmail);
           },
           child: SafeArea(
             child: Padding(
@@ -91,7 +92,9 @@ class _AgencyStaffScreenState extends State<AgencyStaffScreen> {
             horizontalMargin: 18.0,
             verticalMargin: 10.0,
             onTap: () {
-              NavigationServices.goNextAndKeepHistory(context: context, widget: AddStaffUserScreen());
+              NavigationServices.goNextAndKeepHistory(context: context, widget: AddStaffUserScreen(
+                agentEmail: widget.agentEmail,
+              ));
             },
             text: "Add User",
             fontSize: 18.0,

@@ -42,9 +42,9 @@ areaSizeViewHandler(BuildContext context,String catName,int areaSizeId,int typeI
 }
 
   ////AGENTS hANDLERS
-  getStaffMemberHandler(BuildContext context)async{
+  getStaffMemberHandler(BuildContext context,String agentEmail)async{
     CustomLoader.showLoader(context: context);
-    await GetStaffMemberService().getStaff(context: context, agentEmail: Provider.of<UserDataProvider>(context,listen: false).user!.email!);
+    await GetStaffMemberService().getStaff(context: context, agentEmail: agentEmail);
     CustomLoader.hideLoader(context);
   }
 

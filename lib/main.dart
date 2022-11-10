@@ -13,7 +13,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'auth/screens/login_screen.dart';
+
 import 'auth/provider/registration_provider.dart';
 import 'auth/provider/user_data_provider.dart';
 import 'customer_module/providers/area_size_provider.dart';
@@ -24,6 +24,12 @@ import 'customer_module/providers/location_name_provider.dart';
 import 'customer_module/providers/location_phases_provider.dart';
 import 'customer_module/providers/property_search_provider.dart';
 import 'customer_module/providers/property_type_provider.dart';
+
+
+// void main() {
+//   GetStorage.init();
+//   runApp(MyApp());
+// }
 
 void main() {
   GetStorage.init();
@@ -162,8 +168,7 @@ class _MyAppState extends State<MyApp> {
     else if (userRole=="Agent"){
       // isLoading=false;
       // setState((){});
-
-          NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: AgentHomeScreen());
+       NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: AgentHomeScreen());
     }
   }
 

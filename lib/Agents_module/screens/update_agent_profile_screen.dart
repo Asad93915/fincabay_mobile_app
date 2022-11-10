@@ -24,8 +24,13 @@ import '../../utils/handlers.dart';
 class UpdateAgentProfileScreen extends StatefulWidget {
   final String userName;
   final String userEmail;
+  final String mobileNo;
+  final String city;
+  final String agencyName;
+  final String compFax;
+  final String serviceDescription;
 
-  UpdateAgentProfileScreen({required this.userName, required this.userEmail});
+  UpdateAgentProfileScreen({required this.userName, required this.userEmail, required this.mobileNo, required this.city, required this.agencyName, required this.compFax, required this.serviceDescription});
 
   @override
   State<UpdateAgentProfileScreen> createState() =>
@@ -51,7 +56,11 @@ class _UpdateAgentProfileScreenState extends State<UpdateAgentProfileScreen> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       citiesHandler(context);
       nameCont.text = widget.userName;
-      print("User Email ${widget.userEmail}");
+      mobileNoCont.text=widget.mobileNo;
+      agencyNameCont.text=widget.agencyName;
+      companyFaxCont.text=widget.compFax;
+      descriptionCont.text=widget.serviceDescription;
+
       setState(() {});
     });
     super.initState();
@@ -77,6 +86,9 @@ class _UpdateAgentProfileScreenState extends State<UpdateAgentProfileScreen> {
 
   String _selectedCountry = "";
   List<String> _countriesList = ["Pakistan"];
+
+
+
 
   @override
   Widget build(BuildContext context) {

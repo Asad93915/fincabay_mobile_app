@@ -15,7 +15,8 @@ import '../../../helper_widgets/custom_text_field.dart';
 import '../../../utils/handlers.dart';
 
 class AddStaffUserScreen extends StatefulWidget {
-  const AddStaffUserScreen({Key? key}) : super(key: key);
+  final String agentEmail;
+  const AddStaffUserScreen({Key? key, required this.agentEmail}) : super(key: key);
 
   @override
   State<AddStaffUserScreen> createState() => _AddStaffUserScreenState();
@@ -26,8 +27,7 @@ class _AddStaffUserScreenState extends State<AddStaffUserScreen> {
     CustomLoader.showLoader(context: context);
     await AddStaffMemberService().addStaffMember(
         context: context,
-        agentEmail:
-            Provider.of<UserDataProvider>(context, listen: false).user!.email!,
+        agentEmail:widget.agentEmail,
         name: _contactPersonCont.text,
         staffEmail: _emailCont.text,
         mobileNo: _mobileNoCont.text,
@@ -118,9 +118,9 @@ class _AddStaffUserScreenState extends State<AddStaffUserScreen> {
                   onTap: () async {
                     await _addAgencyStaff();
                     NavigationServices.goNextAndKeepHistory(
-                        context: context, widget: AgencyStaffScreen());
+                        context: context, widget: AgencyStaffScreen(agentEmail: widget.agentEmail,));
                     // Navigator.pop(context);
-                    getStaffMemberHandler(context);
+                    getStaffMemberHandler(context,widget.agentEmail);
                   },
                 )
               ],

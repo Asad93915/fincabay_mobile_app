@@ -11,6 +11,7 @@ import '../../providers/get_user_properties_provider.dart';
 import '../../services/get_user_properties_service.dart';
 import '../../cusomer_drawer_screen.dart';
 import 'dashboard_widgets/dashboard_widgets.dart';
+import 'dashboard_widgets/favourites_screen.dart';
 import 'dashboard_widgets/new_project_screen.dart';
 import '../profile_module/get_user_properties_screen.dart';
 
@@ -97,7 +98,7 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
               leading: Builder(builder: (context) =>
                   IconButton(onPressed: () {}, icon: Icon(Icons.menu)),
               ),
-              title: Text("My Properties", style: barStyle,),
+              title: Text("Favourites", style: barStyle,),
             ) :
             selectedIndex == 3 ? AppBar(
               backgroundColor: whiteColor,
@@ -188,7 +189,8 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
                     if(selectedIndex == 1)
                       NewProjectsScreen(),
                     if(selectedIndex == 2)
-                      Center(child: Text("Under Progress")),
+                      FavouritesScreen(),
+                      // Center(child: Text("Under Progress")),
                     // GetUserPropertiesScreen(),
                     if(selectedIndex == 3)
                       ProfileScreen(),

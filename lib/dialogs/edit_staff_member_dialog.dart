@@ -20,6 +20,7 @@ class EditStaffMemberDialog extends StatefulWidget {
   final int id;
   final String agentEmail;
 
+
   EditStaffMemberDialog(
       {required this.contactName,
       required this.password,
@@ -124,7 +125,7 @@ class _EditStaffMemberDialogState extends State<EditStaffMemberDialog> {
                 textColor: whiteColor,
                 onTap: ()async {
                  await updateStaffHandler();
-                  await getStaffMemberHandler(context);
+                  await getStaffMemberHandler(context,widget.agentEmail);
                   Navigator.pop(context);
                   // NavigationServices.goNextAndKeepHistory(context: context, widget: AgencyStaffScreen());
 
