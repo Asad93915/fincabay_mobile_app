@@ -716,7 +716,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                   ),
                   CustomTextField(
                     headerText: "Details Address",
-                    maxLine: 3,
+                    maxLine: 1,
                     controller: _addressCont,
                     focusNode: _addressFocus,
                     inputAction: TextInputAction.done,

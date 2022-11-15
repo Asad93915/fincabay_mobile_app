@@ -91,13 +91,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     "Buyer/visitor",
   ];
 
-  String selectedRole="";
-  List<String> _rolesList=["Customer","Agent"];
+  String selectedRole = "";
+  List<String> _rolesList = ["Customer", "Agent"];
   bool _isChecked = false;
 
   registrationHandler() async {
     CustomLoader.showLoader(context: context);
-  await RegistrationService().registerUser(
+
+ bool res=   await RegistrationService().registerUser(
         context: context,
         userName: nameCont.text,
         email: emailCont.text,
@@ -115,11 +116,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         companyFax: companyFaxCont.text,
         companyEmail: companyEmailCont.text,
         serviceDescription: descriptionCont.text);
+ print("Res $res");
     CustomLoader.hideLoader(context);
-    // if (res) {
-    //   NavigationServices.goNextAndKeepHistory(
-    //       context: context, widget: LoginScreen());
-    // }
+    if (res) {
+      NavigationServices.goNextAndDoNotKeepHistory(
+          context: context, widget: LoginScreen());
+    }
   }
 
   bool _isPassword = true;
@@ -128,6 +130,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+
       onTap: () {
         FocusScopeNode _cureentFocus = FocusScope.of(context);
         _cureentFocus.unfocus();
@@ -233,7 +236,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     initialCountryCode: "PK",
                   ),
                 ),
-
                 CustomDropDownText(
                   text: "City",
                 ),
@@ -347,21 +349,22 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   text: "Select Role",
                 ),
                 CustomDropDown(
-                  borderColor: selectedRole.isEmpty?lightBlackColor:bgColor,
+                  borderColor: selectedRole.isEmpty ? lightBlackColor : bgColor,
                   child: DropdownButton(
-
                     isExpanded: true,
                     underline: SizedBox(),
-                    hint: Text(selectedRole.isEmpty? "-- Select Role --":selectedRole),
-                    items: _rolesList.map((item){
+                    hint: Text(selectedRole.isEmpty
+                        ? "-- Select Role --"
+                        : selectedRole),
+                    items: _rolesList.map((item) {
                       return DropdownMenuItem(
                         value: item,
                         child: Text(item),
                       );
                     }).toList(),
-                    onChanged: (String? value){
-                      selectedRole=value!;
-                      setState((){});
+                    onChanged: (String? value) {
+                      selectedRole = value!;
+                      setState(() {});
                     },
                   ),
                 ),

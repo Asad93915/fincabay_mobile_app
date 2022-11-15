@@ -108,11 +108,12 @@ class _AgentsDrawerState extends State<AgentsDrawer> {
               NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: UpdateAgentProfileScreen(
                 userName:user.name! ,
                 userEmail: user.email!,
+                password: user.password!,
                 mobileNo: user.phoneNumber!,
-                agencyName: "user.agencyName",
-                compFax: "user.companyFax!",
-                serviceDescription: "user.servicesDescription!",
-                city: user.city!,
+                agencyName: user.agencyName==null?"null":user.agencyName!,
+                compFax: user.companyFax==null?"null":user.companyFax!,
+                serviceDescription: user.servicesDescription==null?"null":user.servicesDescription!,
+                city: user.city==null?"null":user.city!,
 
               ));
               selectedIndex=3;
@@ -124,7 +125,7 @@ class _AgentsDrawerState extends State<AgentsDrawer> {
             selctedColor:selectedIndex==4?true:false ,
             title: "Agency Staff",
             onTap: (){
-              NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: AgencyStaffScreen(
+              NavigationServices.goNextAndKeepHistory(context: context, widget: AgencyStaffScreen(
                 agentEmail: user.email!,));
               selectedIndex=4;
               setState((){});

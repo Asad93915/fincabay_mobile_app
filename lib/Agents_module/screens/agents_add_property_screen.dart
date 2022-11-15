@@ -638,7 +638,7 @@ class _AgentsAddPropertyScreenState extends State<AgentsAddPropertyScreen> {
                     ),
                     CustomTextField(
                       headerText: "Details Address",
-                      maxLine: 3,
+                      maxLine: 1,
                       controller: _addressCont,
                       inputAction: TextInputAction.done,
                     ),

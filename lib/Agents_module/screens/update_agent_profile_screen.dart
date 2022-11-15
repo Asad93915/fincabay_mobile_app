@@ -1,9 +1,11 @@
 import 'package:fincabay_application/Agents_module/screens/agents_drawer_screen.dart';
+import 'package:fincabay_application/Agents_module/services/update_agent_profile_service.dart';
 import 'package:fincabay_application/auth/models/user_response_model.dart';
 import 'package:fincabay_application/auth/provider/user_data_provider.dart';
 import 'package:fincabay_application/auth/services/registration_service.dart';
 import 'package:fincabay_application/configs/colors.dart';
 import 'package:fincabay_application/configs/text_styles.dart';
+import 'package:fincabay_application/customer_module/services/update_profile_service.dart';
 import 'package:fincabay_application/dialogs/show_will_pop_dialog.dart';
 import 'package:fincabay_application/helper_services/custom_loader.dart';
 import 'package:fincabay_application/helper_services/custom_snackbar.dart';
@@ -23,6 +25,7 @@ import '../../utils/handlers.dart';
 
 class UpdateAgentProfileScreen extends StatefulWidget {
   final String userName;
+  final String password;
   final String userEmail;
   final String mobileNo;
   final String city;
@@ -30,7 +33,7 @@ class UpdateAgentProfileScreen extends StatefulWidget {
   final String compFax;
   final String serviceDescription;
 
-  UpdateAgentProfileScreen({required this.userName, required this.userEmail, required this.mobileNo, required this.city, required this.agencyName, required this.compFax, required this.serviceDescription});
+  UpdateAgentProfileScreen({required this.userName, required this.userEmail, required this.mobileNo, required this.city, required this.agencyName, required this.compFax, required this.serviceDescription, required this.password});
 
   @override
   State<UpdateAgentProfileScreen> createState() =>
@@ -39,12 +42,15 @@ class UpdateAgentProfileScreen extends StatefulWidget {
 
 class _UpdateAgentProfileScreenState extends State<UpdateAgentProfileScreen> {
   TextEditingController nameCont = TextEditingController();
+  TextEditingController passwordCont=TextEditingController();
   TextEditingController mobileNoCont = TextEditingController();
   TextEditingController agencyNameCont = TextEditingController();
   TextEditingController companyFaxCont = TextEditingController();
   TextEditingController descriptionCont = TextEditingController();
 
+
   FocusNode nameFocus = FocusNode();
+  FocusNode passwordFocus=FocusNode();
   FocusNode noFocus = FocusNode();
   FocusNode agencyNameFocus = FocusNode();
   FocusNode companyFaxFocus = FocusNode();
@@ -56,6 +62,7 @@ class _UpdateAgentProfileScreenState extends State<UpdateAgentProfileScreen> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       citiesHandler(context);
       nameCont.text = widget.userName;
+      passwordCont.text=widget.password;
       mobileNoCont.text=widget.mobileNo;
       agencyNameCont.text=widget.agencyName;
       companyFaxCont.text=widget.compFax;
@@ -64,6 +71,26 @@ class _UpdateAgentProfileScreenState extends State<UpdateAgentProfileScreen> {
       setState(() {});
     });
     super.initState();
+  }
+
+  updateAgentProfileHandler()async{
+    CustomLoader.showLoader(context: context);
+    await UpdateAgentProfileService().updateAgentProfile(
+        context: context,
+        userId: "a62eea97-50da-4cca-98d0-7537268596f3",
+        userEmail: widget.userEmail,
+        password: widget.password,
+        userRole: "Agent",
+        name: nameCont.text,
+        mobileNo: mobileNoCont.text,
+        city: _selectedCity.toString(),
+        country: _selectedCountry,
+        agencyName: agencyNameCont.text,
+        compFax: companyFaxCont.text,
+        serviceDescription: descriptionCont.text,
+        isAgent: false,
+        isActive: true);
+    CustomLoader.hideLoader(context);
   }
 
   String? _selectedCity;
@@ -146,6 +173,12 @@ class _UpdateAgentProfileScreenState extends State<UpdateAgentProfileScreen> {
                     inputAction: TextInputAction.next,
                     controller: nameCont,
                     focusNode: nameFocus,
+                  ),
+                  CustomTextField(
+                    headerText: "Password",
+                    inputAction: TextInputAction.next,
+                    controller: passwordCont,
+                    focusNode: passwordFocus,
                   ),
                   CustomDropDownText(
                     text: "Mobile Number",
@@ -385,9 +418,7 @@ class _UpdateAgentProfileScreenState extends State<UpdateAgentProfileScreen> {
               horizontalMargin: 18.0,
               verticalMargin: 10.0,
               onTap: () {
-                // if (_validateAgentProfile()) {
-                // registrationHandler();
-                // }
+                updateAgentProfileHandler();
               },
               text: "Submit",
               fontSize: 18.0,

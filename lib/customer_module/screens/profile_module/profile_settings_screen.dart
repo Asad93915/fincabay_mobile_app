@@ -1,9 +1,12 @@
 import 'package:fincabay_application/auth/provider/user_data_provider.dart';
+import 'package:fincabay_application/auth/screens/login_screen.dart';
 import 'package:fincabay_application/configs/colors.dart';
 import 'package:fincabay_application/configs/text_styles.dart';
 import 'package:fincabay_application/customer_module/cusomer_drawer_screen.dart';
+import 'package:fincabay_application/customer_module/services/delete_user_service.dart';
 import 'package:fincabay_application/customer_module/services/update_profile_service.dart';
 import 'package:fincabay_application/helper_services/custom_loader.dart';
+import 'package:fincabay_application/helper_services/navigation_services.dart';
 import 'package:fincabay_application/helper_widgets/custom_button.dart';
 import 'package:fincabay_application/helper_widgets/custom_drop_down.dart';
 import 'package:fincabay_application/helper_widgets/custom_icon_button.dart';
@@ -42,7 +45,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
 
   _updateProfileHandler()async{
     CustomLoader.showLoader(context: context);
-    await UpdateAgentProfileService().updateProfile(
+    await UpdateCustomerProfileService().updateProfile(
         context: context,
         usedId: widget.userId,
         userEmail: widget.email,
@@ -55,6 +58,15 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
 
     );
     CustomLoader.hideLoader(context);
+  }
+  _delUserHandler()async{
+    CustomLoader.showLoader(context: context);
+    bool res=await DeleteUserService().delUser(context: context, userId: widget.userId);
+    CustomLoader.hideLoader(context);
+    if(res){
+      NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: LoginScreen());
+
+    }
   }
   @override
   Widget build(BuildContext context) {
@@ -169,7 +181,9 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                     //   bgColor: Colors.white,
                     // ),
                     trailing: CustomIconButton(
-                      onTap: (){},
+                      onTap: (){
+                        _delUserHandler();
+                      },
                       width: MediaQuery.of(context).size.width/3,
                       fontSize: 14.0,
                       borderColor: Colors.red,
@@ -212,4 +226,5 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
       ),
     );
   }
+
 }
