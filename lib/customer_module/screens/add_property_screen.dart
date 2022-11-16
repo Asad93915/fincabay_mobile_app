@@ -303,7 +303,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                                 isShow = true;
                               } else {
                                 isShow = false;
-                                print("Hamza S/O ASAD");
+
                               }
 
                               // value=='Homes'?isShow=true:false;
@@ -1033,3 +1033,6 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
     }
   }
 }
+
+
+

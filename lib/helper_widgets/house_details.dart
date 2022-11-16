@@ -17,7 +17,7 @@ class HouseDetails extends StatelessWidget {
       children: [
         Icon(icon,size: 15.0,),
         SizedBox(width: 5.0,),
-        Text(title!,style: TextStyle(color: blackColor,fontSize: 12.0,),)
+        title==null?SizedBox():Text(title!,style: TextStyle(color: blackColor,fontSize: 12.0,),),
       ],
     ));
   }

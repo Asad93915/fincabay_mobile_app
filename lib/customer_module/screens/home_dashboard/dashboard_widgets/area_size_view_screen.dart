@@ -207,15 +207,21 @@ class _AreaSizeViewScreenState extends State<AreaSizeViewScreen> {
     );
   }
 }
-class AreaViewWidget extends StatelessWidget {
+class AreaViewWidget extends StatefulWidget {
   AreaSizeView areaView;
   final String catName;
    AreaViewWidget({required this.areaView, required this.catName});
 
+  @override
+  State<AreaViewWidget> createState() => _AreaViewWidgetState();
+}
 
+class _AreaViewWidgetState extends State<AreaViewWidget> {
+  bool isShow=true;
   @override
   Widget build(BuildContext context) {
     String imageUrl="assets/images/property_image.jpg";
+
 
     return InkWell(
       onTap: (){
@@ -225,14 +231,14 @@ class AreaViewWidget extends StatelessWidget {
                 transitionDuration: Duration(seconds: 2),
                 pageBuilder: (_, __, ___) => PropertyDetailsScreen(
                   imageUrl: imageUrl,
-                  price: areaView.amount.toString(),
-                  sellingAsset:"${areaView.propertyType}"+" For " + "${areaView.purpose}",
-                  address: areaView.detailAddress!,
-                  noOfBaths: areaView.noOfBaths!,
-                  noOfBeds: areaView.noOfBeds!,
-                  landArea: areaView.landArea!,
-                  unit: areaView.unit!,
-                  description: areaView.description!,
+                  price: widget.areaView.amount.toString(),
+                  sellingAsset:"${widget.areaView.propertyType}"+" For " + "${widget.areaView.purpose}",
+                  address: widget.areaView.detailAddress!,
+                  noOfBaths: widget.areaView.noOfBaths!,
+                  noOfBeds: widget.areaView.noOfBeds!,
+                  landArea: widget.areaView.landArea!,
+                  unit: widget.areaView.unit!,
+                  description: widget.areaView.description!,
 
                 )));
       },
@@ -260,15 +266,15 @@ class AreaViewWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Expire After ${areaView.expireAfter}"),
+                      Text("Expire After ${widget.areaView.expireAfter}"),
                       Text(
-                        "PKR ${areaView.amount}",
+                        "PKR ${widget.areaView.amount}",
                         style: pkrStyle,
                       ),
                       SizedBox(
                         width: MediaQuery.of(context).size.width / 1.78,
                         child: Text(
-                          "${areaView.detailAddress}",
+                          "${widget.areaView.detailAddress}",
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           softWrap: false,
@@ -276,13 +282,13 @@ class AreaViewWidget extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        "${areaView.propertyType}"+" For "+"${areaView.purpose}",
+                        "${widget.areaView.propertyType}"+" For "+"${widget.areaView.purpose}",
                         style: houseStyle,
                       ),
                       SizedBox(
                         height: 1.0,
                       ),
-                      catName=="Home"?
+                      widget.catName=="Home"?
                       SizedBox(
                         width: MediaQuery.of(context).size.width / 1.8,
                         child: Row(
@@ -291,20 +297,30 @@ class AreaViewWidget extends StatelessWidget {
                           children: [
                             HouseDetails(
                               icon: Icons.bed_outlined,
-                              title: areaView.noOfBeds.toString(),
+                              title: widget.areaView.noOfBeds.toString(),
                             ),
                             HouseDetails(
                               icon: Icons.bathtub_outlined,
-                              title: "${areaView.noOfBaths}",
+                              title: "${widget.areaView.noOfBaths}",
                             ),
                             HouseDetails(
                               icon: Icons.house,
-                              title: "${areaView.landArea}",
+                              title: "${widget.areaView.landArea}",
                             ),
+                            Spacer(),
+
+                            InkWell(
+                                onTap: (){
+                                  isShow=!isShow;
+                                  print("IS show $isShow");
+
+                                  setState((){});
+                                },
+                                child: Icon(isShow==true?Icons.favorite:Icons.favorite_border,size: 20.0,color: isShow==true?Colors.red:Colors.black,)),
                           ],
                         ),
                       ):
-                      catName=="Plots"?
+                      widget.catName=="Plots"?
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -312,10 +328,10 @@ class AreaViewWidget extends StatelessWidget {
                           Image.asset("assets/icons/marla_icon.png",height: 15.0,width: 15.0,fit: BoxFit.fill,),
                           Container(
                               margin: EdgeInsets.only(left: 10.0,top: 0.0),
-                              child: Text(areaView.landArea!+ " "+areaView.unit!))
+                              child: Text(widget.areaView.landArea!+ " "+widget.areaView.unit!))
                         ],
                       ):
-                      catName=="Commercial"?
+                      widget.catName=="Commercial"?
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -323,7 +339,7 @@ class AreaViewWidget extends StatelessWidget {
                               Image.asset("assets/icons/marla_icon.png",height: 25.0,width: 25.0,fit: BoxFit.fill,),
                               Container(
                                 margin: EdgeInsets.symmetric(horizontal: 10.0,vertical: 2.0),
-                                  child: Text("${areaView.landArea! }"+" "+"${areaView.unit}"))
+                                  child: Text("${widget.areaView.landArea! }"+" "+"${widget.areaView.unit}"))
                             ],
                           )
                           :Text("UpComing"),
@@ -344,7 +360,7 @@ class AreaViewWidget extends StatelessWidget {
                               fontSize: 14.0,
                               fontWeight: FontWeight.w600,
                               onTap: () {
-                                print("Category Name $catName");
+                                print("Category Name ${widget.catName}");
                               },
                             ),
                             SizedBox(

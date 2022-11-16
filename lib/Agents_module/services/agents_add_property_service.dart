@@ -38,7 +38,7 @@ class AgentsAddPropertyService {
         "city": city,
         "area": area,
         "detailAddress": detailsAddress,
-        "signUpUserEmail":userEmail
+        "userEmail":userEmail
       };
       var res=await PostRequestService().httpPostRequest(url: agentAddPropUrl, body: _body, context: context);
       if(res!=null){
