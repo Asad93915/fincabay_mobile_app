@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:fincabay_application/configs/colors.dart';
 import 'package:fincabay_application/configs/text_styles.dart';
 import 'package:fincabay_application/customer_module/screens/home_dashboard/dashboard_widgets/favourites_screen.dart';
@@ -7,6 +9,7 @@ import 'package:fincabay_application/helper_services/custom_loader.dart';
 import 'package:fincabay_application/helper_services/navigation_services.dart';
 import 'package:fincabay_application/helper_widgets/custom_button.dart';
 import 'package:fincabay_application/helper_widgets/drawer_item_card.dart';
+import 'package:fincabay_application/utils/local_storage_services.dart';
 import 'package:fincabay_application/utils/variable_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +28,9 @@ class CustomDrawer extends StatefulWidget {
 }
 
 class _CustomDrawerState extends State<CustomDrawer> {
+  UserModel user=UserModel();
+
+
   int? selectedIndex;
   bool isLogin = false;
   bool isLoading = true;
@@ -33,15 +39,16 @@ class _CustomDrawerState extends State<CustomDrawer> {
   @override
   void initState() {
     // TODO: implement initState
-    getSelectedValue();
+    getinitMethod();
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final box=GetStorage();
-    UserModel? userModel= isLogin==true?UserModel.fromJson(box.read('user')):null;
-    print("User Model $userModel");
+    // final box=GetStorage();
+    // UserModel? userModel= isLogin==true?UserModel.fromJson(box.read('user')):null;
+    // print("User Model $userModel");
     return Container(
       padding: EdgeInsets.only(
         top: 30.0,
@@ -84,7 +91,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                 child
                                 : Padding(
                                   padding: const EdgeInsets.symmetric(vertical: 9.0),
-                                  child: Text(userModel!.userName!,style: nameStyle),
+                                  child: Text(user.userName??"",style: nameStyle),
                                 ),
                             flex: 1,
                             ),
@@ -145,7 +152,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     widget: AddPropertyScreen(
 
                       isSelected: false,
-                      userEmail: userModel!.email!,
+                      userEmail: "userModel!.email!",
                     ));
               } else {
                 isLogin = false;
@@ -164,7 +171,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             selctedColor: selectedIndex == 2 ? true : false,
             onTap: () {
               selectedIndex = 2;
-              print("User Model $userModel");
+              // print("User Model $userModel");
               setState(() {});
             },
             title: "Search Property",
@@ -185,7 +192,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
               selectedIndex = 4;
               setState(() {
                 NavigationServices.goNextAndKeepHistory(context: context, widget: FavouritesScreen(
-                  isShow: true,
+
                 ));
               });
             },
@@ -215,7 +222,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
           DrawerItemCard(
             selctedColor: selectedIndex == 7 ? true : false,
             onTap: () async {
-              await box.remove('user');
+              // await box.remove('user');
               selectedIndex = 7;
 
 
@@ -224,7 +231,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
 
               NavigationServices.goNextAndDoNotKeepHistory(
                   context: context, widget: LoginScreen());
-              print("User Name ${userModel!.userName!}");
+              // print("User Name ${userModel!.userName!}");
               setState(() {});
             },
             title: "LogOut",
@@ -235,11 +242,26 @@ class _CustomDrawerState extends State<CustomDrawer> {
     );
   }
 
-  void getSelectedValue() async {
+   getSelectedValue() async {
     // CustomLoader.showLoader(context: context);
     isLogin = await getVisitorView();
     // CustomLoader.hideLoader(context);
     isLoading = false;
     setState(() {});
   }
+  getUser()async{
+
+    String getUser=await LocaleStorageServices().getUser();
+    user=UserModel.fromJson(jsonDecode(getUser));
+    print("user Name testing ${user.name}");
+  }
+  getinitMethod()async{
+    await getSelectedValue();
+
+    if(isLogin==true){
+      getUser();
+    }
+
+  }
+
 }

@@ -13,6 +13,9 @@ const String propSearchUrl=baseUrl+ "Property/PropertySearch?";
 const String getUserPropUrl=baseUrl + "Property/GetPropertyByEmail?";
 const String updateProfUrl=baseUrl+"Accounts/UpdateUser";
 const String delUserUrl=baseUrl + "Accounts/UserDelete/";
+const String addFavUrl=baseUrl + "Property/FavoruiteProperty";
+const String getFavPropUrl=baseUrl + "Property/GetFavoruiteProperty?";
+const String delFavPropUrl=baseUrl + "Property/DeleteFavoruiteProperty?";
 
 
 //Agents

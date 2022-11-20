@@ -27,7 +27,10 @@ class LoginApiService{
           newUser: userResponseModel.data
         );
 
-        LocaleStorageServices().saveUser(userResponseModel.data!.email!);
+        LocaleStorageServices().saveUser(jsonEncode(userResponseModel.data!.toJson()));
+
+        LocaleStorageServices().saveUserId(userResponseModel.data!.id!);
+
 
         final box=GetStorage();
         box.write('user', userResponseModel.data!.toJson());
@@ -45,4 +48,5 @@ class LoginApiService{
       return null;
         }
   }
+
 }

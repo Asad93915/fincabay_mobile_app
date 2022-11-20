@@ -3,17 +3,12 @@ import 'package:fincabay_application/configs/text_styles.dart';
 import 'package:fincabay_application/customer_module/screens/profile_module/profile_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '../../../dialogs/show_will_pop_dialog.dart';
-import '../../../helper_services/custom_loader.dart';
 import '../../../helper_widgets/custom_bottom_app_bar_widget.dart';
-import '../../providers/get_user_properties_provider.dart';
-import '../../services/get_user_properties_service.dart';
 import '../../cusomer_drawer_screen.dart';
 import 'dashboard_widgets/dashboard_widgets.dart';
 import 'dashboard_widgets/favourites_screen.dart';
 import 'dashboard_widgets/new_project_screen.dart';
-import '../profile_module/get_user_properties_screen.dart';
 
 class HomeDashboardScreen extends StatefulWidget {
   const HomeDashboardScreen({Key? key}) : super(key: key);
@@ -42,7 +37,7 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
         },
         child: Scaffold(
             drawer: CustomDrawer(),
-            backgroundColor: selectedIndex == 3 ? whiteColor : barColor,
+            backgroundColor: selectedIndex == 3 ? whiteColor :selectedIndex==2?whiteColor: barColor,
             appBar: selectedIndex == 0 ? PreferredSize(
               preferredSize: Size.fromHeight(200.0),
               child: AppBar(
@@ -94,9 +89,12 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
               title: Text("New Projects", style: barStyle,),
             ) :
             selectedIndex == 2 ? AppBar(
-              backgroundColor: bgColor,
+              backgroundColor: whiteColor,
+              elevation: 0.0,
               leading: Builder(builder: (context) =>
-                  IconButton(onPressed: () {}, icon: Icon(Icons.menu)),
+                  IconButton(onPressed: () {
+                    Scaffold.of(context).openDrawer();
+                  }, icon: Icon(Icons.menu,color: blackColor,)),
               ),
               title: Text("Favourites", style: barStyle,),
             ) :

@@ -4,26 +4,36 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 
 class LocaleStorageServices{
-  Future saveToken(String token)async{
-    SharedPreferences pref=await SharedPreferences.getInstance();
-    pref.setString('token', token);
-    return true;
-  }
-  Future getToken()async{
-    SharedPreferences pref=await SharedPreferences.getInstance();
-    String? token= pref.getString('token');
-    return token;
-  }
+  // Future saveToken(String token)async{
+  //   SharedPreferences pref=await SharedPreferences.getInstance();
+  //   pref.setString('token', token);
+  //   return true;
+  // }
+  // Future getToken()async{
+  //   SharedPreferences pref=await SharedPreferences.getInstance();
+  //   String? token= pref.getString('token');
+  //   return token;
+  // }
 
 
-  Future saveUser(String email)async{
+  Future saveUser(String user)async{
     SharedPreferences pref=await SharedPreferences.getInstance();
-    pref.setString('email', email);
+    pref.setString('user', user);
+    // print("Userrrrrrrrrrrrr $user");
   }
-  Future getUserName()async{
+  Future getUser()async{
     SharedPreferences pref=await SharedPreferences.getInstance();
-    String? user=await pref.getString('email');
+    String? user=await pref.getString('user');
     return user;
+  }
+  Future saveUserId(String userId)async{
+    SharedPreferences pref=await SharedPreferences.getInstance();
+    pref.setString('userId', userId);
+
+  }
+  Future getUserId()async{
+    SharedPreferences pref=await SharedPreferences.getInstance();
+    return pref.getString('userId');
   }
 
   /////On the base of User Role

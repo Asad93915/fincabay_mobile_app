@@ -7,6 +7,7 @@ Future setVisitorView(selected)async{
   SharedPreferences pref=await SharedPreferences.getInstance();
   pref.setBool('selected', selected);
 
+
 }
 
 Future getVisitorView()async{

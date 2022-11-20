@@ -1,13 +1,17 @@
+import 'package:fincabay_application/auth/models/user_response_model.dart';
 import 'package:fincabay_application/configs/colors.dart';
 import 'package:fincabay_application/configs/text_styles.dart';
 import 'package:fincabay_application/customer_module/providers/area_size_view_provider.dart';
 import 'package:fincabay_application/customer_module/screens/home_dashboard/dashboard_widgets/property_details_screen.dart';
+import 'package:fincabay_application/customer_module/services/add_favourites_properties_service.dart';
+import 'package:fincabay_application/helper_services/custom_loader.dart';
 import 'package:fincabay_application/helper_widgets/custom_button.dart';
 import 'package:fincabay_application/helper_widgets/house_details.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../utils/Functions.dart';
 import '../../../../utils/handlers.dart';
 import '../../../models/area_size_view_model.dart';
 
@@ -194,6 +198,7 @@ class _AreaSizeViewScreenState extends State<AreaSizeViewScreen> {
                      return AreaViewWidget(
                          areaView: view.areaView![index],
                        catName: widget.catName,
+                       typeId: view.areaView![index].id!,
                      );
                    }),
              ):Container(
@@ -210,14 +215,28 @@ class _AreaSizeViewScreenState extends State<AreaSizeViewScreen> {
 class AreaViewWidget extends StatefulWidget {
   AreaSizeView areaView;
   final String catName;
-   AreaViewWidget({required this.areaView, required this.catName});
+  final int typeId;
+   AreaViewWidget({required this.areaView, required this.catName, required this.typeId});
 
   @override
   State<AreaViewWidget> createState() => _AreaViewWidgetState();
 }
 
 class _AreaViewWidgetState extends State<AreaViewWidget> {
-  bool isShow=true;
+  bool isFavourite=false;
+  _addFavouriteHandler()async{
+    CustomLoader.showLoader(context: context);
+   await AddFavouritePropertyService().addFavourite(context: context, pTypeId: widget.typeId, userId: "59d68e61-78fe-451c-9d76-76d25f871448");
+   CustomLoader.hideLoader(context);
+  }
+  UserModel user=UserModel();
+  @override
+  void initState() {
+    // TODO: implement initState
+    initMethod();
+
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     String imageUrl="assets/images/property_image.jpg";
@@ -311,36 +330,68 @@ class _AreaViewWidgetState extends State<AreaViewWidget> {
 
                             InkWell(
                                 onTap: (){
-                                  isShow=!isShow;
-                                  print("IS show $isShow");
+                                  isFavourite=!isFavourite;
+                                  isFavourite==true?_addFavouriteHandler():isFavourite==false?delFavPropHandler(context: context, userId: user.id??"", propId: widget.typeId):null;
+                                  print("IS Favourite $isFavourite");
+
 
                                   setState((){});
                                 },
-                                child: Icon(isShow==true?Icons.favorite:Icons.favorite_border,size: 20.0,color: isShow==true?Colors.red:Colors.black,)),
+                                child: Icon(isFavourite==true?Icons.favorite:Icons.favorite_border,size: 20.0,color: isFavourite==true?Colors.red:Colors.black,)),
                           ],
                         ),
                       ):
                       widget.catName=="Plots"?
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Image.asset("assets/icons/marla_icon.png",height: 15.0,width: 15.0,fit: BoxFit.fill,),
-                          Container(
-                              margin: EdgeInsets.only(left: 10.0,top: 0.0),
-                              child: Text(widget.areaView.landArea!+ " "+widget.areaView.unit!))
-                        ],
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width / 1.8,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Image.asset("assets/icons/marla_icon.png",height: 15.0,width: 15.0,fit: BoxFit.fill,),
+
+                            Container(
+                                margin: EdgeInsets.only(left: 10.0,top: 0.0),
+                                child: Text(widget.areaView.landArea!+ " "+widget.areaView.unit!)),
+
+                            Spacer(),
+                            InkWell(
+                                onTap: (){
+                                  isFavourite=!isFavourite;
+                                  isFavourite==true?_addFavouriteHandler():isFavourite==false?delFavPropHandler(context: context, userId: user.id??"", propId: widget.typeId):null;
+                                  print("IS Favourite $isFavourite");
+
+
+                                  setState((){});
+                                },
+                                child: Icon(isFavourite==true?Icons.favorite:Icons.favorite_border,size: 20.0,color: isFavourite==true?Colors.red:Colors.black,)),
+                          ],
+                        ),
                       ):
                       widget.catName=="Commercial"?
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Image.asset("assets/icons/marla_icon.png",height: 25.0,width: 25.0,fit: BoxFit.fill,),
-                              Container(
-                                margin: EdgeInsets.symmetric(horizontal: 10.0,vertical: 2.0),
-                                  child: Text("${widget.areaView.landArea! }"+" "+"${widget.areaView.unit}"))
-                            ],
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width / 1.8,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Image.asset("assets/icons/marla_icon.png",height: 25.0,width: 25.0,fit: BoxFit.fill,),
+                                Container(
+                                  margin: EdgeInsets.symmetric(horizontal: 10.0,vertical: 2.0),
+                                    child: Text("${widget.areaView.landArea! }"+" "+"${widget.areaView.unit}")),
+                                Spacer(),
+                      InkWell(
+                          onTap: (){
+                            isFavourite=!isFavourite;
+                            isFavourite==true?_addFavouriteHandler():isFavourite==false?delFavPropHandler(context: context, userId: user.id??"", propId: widget.typeId):null;
+                            print("IS Favourite $isFavourite");
+
+
+                            setState((){});
+                          },
+                          child: Icon(isFavourite==true?Icons.favorite:Icons.favorite_border,size: 20.0,color: isFavourite==true?Colors.red:Colors.black,)),
+                              ],
+                            ),
                           )
                           :Text("UpComing"),
                       SizedBox(
@@ -407,6 +458,9 @@ class _AreaViewWidgetState extends State<AreaViewWidget> {
         ),
       ),
     );
+  }
+  initMethod()async{
+    user=await getUserId();
   }
 }
 

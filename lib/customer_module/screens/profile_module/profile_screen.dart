@@ -1,14 +1,18 @@
 
+import 'dart:convert';
+
 import 'package:fincabay_application/configs/colors.dart';
 import 'package:fincabay_application/customer_module/models/get_user_properties_model.dart';
 import 'package:fincabay_application/customer_module/screens/profile_module/about_us_screen.dart';
 import 'package:fincabay_application/customer_module/screens/profile_module/get_user_properties_screen.dart';
 import 'package:fincabay_application/customer_module/screens/profile_module/profile_settings_screen.dart';
 import 'package:fincabay_application/helper_widgets/custom_button.dart';
+import 'package:fincabay_application/utils/local_storage_services.dart';
 import 'package:fincabay_application/utils/variable_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 import '../../../auth/models/user_response_model.dart';
 import '../../../auth/screens/login_screen.dart';
@@ -26,18 +30,21 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+
   bool isLogin=false;
+  UserModel user=UserModel();
   bool isLoading = true;
   @override
   void initState() {
     // TODO: implement initState
-    getSelectedValue();
+   getInitServices();
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
-    final box=GetStorage();
-    UserModel? user=isLogin==true?UserModel.fromJson(box.read('user')):null;
+    // final box=GetStorage();
+
+    // UserModel? user=isLogin==true?UserModel.fromJson(box.read('user')):null;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0,vertical: 15.0),
       child: Column(
@@ -52,7 +59,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             children: [
 
               Text("Profile",style: profileStyle,),
-              Text(user!.userName==null?"":user.userName!),
+              Text(user.userName==null?"":user.userName!),
 
               Center(
                 child: Wrap(
@@ -64,12 +71,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       icon: Icons.settings,
                       onTap: (){
                         NavigationServices.goNextAndKeepHistory(context: context, widget: ProfileSettingsScreen(
-                          userName: user.name!,
-                          password: user.password!,
-                          mobileNo: user.phoneNumber!,
-                          userId: user.id!,
-                          userRole: user.roleName!,
-                          email: user.email!,
+                          userName: user.name??"",
+                          password: user.password??"",
+                          mobileNo: user.phoneNumber??"",
+                          userId: user.id??"",
+                          userRole: user.roleName??"",
+                          email: user.email??"",
                         ));
                       },
                       selectedColor: false,
@@ -192,11 +199,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
-  void getSelectedValue() async {
+   getSelectedValue() async {
     // CustomLoader.showLoader(context: context);
+    print("Calling ");
     isLogin = await getVisitorView();
+    print("aaaaaa$isLogin");
     // CustomLoader.hideLoader(context);
     isLoading = false;
     setState(() {});
+  }
+ getUser()async{
+    String getUser=await LocaleStorageServices().getUser();
+    user=UserModel.fromJson(jsonDecode(getUser));
+    print("${user.userName}");
+
+  }
+
+   getInitServices()async {
+   await getSelectedValue();
+    print("Is Login $isLogin");
+
+    if(isLogin==true){
+
+     await getUser();
+      print("User Name ${user.name}");
+    }
   }
 }
