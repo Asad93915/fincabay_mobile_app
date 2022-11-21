@@ -1,5 +1,6 @@
 import 'package:fincabay_application/Agents_module/screens/agents_add_property_screen.dart';
 import 'package:fincabay_application/Agents_module/screens/agents_drawer_screen.dart';
+import 'package:fincabay_application/auth/screens/login_screen.dart';
 import 'package:fincabay_application/configs/colors.dart';
 import 'package:fincabay_application/configs/text_styles.dart';
 import 'package:fincabay_application/dialogs/show_will_pop_dialog.dart';
@@ -210,7 +211,10 @@ class _AgentHomeScreenState extends State<AgentHomeScreen> {
                     ),
                   ),
                 ],
-              )
+              ),
+              TextButton(onPressed: (){
+                NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: LoginScreen());
+              }, child: Text("Logout"))
             ],
           ),
         ),

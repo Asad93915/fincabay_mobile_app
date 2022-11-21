@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:fincabay_application/Agents_module/screens/staff/agency_staff_screen.dart';
 import 'package:fincabay_application/Agents_module/screens/agents_add_property_screen.dart';
 import 'package:fincabay_application/Agents_module/screens/update_agent_profile_screen.dart';
@@ -6,11 +8,14 @@ import 'package:fincabay_application/auth/screens/login_screen.dart';
 import 'package:fincabay_application/configs/colors.dart';
 import 'package:fincabay_application/helper_services/navigation_services.dart';
 import 'package:fincabay_application/helper_widgets/drawer_item_card.dart';
+import 'package:fincabay_application/utils/Functions.dart';
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../configs/text_styles.dart';
 import '../../helper_widgets/manage_prop_drawer_widget.dart';
+import '../../utils/local_storage_services.dart';
+import '../../utils/variable_storage.dart';
 import 'agents_home_screen.dart';
 import 'get_agent_properties_screen.dart';
 
@@ -24,12 +29,22 @@ class AgentsDrawer extends StatefulWidget {
 
 class _AgentsDrawerState extends State<AgentsDrawer> {
 
+  UserModel user=UserModel();
+
   int? selectedIndex;
   @override
+  void initState() {
+    // TODO: implement initState
+    initMethod();
+
+
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
-    final box=GetStorage();
-    UserModel user=UserModel.fromJson(box.read('user'));
- return  widget.isSelected==false?Container(
+
+ return  widget.isSelected==false?
+ Container(
       padding: EdgeInsets.only(top: 30.0,left: 12.0),
       color: barColor,
       width: MediaQuery.of(context).size.width/1.4,
@@ -44,24 +59,24 @@ class _AgentsDrawerState extends State<AgentsDrawer> {
             children: [
               Image.asset("assets/images/fincabay_logo.jpg",height: 50.0,),
               Text("Fincabay.com",style: logoStyle,)
+              // Text("${user.name}",style: logoStyle,)
             ],
           ),
+
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
 
 
-              Expanded(
-                child
-                    : Padding(
+              Padding(
                   padding: const EdgeInsets.symmetric(vertical: 9.0),
-                  child: Text(user.userName!,style: nameStyle),
+                  child: Text(user.userName??"",style: nameStyle),
                 ),
-                flex: 1,
-              ),
+
               IconButton(onPressed: (){
 
+                print("User Id ${user.id}");
               }, icon: Icon(Icons.arrow_forward_outlined,color: bgColor,)),
             ],
           ),
@@ -94,7 +109,7 @@ class _AgentsDrawerState extends State<AgentsDrawer> {
             title: "Manage Property",
             onTap: (){
               NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: ManageAgentPropertiesScreen(
-                agentEmail: user.email!,
+                agentEmail: user.email??"",
               ));
               selectedIndex=2;
               setState((){});
@@ -139,8 +154,9 @@ class _AgentsDrawerState extends State<AgentsDrawer> {
 
             title: "Logout",
             onTap: ()async{
-              Navigator.of(context);
-              await box.remove('user');
+
+              SharedPreferences pref=await SharedPreferences.getInstance();
+              pref.clear();
               NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: LoginScreen());
 
               setState((){});
@@ -149,7 +165,8 @@ class _AgentsDrawerState extends State<AgentsDrawer> {
         ],
       ),
 
-    ):Container(
+    ):
+ Container(
    decoration: BoxDecoration(
      color: barColor,
      borderRadius:BorderRadius.only(
@@ -214,5 +231,11 @@ class _AgentsDrawerState extends State<AgentsDrawer> {
      ],
    ),
  );
+  }
+
+  initMethod()async{
+    user=await getUser();
+    setState((){});
+    print("${user.email}");
   }
 }

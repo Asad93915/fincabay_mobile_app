@@ -30,9 +30,10 @@ class _ManageAgentPropertiesScreenState
     CustomLoader.showLoader(context: context);
     await ManageAgentPropertiesService().getAgentProp(
         context: context,
-        agentEmail: widget.agentEmail
+        agentEmail: "${widget.agentEmail}"
     );
     CustomLoader.hideLoader(context);
+
   }
 
   List<AgentProperties> data = [];
@@ -94,11 +95,14 @@ class _ManageAgentPropertiesScreenState
               child: Consumer<AgentPropertiesProvider>(
                 builder: (context, prop, _) {
                   prop.getProperties!.forEach((element) {
-                    if (element.purpose == 'Sale') {
+                    print("purpose ${element.purpose}");
+                    if (element.purpose == 'Sell') {
+
                       saleList.add(element);
                     } else {
                       rentList.add(element);
                     }
+
                   });
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -111,7 +115,7 @@ class _ManageAgentPropertiesScreenState
                         height: MediaQuery.of(context).size.height/4.0,
                         width: double.infinity,
                         child: ListView.builder(
-                            itemCount: prop.getProperties!.length,
+                            itemCount: saleList.length,
                             shrinkWrap: true,
                             primary: false,
                             scrollDirection: Axis.horizontal,
@@ -128,7 +132,7 @@ class _ManageAgentPropertiesScreenState
                                         widget: PropertyDetailsScreen(
                                           imageUrl: imageUrl,
                                           sellingAsset:
-                                              "${saleList[index].propertyType}",
+                                              "${saleList[index].propertyType??""}",
                                           noOfBeds: saleList[index].noOfBeds!,
                                           noOfBaths: saleList[index].noOfBaths!,
                                           description:
@@ -332,10 +336,7 @@ class _ManageAgentPropertiesScreenState
                             itemBuilder: (BuildContext, index) {
                               return InkWell(
                                 onTap: () async {
-                                  Future.delayed(Duration(microseconds: 1), () {
-                                    Center(
-                                        child: CircularProgressIndicator(
-                                            color: bgColor));
+
                                     NavigationServices.goNextAndKeepHistory(
                                         context: context,
                                         widget: PropertyDetailsScreen(
@@ -344,14 +345,14 @@ class _ManageAgentPropertiesScreenState
                                               "${rentList[index].propertyType}",
                                           noOfBeds: rentList[index].noOfBeds!,
                                           noOfBaths: rentList[index].noOfBaths!,
-                                          description: rentList[index].description!,
+                                          description: rentList[index].description??"",
                                           unit: rentList[index].unit!,
                                           landArea: rentList[index].landArea!,
                                           address: rentList[index].detailAddress!,
                                           price: rentList[index].amount
                                               .toString(),
                                         ));
-                                  });
+
                                 },
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,

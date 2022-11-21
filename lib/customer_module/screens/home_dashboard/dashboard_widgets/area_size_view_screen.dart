@@ -460,7 +460,7 @@ class _AreaViewWidgetState extends State<AreaViewWidget> {
     );
   }
   initMethod()async{
-    user=await getUserId();
+    user=await getUser();
   }
 }
 

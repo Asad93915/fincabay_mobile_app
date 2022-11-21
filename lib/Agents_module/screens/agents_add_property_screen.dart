@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:fincabay_application/Agents_module/services/agents_add_property_service.dart';
+import 'package:fincabay_application/auth/models/user_response_model.dart';
 import 'package:fincabay_application/auth/provider/user_data_provider.dart';
 import 'package:fincabay_application/configs/colors.dart';
 import 'package:fincabay_application/customer_module/services/location_name_service.dart';
@@ -10,6 +11,7 @@ import 'package:fincabay_application/helper_services/custom_loader.dart';
 import 'package:fincabay_application/helper_widgets/custom_button.dart';
 import 'package:fincabay_application/helper_widgets/custom_drop_down.dart';
 import 'package:fincabay_application/helper_widgets/custom_text_field.dart';
+import 'package:fincabay_application/utils/Functions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -51,6 +53,7 @@ class _AgentsAddPropertyScreenState extends State<AgentsAddPropertyScreen> {
     "After one month"
   ];
 
+  UserModel user=UserModel();
   getCities() async {
     CustomLoader.showLoader(context: context);
     CitiesService().getAllCities(context: context);
@@ -67,7 +70,8 @@ class _AgentsAddPropertyScreenState extends State<AgentsAddPropertyScreen> {
   void initState() {
     // TODO: implement initState
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      getCities();
+      getInitMethod();
+      setState((){});
     });
     super.initState();
   }
@@ -121,7 +125,7 @@ class _AgentsAddPropertyScreenState extends State<AgentsAddPropertyScreen> {
         city: _selectedCity!,
         area: selectedArea!,
         detailsAddress: _addressCont.text,
-        userEmail: Provider.of<UserDataProvider>(context,listen: false).user!.email!);
+        userEmail:user.email!);
     CustomLoader.hideLoader(context);
   }
 
@@ -307,6 +311,7 @@ class _AgentsAddPropertyScreenState extends State<AgentsAddPropertyScreen> {
                         Expanded(
                             child: CustomTextField(
                           controller: _landAreaCont,
+                          inputType: TextInputType.number,
                           inputAction: TextInputAction.next,
                         )),
                         Expanded(
@@ -707,5 +712,11 @@ class _AgentsAddPropertyScreenState extends State<AgentsAddPropertyScreen> {
       propertyGalleryBytes = await File(element.path).readAsBytesSync();
       print(propertyGalleryBytes);
     });
+  }
+  getInitMethod()async{
+    getCities();
+    user=await getUser();
+    setState((){});
+
   }
 }

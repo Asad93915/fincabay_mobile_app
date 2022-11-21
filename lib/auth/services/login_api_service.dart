@@ -4,7 +4,7 @@ import 'dart:convert';
 
 import 'package:fincabay_application/helper_services/custom_post_reques_service.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:get_storage/get_storage.dart';
+
 import 'package:provider/provider.dart';
 
 import '../../../configs/api_configs.dart';
@@ -32,8 +32,7 @@ class LoginApiService{
         LocaleStorageServices().saveUserId(userResponseModel.data!.id!);
 
 
-        final box=GetStorage();
-        box.write('user', userResponseModel.data!.toJson());
+
 
 
 

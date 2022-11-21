@@ -26,9 +26,13 @@ bool validatePassword(String value){
 }
 
 
-getUserId()async{
-  String getUserId=await LocaleStorageServices().getUser();
+getUser()async {
+  String getUser = await LocaleStorageServices().getUser();
   // user= UserModel.fromJson(jsonDecode(getUserId));
- return UserModel.fromJson(jsonDecode(getUserId));
+  return UserModel.fromJson(jsonDecode(getUser));
+}
 
+getUserId()async{
+  String getUserId=await LocaleStorageServices().getUserId();
+  return UserModel.fromJson(json.decode(getUserId));
 }

@@ -9,7 +9,6 @@ import 'package:fincabay_application/helper_services/delete_favourite_property_s
 import 'package:fincabay_application/utils/handlers.dart';
 import 'package:fincabay_application/utils/local_storage_services.dart';
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../auth/provider/user_data_provider.dart';
@@ -98,7 +97,7 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
   // }
 
    initMethod()async {
-   user= await   getUserId();
+   user= await   getUser();
    getFavouritePropHandler(context, user.id==null?"":user.id!);
    }
 }

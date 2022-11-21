@@ -9,11 +9,11 @@ import 'package:fincabay_application/helper_services/custom_loader.dart';
 import 'package:fincabay_application/helper_services/navigation_services.dart';
 import 'package:fincabay_application/helper_widgets/custom_button.dart';
 import 'package:fincabay_application/helper_widgets/drawer_item_card.dart';
+import 'package:fincabay_application/utils/Functions.dart';
 import 'package:fincabay_application/utils/local_storage_services.dart';
 import 'package:fincabay_application/utils/variable_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../auth/screens/login_screen.dart';
@@ -39,6 +39,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
   @override
   void initState() {
     // TODO: implement initState
+
     getinitMethod();
 
     super.initState();
@@ -152,7 +153,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     widget: AddPropertyScreen(
 
                       isSelected: false,
-                      userEmail: "userModel!.email!",
+                      userEmail: user.email!,
                     ));
               } else {
                 isLogin = false;
@@ -249,17 +250,17 @@ class _CustomDrawerState extends State<CustomDrawer> {
     isLoading = false;
     setState(() {});
   }
-  getUser()async{
-
-    String getUser=await LocaleStorageServices().getUser();
-    user=UserModel.fromJson(jsonDecode(getUser));
-    print("user Name testing ${user.name}");
-  }
+  // getUser()async{
+  //
+  //   String getUser=await LocaleStorageServices().getUser();
+  //   user=UserModel.fromJson(jsonDecode(getUser));
+  //   print("user Name testing ${user.name}");
+  // }
   getinitMethod()async{
     await getSelectedValue();
 
     if(isLogin==true){
-      getUser();
+     user=await getUser();
     }
 
   }
