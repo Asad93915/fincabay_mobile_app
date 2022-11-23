@@ -54,10 +54,11 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   TextEditingController _emailCont = TextEditingController(
+
     text: "testuser1@gmail.com"
   );
   TextEditingController _passwordCont = TextEditingController(
-    text: "Asad123@"
+ text: "Asad123@"
   );
   FocusNode _emailFocus = FocusNode();
   FocusNode _passwordFocus = FocusNode();

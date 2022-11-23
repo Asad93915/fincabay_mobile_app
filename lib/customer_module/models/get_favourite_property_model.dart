@@ -60,7 +60,7 @@ class FavouriteProperty {
   bool? isPending;
   String? userId;
   String? userEmail;
-  Null? roleName;
+  String? roleName;
   Null? signUpUserEmail;
   Null? userPassword;
   Null? signUpUserName;

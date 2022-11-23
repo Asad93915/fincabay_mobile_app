@@ -7,6 +7,7 @@ import 'package:fincabay_application/helper_services/navigation_services.dart';
 import 'package:fincabay_application/helper_widgets/custom_button.dart';
 import 'package:fincabay_application/helper_widgets/custom_drop_down.dart';
 import 'package:fincabay_application/helper_widgets/custom_text_field.dart';
+import 'package:fincabay_application/utils/Functions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
@@ -478,7 +479,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       ),
                       CustomTextField(
                         headerText: "Company_Fax",
+                        inputType: TextInputType.number,
                         inputAction: TextInputAction.next,
+                        charLength: 10,
                         controller: companyFaxCont,
                         focusNode: companyFaxFocus,
                       ),
@@ -525,14 +528,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           context: context, message: "User Name is Empty");
       nameFocus.requestFocus();
       return false;
-    } else if (emailCont.text.isEmpty) {
+    } else if (emailCont.text.isEmpty || !validateEmail(emailCont.text)) {
       CustomSnackBar.failedSnackBar(
           context: context, message: "Enter valid Email");
       emailFocus.requestFocus();
       return false;
-    } else if (passwordCont.text.isEmpty) {
+    } else if (passwordCont.text.isEmpty || passwordCont.text.length<8) {
       CustomSnackBar.failedSnackBar(
-          context: context, message: "Enter valid Password");
+          context: context, message: "Password should be 8 character");
       passwordFocus.requestFocus();
       return false;
     } else if (confirmPasswordCont.text != passwordCont.text) {
@@ -566,14 +569,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             context: context, message: "Enter Company Number");
         companyPhoneFocus.requestFocus();
         return false;
-      } else if (companyFaxCont.text.isEmpty) {
+      } else if (companyFaxCont.text.isEmpty || companyFaxCont.text.length<6) {
         CustomSnackBar.failedSnackBar(
-            context: context, message: "Enter Company Fax");
+            context: context, message: "Fax number should be greater then six");
         companyFaxFocus.requestFocus();
         return false;
-      } else if (companyEmailCont.text.isEmpty) {
+      } else if (companyEmailCont.text.isEmpty || !validateEmail(companyEmailCont.text)) {
         CustomSnackBar.failedSnackBar(
-            context: context, message: "Enter Company Email Address");
+            context: context, message: "Enter Valid Company Email");
         companyEmailFocus.requestFocus();
         return false;
       } else if (descriptionCont.text.isEmpty) {

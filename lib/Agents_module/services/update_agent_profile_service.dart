@@ -35,7 +35,7 @@ class UpdateAgentProfileService {
         "isActive": isActive
       };
       var res = await PostRequestService()
-          .httpPostRequest(url: updateProfUrl, body: _body, context: context);
+          .httpPostRequest(url: updateAgentProfileUrl, body: _body, context: context);
 
       if (res != null) {
         print("Agent Profile Update Successfully");

@@ -4,6 +4,7 @@ import 'package:fincabay_application/auth/provider/user_data_provider.dart';
 import 'package:fincabay_application/helper_services/custom_loader.dart';
 import 'package:fincabay_application/helper_services/custom_snackbar.dart';
 import 'package:fincabay_application/helper_services/navigation_services.dart';
+import 'package:fincabay_application/utils/Functions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -23,7 +24,7 @@ class AddStaffUserScreen extends StatefulWidget {
 }
 
 class _AddStaffUserScreenState extends State<AddStaffUserScreen> {
-  _addAgencyStaff() async {
+  _addAgencyStaffHandler() async {
     CustomLoader.showLoader(context: context);
     await AddStaffMemberService().addStaffMember(
         context: context,
@@ -97,6 +98,7 @@ class _AddStaffUserScreenState extends State<AddStaffUserScreen> {
                   headerText: "Mobile Number",
                   controller: _mobileNoCont,
                   focusNode: _mobileNoFocus,
+                   charLength: 11,
                   inputAction: TextInputAction.next,
                   inputType: TextInputType.phone,
                 ),
@@ -115,12 +117,17 @@ class _AddStaffUserScreenState extends State<AddStaffUserScreen> {
                   fontWeight: FontWeight.bold,
                   bgColor: bgColor,
                   textColor: whiteColor,
-                  onTap: () async {
-                    await _addAgencyStaff();
-                    NavigationServices.goNextAndKeepHistory(
-                        context: context, widget: AgencyStaffScreen(agentEmail: widget.agentEmail,));
-                    // Navigator.pop(context);
-                    getStaffMemberHandler(context,widget.agentEmail);
+                  onTap: ()async  {
+
+                    if(_validateStaff()){
+
+                     await  _addAgencyStaffHandler();
+                      NavigationServices.goNextAndKeepHistory(
+                          context: context, widget: AgencyStaffScreen(agentEmail: widget.agentEmail,));
+                      // // Navigator.pop(context);
+                    }
+
+
                   },
                 )
               ],
@@ -131,32 +138,79 @@ class _AddStaffUserScreenState extends State<AddStaffUserScreen> {
     );
   }
 
-  _validateUserForm() async {
+  _validateStaff()  {
     if (_contactPersonCont.text.isEmpty) {
-      CustomSnackBar.showTopSnackBar(
+      CustomSnackBar.failedSnackBar(
           context: context, message: "Person name can't be empty");
       _contactPersonFocus.requestFocus();
       return false;
-    } else if (_emailCont.text.isEmpty) {
-      CustomSnackBar.showTopSnackBar(
-          context: context, message: "Email can't be empty");
+    }
+    else if (_emailCont.text.isEmpty || !validateEmail(_emailCont.text))
+    {
+      CustomSnackBar.failedSnackBar(
+          context: context, message: "Enter Valid email");
       _emailFocus.requestFocus();
       return false;
-    } else if (_passwordCont.text.isEmpty) {
-      CustomSnackBar.showTopSnackBar(
-          context: context, message: "Password can't be empty");
+    }
+    else if (_passwordCont.text.isEmpty || _passwordCont.text.length<8) {
+      CustomSnackBar.failedSnackBar(
+          context: context, message: "Password should be 8 character");
       _passwordFocus.requestFocus();
       return false;
-    } else if (_mobileNoCont.text.isEmpty) {
-      CustomSnackBar.showTopSnackBar(
-          context: context, message: "Mobile Number can't be empty");
+    }
+    else if (_mobileNoCont.text.isEmpty || _mobileNoCont.text.length<11) {
+      CustomSnackBar.failedSnackBar(
+          context: context, message: "Mobile Number should be 11 character");
       _mobileNoFocus.requestFocus();
       return false;
-    } else if (_addressCont.text.isEmpty) {
-      CustomSnackBar.showTopSnackBar(
+    }
+    else if (_addressCont.text.isEmpty) {
+      CustomSnackBar.failedSnackBar(
           context: context, message: "Address can't be empty");
       _addressFocus.requestFocus();
       return false;
     }
+
+    else{
+
+      return true;
+    }
   }
+  // _validateStaff() {
+  //   if (_contactPersonCont.text.isEmpty) {
+  //     CustomSnackBar.failedSnackBar(
+  //         context: context, message: "Person name can't be empty");
+  //     _contactPersonFocus.requestFocus();
+  //     return false;
+  //   }
+  //   else if (_emailCont.text.isEmpty || !validateEmail(_emailCont.text))
+  //   {
+  //     CustomSnackBar.failedSnackBar(
+  //         context: context, message: "Enter Valid email");
+  //     _emailFocus.requestFocus();
+  //     return false;
+  //   }
+  //   else if (_passwordCont.text.isEmpty || _passwordCont.text.length<8) {
+  //     CustomSnackBar.failedSnackBar(
+  //         context: context, message: "Password should be 8 character");
+  //     _passwordFocus.requestFocus();
+  //     return false;
+  //   }
+  //   else if (_mobileNoCont.text.isEmpty || _mobileNoCont.text.length<11) {
+  //     CustomSnackBar.failedSnackBar(
+  //         context: context, message: "Mobile Number should be 11 character");
+  //     _mobileNoFocus.requestFocus();
+  //     return false;
+  //   }
+  //   else if (_addressCont.text.isEmpty) {
+  //     CustomSnackBar.failedSnackBar(
+  //         context: context, message: "Address can't be empty");
+  //     _addressFocus.requestFocus();
+  //     return false;
+  //   }
+  //
+  //   else {
+  //     return true;
+  //   }
+  // }
 }

@@ -226,7 +226,7 @@ class _AreaViewWidgetState extends State<AreaViewWidget> {
   bool isFavourite=false;
   _addFavouriteHandler()async{
     CustomLoader.showLoader(context: context);
-   await AddFavouritePropertyService().addFavourite(context: context, pTypeId: widget.typeId, userId: "59d68e61-78fe-451c-9d76-76d25f871448");
+   await AddFavouritePropertyService().addFavourite(context: context, pTypeId: widget.typeId, userId: user.id!);
    CustomLoader.hideLoader(context);
   }
   UserModel user=UserModel();

@@ -108,11 +108,14 @@ class _AgentsDrawerState extends State<AgentsDrawer> {
             selctedColor:selectedIndex==2?true:false ,
             title: "Manage Property",
             onTap: (){
-              NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: ManageAgentPropertiesScreen(
+
+              NavigationServices.goNextAndKeepHistory(context: context, widget: ManageAgentPropertiesScreen(
                 agentEmail: user.email??"",
+
               ));
-              selectedIndex=2;
               setState((){});
+              selectedIndex=2;
+
             },
           ),
           DrawerItemCard(
@@ -120,7 +123,7 @@ class _AgentsDrawerState extends State<AgentsDrawer> {
             selctedColor:selectedIndex==3?true:false ,
             title: "Update Profile",
             onTap: (){
-              NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: UpdateAgentProfileScreen(
+              NavigationServices.goNextAndKeepHistory(context: context, widget: UpdateAgentProfileScreen(
                 userName:user.name! ,
                 userEmail: user.email!,
                 password: user.password!,
@@ -155,10 +158,11 @@ class _AgentsDrawerState extends State<AgentsDrawer> {
             title: "Logout",
             onTap: ()async{
 
-              SharedPreferences pref=await SharedPreferences.getInstance();
+              SharedPreferences pref = await SharedPreferences.getInstance();
               pref.clear();
-              NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: LoginScreen());
 
+              NavigationServices.goNextAndDoNotKeepHistory(
+                  context: context, widget: LoginScreen());
               setState((){});
             },
           ),

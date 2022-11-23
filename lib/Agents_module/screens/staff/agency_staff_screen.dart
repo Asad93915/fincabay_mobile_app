@@ -36,71 +36,66 @@ class _AgencyStaffScreenState extends State<AgencyStaffScreen> {
   }
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async{
-        return await showWillPopDialog(context);
-      },
-      child: Scaffold(
-        drawer: AgentsDrawer(),
-        appBar: AppBar(
-          leading: Builder(builder: (context)=>IconButton(onPressed: (){
-            Scaffold.of(context).openDrawer();
-      }, icon: Icon(Icons.menu),)),
-          centerTitle: true,
-          backgroundColor: bgColor,
-          title: Text("Agency Staff",style: barStyle,),
-        ),
-        body: RefreshIndicator(
+    return Scaffold(
+      drawer: AgentsDrawer(),
+      appBar: AppBar(
+        leading: Builder(builder: (context)=>IconButton(onPressed: (){
+          Scaffold.of(context).openDrawer();
+    }, icon: Icon(Icons.menu),)),
+        centerTitle: true,
+        backgroundColor: bgColor,
+        title: Text("Agency Staff",style: barStyle,),
+      ),
+      body: RefreshIndicator(
 
-          onRefresh: (){
-          return  getStaffMemberHandler(context,widget.agentEmail);
-          },
-          child: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12.0,vertical: 10.0),
-              child: SingleChildScrollView(
-                physics: AlwaysScrollableScrollPhysics(),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Agency User",style: titleStyle,),
-                 Consumer<GetStaffProvider>(builder: (context,staff,_){
-                   return  staff.staff!.isNotEmpty?ListView.builder(
-                       itemCount: staff.staff!.length,
-                       shrinkWrap: true,
-                       physics: NeverScrollableScrollPhysics(),
-                       primary: false,
-                       itemBuilder: (BuildContext,index){
-                         return GetStaffWidget(staffMember: staff.staff![index]);
-                       }):Container(
-                     alignment: Alignment.center,
-                     height: MediaQuery.of(context).size.height/1.5,
-                     child: Text("No Staff Available Against this User Exsists",style: headerStyle,),
-                   );
-                 })
-                  ],
-                ),
+        onRefresh: (){
+        return  getStaffMemberHandler(context,widget.agentEmail);
+        },
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0,vertical: 10.0),
+            child: SingleChildScrollView(
+              physics: AlwaysScrollableScrollPhysics(),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Agency User",style: titleStyle,),
+               Consumer<GetStaffProvider>(builder: (context,staff,_){
+                 return  staff.staff!.isNotEmpty?ListView.builder(
+                     itemCount: staff.staff!.length,
+                     shrinkWrap: true,
+                     physics: NeverScrollableScrollPhysics(),
+                     primary: false,
+                     itemBuilder: (BuildContext,index){
+                       return GetStaffWidget(staffMember: staff.staff![index]);
+                     }):Container(
+                   alignment: Alignment.center,
+                   height: MediaQuery.of(context).size.height/1.5,
+                   child: Text("No Staff Available Against this User Exsists",style: headerStyle,),
+                 );
+               })
+                ],
               ),
             ),
           ),
         ),
-        bottomNavigationBar: Container(
-          height: kToolbarHeight * 1.0,
+      ),
+      bottomNavigationBar: Container(
+        height: kToolbarHeight * 1.0,
+        width: double.infinity,
+        child: CustomButton(
+          horizontalMargin: 18.0,
+          verticalMargin: 10.0,
+          onTap: () {
+            NavigationServices.goNextAndKeepHistory(context: context, widget: AddStaffUserScreen(
+              agentEmail: widget.agentEmail,
+            ));
+          },
+          text: "Add User",
+          fontSize: 18.0,
+          fontWeight: FontWeight.w800,
           width: double.infinity,
-          child: CustomButton(
-            horizontalMargin: 18.0,
-            verticalMargin: 10.0,
-            onTap: () {
-              NavigationServices.goNextAndKeepHistory(context: context, widget: AddStaffUserScreen(
-                agentEmail: widget.agentEmail,
-              ));
-            },
-            text: "Add User",
-            fontSize: 18.0,
-            fontWeight: FontWeight.w800,
-            width: double.infinity,
-          ),
         ),
       ),
     );
