@@ -125,7 +125,7 @@ class _AgentsAddPropertyScreenState extends State<AgentsAddPropertyScreen> {
         city: _selectedCity!,
         area: selectedArea!,
         detailsAddress: _addressCont.text,
-        userEmail:user.email!);
+        userEmail:user.email!, uploadImage: []);
     CustomLoader.hideLoader(context);
   }
 

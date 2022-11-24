@@ -5,27 +5,27 @@ import '../../configs/api_configs.dart';
 
 
 class AddPropertyService {
-  Future addProperty(
-      {required BuildContext context,
-      required String propertyTitle,
-      required String content,
-      required String propType,
-      required String propPurpose,
-      required String price,
-      required String landArea,
-      required String unit,
-      required String noOfBeds,
-      required String noOfBaths,
-      required String expiryDate,
-      required String city,
-      required String area,
-      required String detailAddress,
-      required String email,
-      required String password,
-      required String signUpAs,
-      required String name,
-      required bool isLogin,
-      required bool isSignup}) async {
+  Future addProperty({required BuildContext context,
+    required String propertyTitle,
+    required String content,
+    required String propType,
+    required String propPurpose,
+    required String price,
+    required String landArea,
+    required String unit,
+    required String noOfBeds,
+    required String noOfBaths,
+    required String expiryDate,
+    required String city,
+    required List<int> uploadImage,
+    required String area,
+    required String detailAddress,
+    required String email,
+    required String password,
+    required String signUpAs,
+    required String name,
+    required bool isLogin,
+    required bool isSignup}) async {
     try {
       Map _body = {
         "propertyTitle": propertyTitle,
@@ -38,6 +38,7 @@ class AddPropertyService {
         "noOfBeds": noOfBeds,
         "noOfBaths": noOfBaths,
         "expireAfter": expiryDate,
+        "uploadImage":uploadImage,
         "city": city,
         "area": area,
         "detailAddress": detailAddress,
@@ -48,12 +49,12 @@ class AddPropertyService {
         "isLogin": isLogin,
         "isSignUp": isSignup
       };
+      print("Body $_body");
       var res = await PostRequestService()
           .httpPostRequest(url: addPropertyUrl, body: _body, context: context);
       print("Is Login $isLogin");
       print("Is Signup $isSignup");
       if (res != null) {
-
         print("Property Added Successfully");
         return true;
       } else {

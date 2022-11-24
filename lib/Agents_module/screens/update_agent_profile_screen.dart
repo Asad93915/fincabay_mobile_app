@@ -385,6 +385,8 @@ class _UpdateAgentProfileScreenState extends State<UpdateAgentProfileScreen> {
                     CustomTextField(
                       headerText: "Company_Fax",
                       inputAction: TextInputAction.next,
+                      inputType: TextInputType.number,
+                      charLength: 10,
                       controller: companyFaxCont,
                       focusNode: companyFaxFocus,
                     ),

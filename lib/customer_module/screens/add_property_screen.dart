@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:developer';
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:fincabay_application/Agents_module/services/agents_add_property_service.dart';
@@ -35,9 +36,9 @@ class AddPropertyScreen extends StatefulWidget {
 }
 
 class _AddPropertyScreenState extends State<AddPropertyScreen> {
-  List<XFile> galleryFile = [];
+  List<PickedFile>? galleryFile;
   File? imageFile;
-  List<int> propertyGalleryBytes = [];
+  List<int> uploadImagesBytes = [];
   List<int> propertyCameraBytes = [];
 
   PickedFile? cameraFile;
@@ -112,6 +113,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
             noOfBaths: selectedProperty == "Homes" ? _noOfBathsCont.text : '0',
             expiryDate: _expiryCont.text,
             city: _selectedCity!,
+            uploadImage: uploadImagesBytes,
             area: selectedArea!,
             detailAddress: _addressCont.text,
             email: _emailCont.text,
@@ -136,7 +138,8 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
             city: _selectedCity!,
             area: selectedArea!,
             detailsAddress: _addressCont.text,
-            userEmail: widget.userEmail
+            userEmail: widget.userEmail,
+        uploadImage: uploadImagesBytes,
           );
     CustomLoader.hideLoader(context);
   }
@@ -558,7 +561,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                               : Container(
                                   color: bgColor,
                                 ),
-                          galleryFile.isNotEmpty
+                          galleryFile!=null
                               ? Container(
                                   margin: EdgeInsets.only(
                                       top: 10.0, left: 10.0, right: 10.0),
@@ -566,7 +569,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                                       MediaQuery.of(context).size.height / 6,
                                   width: double.infinity,
                                   child: ListView.builder(
-                                      itemCount: galleryFile.length,
+                                      itemCount: galleryFile!.length,
                                       shrinkWrap: true,
                                       primary: false,
                                       scrollDirection: Axis.horizontal,
@@ -578,7 +581,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                                             borderRadius:
                                                 BorderRadius.circular(10.0),
                                             child: Image.file(
-                                              File(galleryFile[index].path),
+                                              File(galleryFile![index].path),
                                               width: 100.0,
                                               fit: BoxFit.fill,
                                             ),
@@ -885,12 +888,13 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                 fontWeight: FontWeight.w800,
                 width: MediaQuery.of(context).size.width / 3,
                 text: "Post Ad",
-                onTap: () {
+                onTap: ()async {
                   // await propertyGalleryImageIntoBytes();
                   // await pickMultipleImage();
                   if (_addPropValidation()) {
-                    postAddressHandler();
-                    Navigator.pop(context);
+                  await  uploadedImagesIntoBytes();
+                 await   postAddressHandler();
+                    // Navigator.pop(context);
                   }
 
                 },
@@ -903,9 +907,9 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
   }
 
   _getFromGallery() async {
-    galleryFile = (await ImagePicker().pickMultiImage())!;
+    galleryFile = await ImagePicker().getMultiImage();
     if (galleryFile != null) {
-      imageFile = File(galleryFile[0].path);
+      imageFile = File(galleryFile![0].path);
       setState(() {});
     }
   }
@@ -918,10 +922,10 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
     }
   }
 
-  galleryImagesBytes() async {
-    galleryFile.forEach((element) async {
-      propertyGalleryBytes = await File(element.path).readAsBytesSync();
-      print(propertyGalleryBytes);
+  uploadedImagesIntoBytes() async {
+    galleryFile!.forEach((element) async {
+      uploadImagesBytes = await File(element.path).readAsBytesSync();
+      log(uploadImagesBytes.toString());
     });
   }
 

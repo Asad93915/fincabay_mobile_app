@@ -507,6 +507,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   onTap: () {
                     if (validateRegistration()) {
                       registrationHandler();
+
                     }
                   },
                   text: "Submit",
@@ -588,6 +589,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         return true;
       }
     } else {
+    
       return true;
     }
   }
