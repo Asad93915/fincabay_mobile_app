@@ -894,7 +894,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                   if (_addPropValidation()) {
                   await  uploadedImagesIntoBytes();
                  await   postAddressHandler();
-                    // Navigator.pop(context);
+                    Navigator.pop(context);
                   }
 
                 },
@@ -1036,6 +1036,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
     }
   }
 }
+
 
 
 

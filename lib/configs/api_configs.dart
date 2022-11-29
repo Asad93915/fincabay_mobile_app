@@ -26,3 +26,4 @@ const String getStaffUrl=baseUrl + "Accounts/GetAllStaffMembersByAgentEmail?";
 const String delStaffUrl=baseUrl + "Accounts/StaffUserDelete/";
 const String editStaffUrl=baseUrl + "Accounts/UpdateStaffMember";
 const String updateAgentProfileUrl=baseUrl+"Accounts/UpdateUser";
+const String getAllAgentsUrl=baseUrl + "accounts/GetAgentsList";

@@ -38,7 +38,8 @@ class AddPropertyService {
         "noOfBeds": noOfBeds,
         "noOfBaths": noOfBaths,
         "expireAfter": expiryDate,
-        "uploadImage":uploadImage,
+        // "uploadImage":uploadImage
+        "imageUploadString":"$uploadImage",
         "city": city,
         "area": area,
         "detailAddress": detailAddress,

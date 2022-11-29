@@ -1,11 +1,13 @@
 
 import 'dart:async';
+import 'dart:js';
 
 
 import 'package:fincabay_application/Agents_module/providers/agent_properties_provider.dart';
 import 'package:fincabay_application/Agents_module/providers/staff_member_provider.dart';
 import 'package:fincabay_application/Agents_module/screens/agents_home_screen.dart';
 import 'package:fincabay_application/app_localization.dart';
+import 'package:fincabay_application/customer_module/providers/agents_list_provider.dart';
 import 'package:fincabay_application/customer_module/providers/get_favourite_prop_provider.dart';
 import 'package:fincabay_application/customer_module/screens/home_dashboard/home_dashboard_screens.dart';
 import 'package:fincabay_application/helper_services/navigation_services.dart';
@@ -49,7 +51,8 @@ void main() {
         ChangeNotifierProvider(create: (context)=>GetFavPropProvider()),
         //Agents
         ChangeNotifierProvider(create: (context)=>AgentPropertiesProvider()),
-        ChangeNotifierProvider(create: (context)=>GetStaffProvider())
+        ChangeNotifierProvider(create: (context)=>GetStaffProvider()),
+        ChangeNotifierProvider(create: (context)=>AgentsListProvider())
       ],
       child: MaterialApp(home: MyApp())));
 }

@@ -19,6 +19,7 @@ class GetUserPropertiesService{
         Provider.of<GetUserPropertiesProvider>(context,listen: false).updateAllProperties(
           newProperties: getProp.data
         );
+
         return true;
       }
       else{

@@ -112,12 +112,22 @@ class _GetUserPropertiesWidgetState extends State<GetUserPropertiesWidget> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              widget.prop.imageByPath==null?
               Image.asset(
                 "assets/images/property_image.jpg",
                 height: MediaQuery.of(context).size.height / 4.5,
                 width: 125.0,
                 fit: BoxFit.fill,
+              )
+                  :ClipRRect(
+                borderRadius: BorderRadius.circular(8.0),
+                    child: Image.network("http://173.208.142.67:5955/fincabayapi/${widget.prop.imageByPath}",
+
+                height: MediaQuery.of(context).size.height / 4.5,
+                width: 125.0,
+                fit: BoxFit.fill,
               ),
+                  ),
               Padding(
                 padding:
                     const EdgeInsets.only(left: 8.0, top: 8.0, bottom: 8.0),

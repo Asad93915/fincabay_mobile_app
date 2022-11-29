@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:fincabay_application/configs/colors.dart';
 import 'package:fincabay_application/configs/text_styles.dart';
+import 'package:fincabay_application/customer_module/screens/get_all_agents_screen.dart';
 import 'package:fincabay_application/customer_module/screens/home_dashboard/dashboard_widgets/favourites_screen.dart';
 import 'package:fincabay_application/customer_module/screens/home_dashboard/home_dashboard_screens.dart';
 import 'package:fincabay_application/customer_module/screens/profile_module/profile_screen.dart';
@@ -219,6 +220,16 @@ class _CustomDrawerState extends State<CustomDrawer> {
           //   title: "User Profile",
           //   icon: Icons.person,
           // ),
+          DrawerItemCard(
+            selctedColor: selectedIndex == 6 ? true : false,
+            onTap: () {
+              selectedIndex = 6;
+              NavigationServices.goNextAndKeepHistory(context: context, widget: GetAllAgentsScreen());
+              setState(() {});
+            },
+            title: "Agents List",
+            icon: Icons.person,
+          ),
           Spacer(),
           DrawerItemCard(
             selctedColor: selectedIndex == 7 ? true : false,
