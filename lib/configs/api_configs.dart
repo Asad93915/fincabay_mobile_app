@@ -16,6 +16,7 @@ const String delUserUrl=baseUrl + "Accounts/UserDelete/";
 const String addFavUrl=baseUrl + "Property/FavoruiteProperty";
 const String getFavPropUrl=baseUrl + "Property/GetFavoruiteProperty?";
 const String delFavPropUrl=baseUrl + "Property/DeleteFavoruiteProperty?";
+const String selectAreaUnitUrl=baseUrl+ "Property/GetAllAreaSizes";
 
 
 //Agents

@@ -1,6 +1,7 @@
 import 'package:fincabay_application/Agents_module/providers/agent_properties_provider.dart';
 import 'package:fincabay_application/Agents_module/services/agent_properties_service.dart';
 import 'package:fincabay_application/auth/provider/user_data_provider.dart';
+import 'package:fincabay_application/customer_module/cusomer_drawer_screen.dart';
 import 'package:fincabay_application/dialogs/show_will_pop_dialog.dart';
 import 'package:fincabay_application/helper_services/custom_loader.dart';
 import 'package:fincabay_application/helper_services/navigation_services.dart';
@@ -18,7 +19,8 @@ import 'agents_drawer_screen.dart';
 
 class ManageAgentPropertiesScreen extends StatefulWidget {
   final String agentEmail;
-  ManageAgentPropertiesScreen({required this.agentEmail});
+  final bool showDrarwer;
+  ManageAgentPropertiesScreen({required this.agentEmail,  this.showDrarwer=true});
   @override
   State<ManageAgentPropertiesScreen> createState() =>
       _ManageAgentPropertiesScreenState();
@@ -62,7 +64,7 @@ class _ManageAgentPropertiesScreenState
       // endDrawer: AgentsDrawer(
       //   isSelected: true,
       // ),
-      drawer: AgentsDrawer(),
+      drawer: widget.showDrarwer==true?AgentsDrawer():CustomDrawer(),
       backgroundColor: barColor,
       appBar: AppBar(
         leading: Builder(
@@ -130,6 +132,7 @@ class _ManageAgentPropertiesScreenState
                                   NavigationServices.goNextAndKeepHistory(
                                       context: context,
                                       widget: PropertyDetailsScreen(
+
                                         imageUrl: imageUrl,
                                         sellingAsset:
                                         "${saleList[index].propertyType??""}",

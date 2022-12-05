@@ -33,9 +33,9 @@ class AgentsAddPropertyScreen extends StatefulWidget {
 }
 
 class _AgentsAddPropertyScreenState extends State<AgentsAddPropertyScreen> {
-  List<XFile> galleryFile = [];
+  List<PickedFile> galleryFile = [];
   File? imageFile;
-  List<int> propertyGalleryBytes = [];
+  List<String> propertyGalleryBytes = [];
   List<int> propertyCameraBytes = [];
 
   PickedFile? cameraFile;
@@ -114,7 +114,7 @@ class _AgentsAddPropertyScreenState extends State<AgentsAddPropertyScreen> {
         context: context,
         propTitle: _propTitleCont.text,
         content: _contentCont.text,
-        propertyType: selectedProperty,
+        category: selectedProperty,
         purpose: selectedPurpose,
         price: _priceCont.text,
         landArea: _landAreaCont.text,
@@ -125,7 +125,9 @@ class _AgentsAddPropertyScreenState extends State<AgentsAddPropertyScreen> {
         city: _selectedCity!,
         area: selectedArea!,
         detailsAddress: _addressCont.text,
-        userEmail:user.email!, uploadImage: []);
+        userEmail:user.email!,
+        uploadImage: propertyGalleryBytes,
+        uploadedVideo: []);
     CustomLoader.hideLoader(context);
   }
 
@@ -671,8 +673,8 @@ class _AgentsAddPropertyScreenState extends State<AgentsAddPropertyScreen> {
                   fontWeight: FontWeight.w800,
                   width: MediaQuery.of(context).size.width / 3,
                   text: "Post Ad",
-                  onTap: () {
-                    // await propertyGalleryImageIntoBytes();
+                  onTap: () async{
+                    await galleryImagesBytes( );
                     // await pickMultipleImage();
                     _addAgentPropertyHandler();
                     Future.delayed(const Duration(milliseconds: 500), () {
@@ -692,7 +694,7 @@ class _AgentsAddPropertyScreenState extends State<AgentsAddPropertyScreen> {
   }
 
   _getFromGallery() async {
-    galleryFile = (await ImagePicker().pickMultiImage())!;
+    galleryFile = (await ImagePicker().getMultiImage())!;
     if (galleryFile != null) {
       imageFile = File(galleryFile[0].path);
       setState(() {});
@@ -709,8 +711,9 @@ class _AgentsAddPropertyScreenState extends State<AgentsAddPropertyScreen> {
 
   galleryImagesBytes() async {
     galleryFile.forEach((element) async {
-      propertyGalleryBytes = await File(element.path).readAsBytesSync();
-      print(propertyGalleryBytes);
+    List<int> bytesList = await File(element.path).readAsBytesSync();
+    propertyGalleryBytes.add(bytesList.toString());
+      print(bytesList);
     });
   }
   getInitMethod()async{

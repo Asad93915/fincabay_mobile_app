@@ -55,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   TextEditingController _emailCont = TextEditingController(
 
-    text: "testuser1@gmail.com"
+    text: "asad@gmail.com"
   );
   TextEditingController _passwordCont = TextEditingController(
  text: "Asad123@"
@@ -172,8 +172,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),),
                   Text("OR",style: forgotStyle,),
                InkWell(
-                   onTap: (){
+                   onTap: ()async{
+                     // String email=await getUserEmail();
                      NavigationServices.goNextAndKeepHistory(context: context, widget: AddPropertyScreen(
+
                        userEmail: "",
                      ));
                    },

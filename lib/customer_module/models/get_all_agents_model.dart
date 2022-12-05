@@ -7,7 +7,7 @@ class AgentsListModel {
   String? companyFax;
   String? companyEmail;
   String? servicesDescription;
-  Null? roleName;
+  String? roleName;
   String? userEmail;
   bool? isApproved;
   bool? isRejected;

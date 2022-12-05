@@ -32,7 +32,9 @@ getUser()async {
   return UserModel.fromJson(jsonDecode(getUser));
 }
 
-getUserId()async{
-  String getUserId=await LocaleStorageServices().getUserId();
-  return UserModel.fromJson(json.decode(getUserId));
+getUserEmail()async{
+  String getUserId=await LocaleStorageServices().getUser();
+  UserModel user=UserModel.fromJson(json.decode(getUserId));
+  String email= user.email??"";
+  return email;
 }

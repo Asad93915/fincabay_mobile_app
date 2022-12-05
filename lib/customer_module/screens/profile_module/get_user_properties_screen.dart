@@ -1,5 +1,7 @@
 
 import 'package:fincabay_application/auth/provider/user_data_provider.dart';
+import 'package:fincabay_application/customer_module/screens/home_dashboard/dashboard_widgets/property_details_screen.dart';
+import 'package:fincabay_application/helper_services/navigation_services.dart';
 import 'package:fincabay_application/helper_widgets/custom_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -104,183 +106,224 @@ class _GetUserPropertiesWidgetState extends State<GetUserPropertiesWidget> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 10.0, right: 5.0, top: 10.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              widget.prop.imageByPath==null?
-              Image.asset(
-                "assets/images/property_image.jpg",
-                height: MediaQuery.of(context).size.height / 4.5,
-                width: 125.0,
-                fit: BoxFit.fill,
-              )
-                  :ClipRRect(
-                borderRadius: BorderRadius.circular(8.0),
-                    child: Image.network("http://173.208.142.67:5955/fincabayapi/${widget.prop.imageByPath}",
+      child: InkWell(
 
-                height: MediaQuery.of(context).size.height / 4.5,
-                width: 125.0,
-                fit: BoxFit.fill,
-              ),
+        onTap: (){
+          NavigationServices.goNextAndKeepHistory(context: context, widget: PropertyDetailsScreen1(properties: widget.prop,));
+          setState((){});
+        },
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // widget.prop.imageByPath!=null?
+                //
+                //     ClipRRect(
+                //   borderRadius: BorderRadius.circular(8.0),
+                //       child: Image.network("http://173.208.142.67:5955/fincabayapi/${widget.prop.imageByPath}",
+                //
+                //   height: MediaQuery.of(context).size.height / 4.5,
+                //   width: 125.0,
+                //   fit: BoxFit.fill,
+                // ),
+                //     ):   Image.asset(
+                //   "assets/images/property_image.jpg",
+                //   height: MediaQuery.of(context).size.height / 4.5,
+                //   width: 125.0,
+                //   fit: BoxFit.fill,
+                // ),
+               widget.prop.propertyImages!=null?
+              Stack(
+                alignment: Alignment.bottomRight,
+                children: [
+                  Image.network("http://173.208.142.67:5955/fincabayapi/${widget.prop.propertyImages![0].imageURL!}",
+                    height: MediaQuery.of(context).size.height / 4.5,
+                    width: 125.0,
+                    fit: BoxFit.fill,
                   ),
-              Padding(
-                padding:
-                    const EdgeInsets.only(left: 8.0, top: 8.0, bottom: 8.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Expire After ${widget.prop.expireAfter}"),
-                    Text(
-                      "PKR ${widget.prop.amount}",
-                      style: pkrStyle,
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width / 1.78,
-                      child: Text(
-                        widget.prop.detailAddress!,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        softWrap: false,
-                        style: addressStyle,
+                  Container(
+                    alignment: Alignment.center,
+                      margin: EdgeInsets.symmetric(vertical: 8.0,horizontal: 6.0),
+                      width: 50.0,
+                      height: 30.0,
+                      decoration: BoxDecoration(
+                        color: Colors.black54,
+                        borderRadius: BorderRadius.circular(6.0)
                       ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "${widget.prop.propertyType!} For ",
-                          style: houseStyle,
-                        ),
-                        Text(
-                          widget.prop.purpose!,
-                          style: houseStyle,
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 1.0,
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width / 1.8,
-                      child: widget.prop.propertyType=="Homes"?Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          HouseDetails(
-                            icon: Icons.bed_outlined,
-                            title: widget.prop.noOfBeds.toString(),
-                          ),
-                          HouseDetails(
-                            icon: Icons.bathtub_outlined,
-                            title: widget.prop.noOfBaths.toString(),
-                          ),
-                          HouseDetails(
-                            icon: Icons.grid_view,
-                            title: "${widget.prop.landArea}",
-                          ),
-                        ],
-                      ):
-                      widget.prop.propertyType=="Plots"?Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Image.asset("assets/icons/marla_icon.png",height: 25.0,width: 25.0,fit: BoxFit.fill,),
-                          Container(
-                              margin: EdgeInsets.symmetric(horizontal: 10.0,vertical: 2.0),
-                              child: Text("${widget.prop.landArea! }"+" "+"${widget.prop.unit}"))
-                        ],
-                      ):
-                      widget.prop.propertyType=="Commercial"?Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Image.asset("assets/icons/marla_icon.png",height: 25.0,width: 25.0,fit: BoxFit.fill,),
-                          Container(
-                              margin: EdgeInsets.symmetric(horizontal: 10.0,vertical: 2.0),
-                              child: Text("${widget.prop.landArea! }"+" "+"${widget.prop.unit}"))
-                        ],
-                      ):SizedBox()
-
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width / 1.7,
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(Icons.image_rounded,color: whiteColor,size: 20.0,),
+                          Text(widget.prop.propertyImages!.length.toString(),style: TextStyle(color: whiteColor,fontSize: 14.0,fontWeight: FontWeight.w500),),
+                        ],
+                      )),
+                ],
+              ):
+               Image.asset(
+                 "assets/images/property_image.jpg",
+                 height: MediaQuery.of(context).size.height / 4.5,
+                 width: 125.0,
+                 fit: BoxFit.fill,
+               ),
+                Padding(
+                  padding:
+                      const EdgeInsets.only(left: 8.0, top: 8.0, bottom: 8.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Expire After ${widget.prop.expireAfter}"),
+                      Text(
+                        "PKR ${widget.prop.amount}",
+                        style: pkrStyle,
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width / 1.78,
+                        child: Text(
+                          widget.prop.detailAddress!,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          softWrap: false,
+                          style: addressStyle,
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          CustomButton(
-                            verticalMargin: 5.0,
-                            height: 30.0,
-                            width: MediaQuery.of(context).size.width / 5.8,
-                            bgColor: whiteColor,
-                            borderColor: bgColor,
-                            text: "SMS",
-                            textColor: bgColor,
-                            fontSize: 14.0,
-                            fontWeight: FontWeight.w600,
-                            onTap: () {},
+                          Text(
+                            "${widget.prop.category!} For ",
+                            style: houseStyle,
                           ),
-                          SizedBox(
-                            width: 3.0,
-                          ),
-                          Container(
-                              margin: EdgeInsets.symmetric(vertical: 5.0),
-                              height: 30.0,
-                              child: ElevatedButton.icon(
-                                  style: ElevatedButton.styleFrom(
-                                      primary: bgColor,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0))),
-                                  onPressed: () {
-                                    {
-                                      _sendSMS(message, [
-                                        '+923414044446',
-                                        // apis like that
-                                        // '${widget.missionReminderModel.phone}',
-                                      ]);
-                                      setState(() {});
-                                    }
-                                  },
-                                  icon: Icon(Icons.call),
-                                  label: Text(
-                                    "Call",
-                                    style: TextStyle(fontSize: 14.0),
-                                  ))),
-                          SizedBox(
-                            width: 3.0,
-                          ),
-                          Expanded(
-                              child: Container(
-                            height: 30.0,
-                            decoration: BoxDecoration(
-                                color: bgColor,
-                                borderRadius: BorderRadius.circular(10.0)),
-                            margin: EdgeInsets.symmetric(vertical: 5.0),
-                            child: Icon(
-                              Icons.whatsapp,
-                              color: whiteColor,
-                            ),
-                          )),
+                          Text(
+                            widget.prop.purpose!,
+                            style: houseStyle,
+                          )
                         ],
                       ),
-                    )
-                  ],
+                      SizedBox(
+                        height: 1.0,
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width / 1.8,
+                        child: widget.prop.category=="Homes"?Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            HouseDetails(
+                              icon: Icons.bed_outlined,
+                              title: widget.prop.noOfBeds.toString(),
+                            ),
+                            HouseDetails(
+                              icon: Icons.bathtub_outlined,
+                              title: widget.prop.noOfBaths.toString(),
+                            ),
+                            HouseDetails(
+                              icon: Icons.grid_view,
+                              title: "${widget.prop.landArea}",
+                            ),
+                          ],
+                        ):
+                        widget.prop.propertyType=="Plots"?Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Image.asset("assets/icons/marla_icon.png",height: 25.0,width: 25.0,fit: BoxFit.fill,),
+                            Container(
+                                margin: EdgeInsets.symmetric(horizontal: 10.0,vertical: 2.0),
+                                child: Text("${widget.prop.landArea! }"+" "+"${widget.prop.unit}"))
+                          ],
+                        ):
+                        widget.prop.propertyType=="Commercial"?Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Image.asset("assets/icons/marla_icon.png",height: 25.0,width: 25.0,fit: BoxFit.fill,),
+                            Container(
+                                margin: EdgeInsets.symmetric(horizontal: 10.0,vertical: 2.0),
+                                child: Text("${widget.prop.landArea! }"+" "+"${widget.prop.unit}"))
+                          ],
+                        ):SizedBox()
+
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width / 1.7,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CustomButton(
+                              verticalMargin: 5.0,
+                              height: 30.0,
+                              width: MediaQuery.of(context).size.width / 5.8,
+                              bgColor: whiteColor,
+                              borderColor: bgColor,
+                              text: "SMS",
+                              textColor: bgColor,
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.w600,
+                              onTap: () {},
+                            ),
+                            SizedBox(
+                              width: 3.0,
+                            ),
+                            Container(
+                                margin: EdgeInsets.symmetric(vertical: 5.0),
+                                height: 30.0,
+                                child: ElevatedButton.icon(
+                                    style: ElevatedButton.styleFrom(
+                                        primary: bgColor,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10.0))),
+                                    onPressed: () {
+                                      {
+                                        _sendSMS(message, [
+                                          '+923414044446',
+                                          // apis like that
+                                          // '${widget.missionReminderModel.phone}',
+                                        ]);
+                                        setState(() {});
+                                      }
+                                    },
+                                    icon: Icon(Icons.call),
+                                    label: Text(
+                                      "Call",
+                                      style: TextStyle(fontSize: 14.0),
+                                    ))),
+                            SizedBox(
+                              width: 3.0,
+                            ),
+                            Expanded(
+                                child: Container(
+                              height: 30.0,
+                              decoration: BoxDecoration(
+                                  color: bgColor,
+                                  borderRadius: BorderRadius.circular(10.0)),
+                              margin: EdgeInsets.symmetric(vertical: 5.0),
+                              child: Icon(
+                                Icons.whatsapp,
+                                color: whiteColor,
+                              ),
+                            )),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
-          Divider(
-            thickness: 1.5,
-          )
-        ],
+              ],
+            ),
+            Divider(
+              thickness: 1.5,
+            )
+          ],
+        ),
       ),
     );
   }

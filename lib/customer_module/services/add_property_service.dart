@@ -5,6 +5,8 @@ import '../../configs/api_configs.dart';
 
 
 class AddPropertyService {
+  //yha check kr null konsi value arhi
+
   Future addProperty({required BuildContext context,
     required String propertyTitle,
     required String content,
@@ -17,7 +19,8 @@ class AddPropertyService {
     required String noOfBaths,
     required String expiryDate,
     required String city,
-    required List<int> uploadImage,
+    required List<String> uploadImage,
+
     required String area,
     required String detailAddress,
     required String email,
@@ -27,19 +30,20 @@ class AddPropertyService {
     required bool isLogin,
     required bool isSignup}) async {
     try {
+      print("list  $uploadImage");
       Map _body = {
         "propertyTitle": propertyTitle,
         "content": content,
-        "propertyType": propType,
+        "category": propType,
         "purpose": propPurpose,
         "amount": price,
         "landArea": landArea,
-        "selectUnit": unit,
+        "unit": unit,
         "noOfBeds": noOfBeds,
         "noOfBaths": noOfBaths,
         "expireAfter": expiryDate,
         // "uploadImage":uploadImage
-        "imageUploadString":"$uploadImage",
+        "imageUploadString":uploadImage,
         "city": city,
         "area": area,
         "detailAddress": detailAddress,

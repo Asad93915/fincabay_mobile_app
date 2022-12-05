@@ -29,13 +29,6 @@ class LoginApiService{
 
         LocaleStorageServices().saveUser(jsonEncode(userResponseModel.data!.toJson()));
 
-        LocaleStorageServices().saveUserId(userResponseModel.data!.id!);
-
-
-
-
-
-
         return true;
       }
       else{

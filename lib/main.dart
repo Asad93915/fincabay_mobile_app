@@ -1,6 +1,7 @@
 
 import 'dart:async';
-import 'dart:js';
+
+
 
 
 import 'package:fincabay_application/Agents_module/providers/agent_properties_provider.dart';
@@ -9,6 +10,7 @@ import 'package:fincabay_application/Agents_module/screens/agents_home_screen.da
 import 'package:fincabay_application/app_localization.dart';
 import 'package:fincabay_application/customer_module/providers/agents_list_provider.dart';
 import 'package:fincabay_application/customer_module/providers/get_favourite_prop_provider.dart';
+import 'package:fincabay_application/customer_module/providers/select_area_units_provider.dart';
 import 'package:fincabay_application/customer_module/screens/home_dashboard/home_dashboard_screens.dart';
 import 'package:fincabay_application/helper_services/navigation_services.dart';
 import 'package:fincabay_application/utils/local_storage_services.dart';
@@ -49,6 +51,7 @@ void main() {
         ChangeNotifierProvider(create: (context)=>GetUserPropertiesProvider()),
         ChangeNotifierProvider(create: (context)=>AreaSizeViewProvider()),
         ChangeNotifierProvider(create: (context)=>GetFavPropProvider()),
+        ChangeNotifierProvider(create: (context)=>SelectAreaUnitsProvider()),
         //Agents
         ChangeNotifierProvider(create: (context)=>AgentPropertiesProvider()),
         ChangeNotifierProvider(create: (context)=>GetStaffProvider()),

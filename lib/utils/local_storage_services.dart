@@ -26,15 +26,7 @@ class LocaleStorageServices{
     String? user=await pref.getString('user');
     return user;
   }
-  Future saveUserId(String userId)async{
-    SharedPreferences pref=await SharedPreferences.getInstance();
-    pref.setString('userId', userId);
 
-  }
-  Future getUserId()async{
-    SharedPreferences pref=await SharedPreferences.getInstance();
-    return pref.getString('userId');
-  }
 
   /////On the base of User Role
   Future saveRoleName(String userRole)async{

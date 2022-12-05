@@ -6,6 +6,8 @@ import 'package:fincabay_application/Agents_module/services/agents_add_property_
 import 'package:fincabay_application/auth/models/user_response_model.dart';
 import 'package:fincabay_application/auth/provider/user_data_provider.dart';
 import 'package:fincabay_application/configs/colors.dart';
+import 'package:fincabay_application/customer_module/providers/select_area_units_provider.dart';
+import 'package:fincabay_application/customer_module/services/select_area_unit_service.dart';
 import 'package:fincabay_application/helper_services/custom_loader.dart';
 import 'package:fincabay_application/helper_widgets/custom_button.dart';
 import 'package:fincabay_application/helper_widgets/custom_drop_down.dart';
@@ -29,6 +31,7 @@ import '../services/location_name_service.dart';
 class AddPropertyScreen extends StatefulWidget {
   final bool isSelected;
   final String userEmail;
+
   AddPropertyScreen({this.isSelected = true, required this.userEmail});
 
   @override
@@ -38,7 +41,9 @@ class AddPropertyScreen extends StatefulWidget {
 class _AddPropertyScreenState extends State<AddPropertyScreen> {
   List<PickedFile>? galleryFile;
   File? imageFile;
-  List<int> uploadImagesBytes = [];
+
+  List<String> uploadMultImagesBytes = [];
+
   List<int> propertyCameraBytes = [];
 
   PickedFile? cameraFile;
@@ -47,8 +52,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
   List<String> propertyTypeList = ["Homes", "Plots", "Commercial"];
   String selectedPurpose = "";
   List<String> purposeList = ["Sell", "Rent Out", "Purchase"];
-  String selectedUnit = "";
-  List<String> unitList = ["House", "Apartment", "Mobile Home"];
+
   String selectedExpiration = "";
   List<String> expiryList = [
     "After one week",
@@ -77,24 +81,20 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
   _getCities() async {
     CustomLoader.showLoader(context: context);
     await CitiesService().getAllCities(context: context);
-
+    CustomLoader.hideLoader(context);
+  }
+  _getAreaUnitsHandler() async {
+    CustomLoader.showLoader(context: context);
+    await SelectAreaUnitsService().selectUnit(context: context);
     CustomLoader.hideLoader(context);
   }
 
   _getLocNameHandler(int cityId) async {
     CustomLoader.showLoader(context: context);
-
     await GetLocationNameService().getLocName(context: context, cityId: cityId);
-
     print("City $cityId");
     CustomLoader.hideLoader(context);
   }
-
-  // postAddressHandler() async {
-  //   CustomLoader.showLoader(context: context);
-  //
-  //   CustomLoader.hideLoader(context);
-  // }
 
   postAddressHandler() async {
     CustomLoader.showLoader(context: context);
@@ -108,12 +108,12 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
             propPurpose: selectedPurpose,
             price: _priceCont.text,
             landArea: _landAreaCont.text,
-            unit: selectedUnit,
+            unit: selectedUnit??"",
             noOfBeds: selectedProperty == 'Homes' ? _noOfBedsCont.text : "0",
             noOfBaths: selectedProperty == "Homes" ? _noOfBathsCont.text : '0',
             expiryDate: _expiryCont.text,
             city: _selectedCity!,
-            uploadImage: uploadImagesBytes,
+            uploadImage: uploadMultImagesBytes,
             area: selectedArea!,
             detailAddress: _addressCont.text,
             email: _emailCont.text,
@@ -127,20 +127,20 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
             context: context,
             propTitle: _propTitleCont.text,
             content: _contentCont.text,
-            propertyType: selectedProperty,
+            category: selectedProperty,
             purpose: selectedPurpose,
             price: _priceCont.text,
             landArea: _landAreaCont.text,
-            unit: selectedUnit,
+            unit: selectedUnit??"",
             noOfBeds: selectedProperty == 'Homes' ? _noOfBedsCont.text : "0",
             noOfBaths: selectedProperty == "Homes" ? _noOfBathsCont.text : '0',
             expiryDate: selectedExpiration,
             city: _selectedCity!,
             area: selectedArea!,
             detailsAddress: _addressCont.text,
-            userEmail: widget.userEmail,
-        uploadImage: uploadImagesBytes,
-          );
+            userEmail: widget.isSelected==false?widget.userEmail:"",
+            uploadImage: uploadMultImagesBytes,
+            uploadedVideo: []);
     CustomLoader.hideLoader(context);
   }
 
@@ -150,14 +150,21 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       print("Is Selected ${widget.isSelected}");
       _getCities();
+      _getAreaUnitsHandler();
     });
     setState(() {});
     super.initState();
   }
+  String? selectedUnit;
+  updateUnit(String value){
+    setState((){
+      selectedUnit=value;
+
+    });
+  }
 
   String? _selectedCity;
 
-  @override
   updateCity(String value) {
     setState(() {
       _selectedCity = value;
@@ -165,7 +172,6 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
   }
 
   String? selectedArea;
-
   @override
   updateArea(String? value) async {
     selectedArea = value;
@@ -188,7 +194,6 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
   FocusNode _landAreaFocus = FocusNode();
   FocusNode _noOfBedsFocus = FocusNode();
   FocusNode _noOfBathsFocus = FocusNode();
-  FocusNode _expiryFocus = FocusNode();
   FocusNode _addressFocus = FocusNode();
   bool isShow = false;
 
@@ -305,13 +310,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                                 isShow = true;
                               } else {
                                 isShow = false;
-
                               }
-
-                              // value=='Homes'?isShow=true:false;
-                              // print("Is Show $isShow");
-                              // print("Selected Property $selectedProperty");
-                              // print("Property Value $value");
 
                               setState(() {});
                             },
@@ -381,29 +380,33 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                         inputType: TextInputType.number,
                         inputAction: TextInputAction.next,
                       )),
-                      Expanded(
-                        child: CustomDropDown(
-                          borderColor:
-                              selectedUnit.isEmpty ? lightBlackColor : bgColor,
-                          child: DropdownButton(
-                            isExpanded: true,
-                            underline: SizedBox(),
-                            hint: Text(selectedUnit.isEmpty
-                                ? "Select Unit"
-                                : selectedUnit),
-                            items: unitList.map((item) {
-                              return DropdownMenuItem(
-                                child: Text(item),
-                                value: item,
-                              );
-                            }).toList(),
-                            onChanged: (String? value) {
-                              selectedUnit = value!;
-                              setState(() {});
-                            },
-                          ),
-                        ),
-                      )
+                     Consumer<SelectAreaUnitsProvider>(builder: (context,area,_){
+                       return  Expanded(
+                         child: CustomDropDown(
+                           borderColor:
+                           selectedUnit==null ? lightBlackColor : bgColor,
+                           child: DropdownButton(
+                             value: selectedUnit,
+                             isExpanded: true,
+                             underline: SizedBox(),
+                             hint: Text(selectedUnit==null?
+                                  "Select Unit"
+                                 : selectedUnit!),
+                             items: area.areaUnit!.map((item) {
+                               return DropdownMenuItem(
+                                 child: Text(item.name!),
+                                 value: item.name,
+                               );
+                             }).toList(),
+                             onChanged: (String? newValue) {
+                               updateUnit(newValue!);
+
+                               setState(() {});
+                             },
+                           ),
+                         ),
+                       );
+                     })
                     ],
                   ),
                   isShow == true
@@ -561,7 +564,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                               : Container(
                                   color: bgColor,
                                 ),
-                          galleryFile!=null
+                          galleryFile != null
                               ? Container(
                                   margin: EdgeInsets.only(
                                       top: 10.0, left: 10.0, right: 10.0),
@@ -888,15 +891,15 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                 fontWeight: FontWeight.w800,
                 width: MediaQuery.of(context).size.width / 3,
                 text: "Post Ad",
-                onTap: ()async {
+                onTap: () async {
                   // await propertyGalleryImageIntoBytes();
                   // await pickMultipleImage();
                   if (_addPropValidation()) {
-                  await  uploadedImagesIntoBytes();
-                 await   postAddressHandler();
+                    await uploadedImagesIntoBytes();
+
+                    await postAddressHandler();
                     Navigator.pop(context);
                   }
-
                 },
               ),
             ],
@@ -924,8 +927,10 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
 
   uploadedImagesIntoBytes() async {
     galleryFile!.forEach((element) async {
-      uploadImagesBytes = await File(element.path).readAsBytesSync();
-      log(uploadImagesBytes.toString());
+      List<int> temp = await File(element.path).readAsBytesSync();
+      uploadMultImagesBytes.add(temp.toString());
+      print('temp $temp');
+      //log(uploadImagesBytes.toString());
     });
   }
 
@@ -956,7 +961,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
           context: context, message: "Enter Total Land");
       _landAreaFocus.requestFocus();
       return false;
-    } else if (selectedUnit.isEmpty) {
+    } else if (selectedUnit==null) {
       CustomSnackBar.failedSnackBar(
           context: context, message: "Selected Property Unit");
     }
@@ -978,7 +983,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
       return false;
     } else if (_selectedCity == null) {
       CustomSnackBar.failedSnackBar(context: context, message: "Selected City");
-   return false;
+      return false;
     } else if (_addressCont.text.isEmpty) {
       CustomSnackBar.failedSnackBar(
           context: context, message: "Enter Address Details");
@@ -1027,8 +1032,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
         } else {
           return true;
         }
-      }
-      else{
+      } else {
         return true;
       }
     } else {
@@ -1036,7 +1040,3 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
     }
   }
 }
-
-
-
-
