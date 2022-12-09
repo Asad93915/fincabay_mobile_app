@@ -22,7 +22,7 @@ class _AboutUSScreenState extends State<AboutUSScreen> {
                 fit: BoxFit.fill,
               ),
               Text(
-                "This project is proposed & designed by Absolute Solutions as a gift to PmLn.",
+                "This project is proposed & designed by Absolute Solutions for Fincabay Clients.",
                 style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),

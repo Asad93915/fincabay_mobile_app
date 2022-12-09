@@ -89,12 +89,12 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
               title: Text("New Projects", style: barStyle,),
             ) :
             selectedIndex == 2 ? AppBar(
-              backgroundColor: whiteColor,
+              backgroundColor: bgColor,
               elevation: 0.0,
               leading: Builder(builder: (context) =>
                   IconButton(onPressed: () {
                     Scaffold.of(context).openDrawer();
-                  }, icon: Icon(Icons.menu,color: blackColor,)),
+                  }, icon: Icon(Icons.menu,color: whiteColor,)),
               ),
               title: Text("Favourites", style: barStyle,),
             ) :

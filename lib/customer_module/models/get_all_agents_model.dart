@@ -1,4 +1,33 @@
 class AgentsListModel {
+  int? status;
+  String? message;
+  List<AgentsList>? data;
+
+  AgentsListModel({this.status, this.message, this.data});
+
+  AgentsListModel.fromJson(Map<String, dynamic> json) {
+    status = json['status'];
+    message = json['message'];
+    if (json['data'] != null) {
+      data = <AgentsList>[];
+      json['data'].forEach((v) {
+        data!.add(new AgentsList.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['status'] = this.status;
+    data['message'] = this.message;
+    if (this.data != null) {
+      data['data'] = this.data!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class AgentsList {
   int? id;
   String? agencyName;
   String? dealCity;
@@ -13,7 +42,7 @@ class AgentsListModel {
   bool? isRejected;
   bool? isPending;
 
-  AgentsListModel(
+  AgentsList(
       {this.id,
         this.agencyName,
         this.dealCity,
@@ -28,7 +57,7 @@ class AgentsListModel {
         this.isRejected,
         this.isPending});
 
-  AgentsListModel.fromJson(Map<String, dynamic> json) {
+  AgentsList.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     agencyName = json['agency_Name'];
     dealCity = json['deal_City'];
@@ -62,3 +91,4 @@ class AgentsListModel {
     return data;
   }
 }
+

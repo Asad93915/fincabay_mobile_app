@@ -15,14 +15,9 @@ class GetAllAgentsService{
       if(res!=null){
         print("Inside");
 
-        // AgentsListModel agentsListModel=AgentsListModel.fromJson(res);
-
-        // List<AgentsListModel>agentsListModel=(res).map<AgentsListModel>((m)=>AgentsListModel.fromJson(m)).();
-    List<AgentsListModel> agentsListModel = (res).map<AgentsListModel>((m )=> AgentsListModel.fromJson(m)).toList();
-
-
+     AgentsListModel agentsList=AgentsListModel.fromJson(res);
     Provider.of<AgentsListProvider>(context,listen: false).updateAgentsList(
-          newAgents: agentsListModel
+          newAgents: agentsList.data
         );
       }
       else{

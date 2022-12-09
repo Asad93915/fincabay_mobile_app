@@ -5,6 +5,7 @@ import 'package:fincabay_application/Agents_module/services/agents_add_property_
 import 'package:fincabay_application/auth/models/user_response_model.dart';
 import 'package:fincabay_application/auth/provider/user_data_provider.dart';
 import 'package:fincabay_application/configs/colors.dart';
+import 'package:fincabay_application/customer_module/services/area_size_service.dart';
 import 'package:fincabay_application/customer_module/services/location_name_service.dart';
 import 'package:fincabay_application/dialogs/show_will_pop_dialog.dart';
 import 'package:fincabay_application/helper_services/custom_loader.dart';
@@ -22,7 +23,9 @@ import '../../../helper_widgets/custom_dropdown_text.dart';
 import '../../../helper_widgets/custom_uploading_widget.dart';
 import '../../customer_module/providers/cities_provider.dart';
 import '../../customer_module/providers/location_name_provider.dart';
+import '../../customer_module/providers/select_area_units_provider.dart';
 import '../../customer_module/services/cities_service.dart';
+import '../../customer_module/services/select_area_unit_service.dart';
 
 class AgentsAddPropertyScreen extends StatefulWidget {
   const AgentsAddPropertyScreen({super.key});
@@ -44,8 +47,7 @@ class _AgentsAddPropertyScreenState extends State<AgentsAddPropertyScreen> {
   List<String> propertyTypeList = ["Homes", "Plots", "Commercial"];
   String selectedPurpose = "";
   List<String> purposeList = ["Sell", "Rent Out", "Purchase"];
-  String selectedUnit = "";
-  List<String> unitList = ["House", "Apartment", "Mobile Home"];
+
   String selectedExpiration = "";
   List<String> expiryList = [
     "After one week",
@@ -53,16 +55,28 @@ class _AgentsAddPropertyScreenState extends State<AgentsAddPropertyScreen> {
     "After one month"
   ];
 
-  UserModel user=UserModel();
+  UserModel user = UserModel();
+
   getCities() async {
     CustomLoader.showLoader(context: context);
     CitiesService().getAllCities(context: context);
     CustomLoader.hideLoader(context);
   }
-
   getLocationNamesHandler(int cityId) async {
     CustomLoader.showLoader(context: context);
     await GetLocationNameService().getLocName(context: context, cityId: cityId);
+    CustomLoader.hideLoader(context);
+  }
+  String? selectedUnit;
+  updateUnit(String value){
+    setState((){
+      selectedUnit=value;
+
+    });
+  }
+  _getAreaUnitsHandler() async {
+    CustomLoader.showLoader(context: context);
+    await SelectAreaUnitsService().selectUnit(context: context);
     CustomLoader.hideLoader(context);
   }
 
@@ -70,8 +84,9 @@ class _AgentsAddPropertyScreenState extends State<AgentsAddPropertyScreen> {
   void initState() {
     // TODO: implement initState
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _getAreaUnitsHandler();
       getInitMethod();
-      setState((){});
+      setState(() {});
     });
     super.initState();
   }
@@ -118,14 +133,14 @@ class _AgentsAddPropertyScreenState extends State<AgentsAddPropertyScreen> {
         purpose: selectedPurpose,
         price: _priceCont.text,
         landArea: _landAreaCont.text,
-        unit: selectedUnit,
-        noOfBeds: isShow?_noOfBathsCont.text:"0",
-        noOfBaths: isShow?_noOfBathsCont.text:"0",
+        unit: selectedUnit??"",
+        noOfBeds: isShow ? _noOfBathsCont.text : "0",
+        noOfBaths: isShow ? _noOfBathsCont.text : "0",
         expiryDate: selectedExpiration,
         city: _selectedCity!,
         area: selectedArea!,
         detailsAddress: _addressCont.text,
-        userEmail:user.email!,
+        userEmail: user.email!,
         uploadImage: propertyGalleryBytes,
         uploadedVideo: []);
     CustomLoader.hideLoader(context);
@@ -141,7 +156,7 @@ class _AgentsAddPropertyScreenState extends State<AgentsAddPropertyScreen> {
         currentFocus.unfocus();
       },
       child: WillPopScope(
-        onWillPop: ()async {
+        onWillPop: () async {
           return await showWillPopDialog(context);
         },
         child: Scaffold(
@@ -180,8 +195,8 @@ class _AgentsAddPropertyScreenState extends State<AgentsAddPropertyScreen> {
                   ),
               SliverToBoxAdapter(
                   child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 12.0, vertical: 12.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -316,29 +331,33 @@ class _AgentsAddPropertyScreenState extends State<AgentsAddPropertyScreen> {
                           inputType: TextInputType.number,
                           inputAction: TextInputAction.next,
                         )),
-                        Expanded(
-                          child: CustomDropDown(
-                            borderColor:
-                                selectedUnit.isEmpty ? lightBlackColor : bgColor,
-                            child: DropdownButton(
-                              isExpanded: true,
-                              underline: SizedBox(),
-                              hint: Text(selectedUnit.isEmpty
-                                  ? "Select Unit"
-                                  : selectedUnit),
-                              items: unitList.map((item) {
-                                return DropdownMenuItem(
-                                  child: Text(item),
-                                  value: item,
-                                );
-                              }).toList(),
-                              onChanged: (String? value) {
-                                selectedUnit = value!;
-                                setState(() {});
-                              },
+                        Consumer<SelectAreaUnitsProvider>(builder: (context,area,_){
+                          return  Expanded(
+                            child: CustomDropDown(
+                              borderColor:
+                              selectedUnit==null ? lightBlackColor : bgColor,
+                              child: DropdownButton(
+                                value: selectedUnit,
+                                isExpanded: true,
+                                underline: SizedBox(),
+                                hint: Text(selectedUnit==null?
+                                "Select Unit"
+                                    : selectedUnit!),
+                                items: area.areaUnit!.map((item) {
+                                  return DropdownMenuItem(
+                                    child: Text(item.name!),
+                                    value: item.name,
+                                  );
+                                }).toList(),
+                                onChanged: (String? newValue) {
+                                  updateUnit(newValue!);
+
+                                  setState(() {});
+                                },
+                              ),
                             ),
-                          ),
-                        )
+                          );
+                        })
                       ],
                     ),
                     isShow == true
@@ -370,8 +389,9 @@ class _AgentsAddPropertyScreenState extends State<AgentsAddPropertyScreen> {
                       text: "Expire After",
                     ),
                     CustomDropDown(
-                      borderColor:
-                          selectedExpiration.isEmpty ? lightBlackColor : bgColor,
+                      borderColor: selectedExpiration.isEmpty
+                          ? lightBlackColor
+                          : bgColor,
                       child: DropdownButton(
                         isExpanded: true,
                         underline: SizedBox(),
@@ -411,7 +431,8 @@ class _AgentsAddPropertyScreenState extends State<AgentsAddPropertyScreen> {
                           ),
                         ),
                         SizedBox(width: 13.0),
-                        Text("Upload image of your property", style: imageStyle),
+                        Text("Upload image of your property",
+                            style: imageStyle),
                       ],
                     ),
                     CustomUploadingWidget(
@@ -435,7 +456,8 @@ class _AgentsAddPropertyScreenState extends State<AgentsAddPropertyScreen> {
                               color: bgColor,
                               child: Container(
                                 alignment: Alignment.center,
-                                height: MediaQuery.of(context).size.height / 5.3,
+                                height:
+                                    MediaQuery.of(context).size.height / 5.3,
                                 width: MediaQuery.of(context).size.width / 1.4,
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -459,9 +481,11 @@ class _AgentsAddPropertyScreenState extends State<AgentsAddPropertyScreen> {
                                         style: ElevatedButton.styleFrom(
                                             primary: whiteColor,
                                             shape: RoundedRectangleBorder(
-                                                side: BorderSide(color: black26),
+                                                side:
+                                                    BorderSide(color: black26),
                                                 borderRadius:
-                                                    BorderRadius.circular(8.0))),
+                                                    BorderRadius.circular(
+                                                        8.0))),
                                         onPressed: () {
                                           _getFromCamera();
                                           print(cameraFile!.path);
@@ -492,7 +516,7 @@ class _AgentsAddPropertyScreenState extends State<AgentsAddPropertyScreen> {
                                     ),
                                   )
                                 : SizedBox(),
-                            galleryFile .isNotEmpty
+                            galleryFile.isNotEmpty
                                 ? Container(
                                     margin: EdgeInsets.only(
                                         top: 10.0, left: 10.0, right: 10.0),
@@ -673,14 +697,13 @@ class _AgentsAddPropertyScreenState extends State<AgentsAddPropertyScreen> {
                   fontWeight: FontWeight.w800,
                   width: MediaQuery.of(context).size.width / 3,
                   text: "Post Ad",
-                  onTap: () async{
-                    await galleryImagesBytes( );
+                  onTap: () async {
+                    await galleryImagesBytes();
                     // await pickMultipleImage();
-                    _addAgentPropertyHandler();
-                    Future.delayed(const Duration(milliseconds: 500), () {
+                   await _addAgentPropertyHandler();
+                    Future.delayed(const Duration(milliseconds: 100), () {
                       setState(() {
                         Navigator.pop(context);
-
                       });
                     });
                   },
@@ -711,15 +734,15 @@ class _AgentsAddPropertyScreenState extends State<AgentsAddPropertyScreen> {
 
   galleryImagesBytes() async {
     galleryFile.forEach((element) async {
-    List<int> bytesList = await File(element.path).readAsBytesSync();
-    propertyGalleryBytes.add(bytesList.toString());
+      List<int> bytesList = await File(element.path).readAsBytesSync();
+      propertyGalleryBytes.add(bytesList.toString());
       print(bytesList);
     });
   }
-  getInitMethod()async{
-    getCities();
-    user=await getUser();
-    setState((){});
 
+  getInitMethod() async {
+    getCities();
+    user = await getUser();
+    setState(() {});
   }
 }

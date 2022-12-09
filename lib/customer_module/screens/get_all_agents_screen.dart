@@ -69,7 +69,7 @@ class _GetAllAgentsScreenState extends State<GetAllAgentsScreen> {
                       itemCount:agent.agents!.length,
 
                       itemBuilder: (BuildContext,index){
-                    return AgentsList(
+                    return AgentsListWidget(
                         agentsList:agent.agents![index]
 
                     );
@@ -85,15 +85,15 @@ class _GetAllAgentsScreenState extends State<GetAllAgentsScreen> {
   }
 }
 
-class AgentsList extends StatefulWidget {
-  AgentsListModel agentsList;
-   AgentsList({required this.agentsList});
+class AgentsListWidget extends StatefulWidget {
+  AgentsList agentsList;
+   AgentsListWidget({required this.agentsList});
 
   @override
-  State<AgentsList> createState() => _AgentsListState();
+  State<AgentsListWidget> createState() => _AgentsListWidgetState();
 }
 
-class _AgentsListState extends State<AgentsList> {
+class _AgentsListWidgetState extends State<AgentsListWidget> {
   @override
   Widget build(BuildContext context) {
     return InkWell(

@@ -7,6 +7,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../helper_widgets/custom_icon_button.dart';
+import '../../../../utils/Functions.dart';
+import '../../../../utils/handlers.dart';
 import '../../../models/get_user_properties_model.dart';
 
 class PropertyDetailsScreen extends StatefulWidget {
@@ -70,7 +72,7 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                   // background: Hero(
                   //   tag: "propertyUrl",
                   background:
-                  Image.asset("assets/images/property_image.jpg ")
+                  Image.asset(widget.imageUrl,fit: BoxFit.fill,),
                   ),
             ),
           ),
@@ -336,6 +338,7 @@ class _PropertyDetailsScreen1State extends State<PropertyDetailsScreen1> {
   String descriptionText =
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
 
+bool isFavourite=false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -472,13 +475,27 @@ class _PropertyDetailsScreen1State extends State<PropertyDetailsScreen1> {
                               style: priceStyle),
                           Spacer(),
                           InkWell(
-                              onTap: () {},
-                              child: Image.asset(
+                              onTap: () async{
+                               isFavourite =! isFavourite;
+                               String userId=await getUserId();
+                               setState((){});
+                               isFavourite?addFavouritePropHandler(
+                                   context: context,
+                                   typeId:widget.properties.id!,
+                                   userId:"$userId"
+                               ):delFavPropHandler(
+                                 userId: "$userId",
+                                 context: context,
+                                 propId: widget.properties.id!
+                               );
+                              },
+                              child:isFavourite==false?Image.asset(
                                 "assets/icons/favourite_icon.png",
                                 height: 20.0,
                                 width: 20.0,
                                 fit: BoxFit.fill,
-                              )),
+                              ):Icon(CupertinoIcons.heart_fill,color: redColor,size: 25.0,)
+                          ),
                           SizedBox(
                             width: 10.0,
                           ),
@@ -583,10 +600,14 @@ class _PropertyDetailsScreen1State extends State<PropertyDetailsScreen1> {
                                 SizedBox(
                                   width: 6.0,
                                 ),
-                                Text(
-                                  "${widget.properties.landArea} " +
-                                      " ${widget.properties.unit}",
-                                  style: iconStyle,
+                                Expanded(
+                                  child: Text(
+                                    "${widget.properties.landArea} " +
+                                        " ${widget.properties.unit}",
+                                    style: iconStyle,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 )
                               ],
                             ),

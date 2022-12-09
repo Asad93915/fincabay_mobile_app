@@ -224,11 +224,7 @@ class AreaViewWidget extends StatefulWidget {
 
 class _AreaViewWidgetState extends State<AreaViewWidget> {
   bool isFavourite=false;
-  _addFavouriteHandler()async{
-    CustomLoader.showLoader(context: context);
-   await AddFavouritePropertyService().addFavourite(context: context, pTypeId: widget.typeId, userId: user.id!);
-   CustomLoader.hideLoader(context);
-  }
+
   UserModel user=UserModel();
   @override
   void initState() {
@@ -331,7 +327,11 @@ class _AreaViewWidgetState extends State<AreaViewWidget> {
                             InkWell(
                                 onTap: (){
                                   isFavourite=!isFavourite;
-                                  isFavourite==true?_addFavouriteHandler():isFavourite==false?delFavPropHandler(context: context, userId: user.id??"", propId: widget.typeId):null;
+                                  isFavourite==true?addFavouritePropHandler(
+                                    context: context,
+                                    typeId: widget.typeId,
+                                    userId: user.id??"",
+                                  ):isFavourite==false?delFavPropHandler(context: context, userId: user.id??"", propId: widget.typeId):null;
                                   print("IS Favourite $isFavourite");
 
 
@@ -358,7 +358,11 @@ class _AreaViewWidgetState extends State<AreaViewWidget> {
                             InkWell(
                                 onTap: (){
                                   isFavourite=!isFavourite;
-                                  isFavourite==true?_addFavouriteHandler():isFavourite==false?delFavPropHandler(context: context, userId: user.id??"", propId: widget.typeId):null;
+                                  isFavourite==true?addFavouritePropHandler(
+                                    context: context,
+                                      typeId: widget.typeId,
+                                    userId: user.id??""
+                                  ):isFavourite==false?delFavPropHandler(context: context, userId: user.id??"", propId: widget.typeId):null;
                                   print("IS Favourite $isFavourite");
 
 
@@ -383,7 +387,11 @@ class _AreaViewWidgetState extends State<AreaViewWidget> {
                       InkWell(
                           onTap: (){
                             isFavourite=!isFavourite;
-                            isFavourite==true?_addFavouriteHandler():isFavourite==false?delFavPropHandler(context: context, userId: user.id??"", propId: widget.typeId):null;
+                            isFavourite==true?addFavouritePropHandler(
+                                context: context,
+                                typeId: widget.typeId,
+                                userId: user.id??""
+                            ):isFavourite==false?delFavPropHandler(context: context, userId: user.id??"", propId: widget.typeId):null;
                             print("IS Favourite $isFavourite");
 
 

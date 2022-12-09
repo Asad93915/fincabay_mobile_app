@@ -194,6 +194,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
               selectedIndex = 4;
               setState(() {
                 NavigationServices.goNextAndKeepHistory(context: context, widget: FavouritesScreen(
+                  showScaffold: true,
 
                 ));
               });

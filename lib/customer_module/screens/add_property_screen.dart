@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:developer';
 
@@ -15,6 +16,8 @@ import 'package:fincabay_application/helper_widgets/custom_text_field.dart';
 import 'package:fincabay_application/utils/Functions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
@@ -151,6 +154,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
       print("Is Selected ${widget.isSelected}");
       _getCities();
       _getAreaUnitsHandler();
+      initMethod();
     });
     setState(() {});
     super.initState();
@@ -197,6 +201,20 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
   FocusNode _addressFocus = FocusNode();
   bool isShow = false;
 
+  CameraPosition initCamerPosition=CameraPosition(
+    target: LatLng(31.5204,74.3587),
+    zoom: 20.0
+  );
+  List<Marker> _markers=[
+    Marker(
+        markerId: MarkerId('1'),
+    position: LatLng(31.5204,74.3587),
+      infoWindow: InfoWindow(
+        title: "My Location"
+      )
+    )
+  ];
+  final Completer<GoogleMapController> _controller=Completer();
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -726,6 +744,23 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                     focusNode: _addressFocus,
                     inputAction: TextInputAction.done,
                   ),
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: black12),
+
+                    ),
+                    margin: EdgeInsets.symmetric(vertical: 12.0),
+                    height: 200.0,
+                    width: double.infinity,
+                    child: GoogleMap(
+                        initialCameraPosition: initCamerPosition,
+                      markers:Set<Marker>.of(_markers),
+                      onMapCreated: (GoogleMapController controller){
+                          _controller.complete(controller);
+                      },
+
+                    ),
+                  ),
                   if (widget.isSelected == true)
                     Column(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -905,6 +940,36 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
             ],
           ),
         ),
+        // floatingActionButton: FloatingActionButton(
+        //   backgroundColor: bgColor,
+        //   onPressed: (){
+        //     _getCurrentLocation().then((value)async {
+        //       print("My Current Location");
+        //       print("Lonitude ${value.longitude}");
+        //       print("Latitude ${value.latitude}");
+        //       _markers.add(
+        //           Marker(
+        //               markerId: MarkerId('3'),
+        //               infoWindow: InfoWindow(
+        //                   title: "My Current Location"
+        //               ),
+        //               position: LatLng(
+        //                   value.latitude,value.longitude
+        //               )
+        //           )
+        //       );
+        //       setState((){});
+        //       CameraPosition cameraPosition=CameraPosition(
+        //           target:LatLng(value.latitude,value.longitude),
+        //       zoom: 14);
+        //       final GoogleMapController controller=await _controller.future;
+        //       controller.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+        //     });
+        //
+        //     setState((){});
+        //   },
+        //   child: Icon(Icons.location_on),
+        // ),
       ),
     );
   }
@@ -977,14 +1042,17 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
         _noOfBathsFocus.requestFocus();
         return false;
       }
-    } else if (selectedExpiration.isEmpty) {
+    }
+    else if (selectedExpiration.isEmpty) {
       CustomSnackBar.failedSnackBar(
           context: context, message: "Selected Expiration Date");
       return false;
-    } else if (_selectedCity == null) {
+    }
+    else if (_selectedCity == null) {
       CustomSnackBar.failedSnackBar(context: context, message: "Selected City");
       return false;
-    } else if (_addressCont.text.isEmpty) {
+    }
+    else if (_addressCont.text.isEmpty) {
       CustomSnackBar.failedSnackBar(
           context: context, message: "Enter Address Details");
       _addressFocus.requestFocus();
@@ -1038,5 +1106,42 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
     } else {
       return true;
     }
+  }
+
+  Future<Position> _getCurrentLocation() async{
+    await Geolocator.requestPermission().then((value) {
+
+    }).onError((error, stackTrace) {
+      print("Error $error");
+    });
+
+    return await Geolocator.getCurrentPosition();
+
+  }
+  ////Get Location in init or at start
+
+  initMethod()async{
+    _getCurrentLocation().then((value)async {
+      print("My Current Location");
+      print("Lonitude ${value.longitude}");
+      print("Latitude ${value.latitude}");
+      _markers.add(
+          Marker(
+              markerId: MarkerId('3'),
+              infoWindow: InfoWindow(
+                  title: "My Current Location"
+              ),
+              position: LatLng(
+                  value.latitude,value.longitude
+              )
+          )
+      );
+      setState((){});
+      CameraPosition cameraPosition=CameraPosition(
+          target:LatLng(value.latitude,value.longitude),
+          zoom: 14);
+      final GoogleMapController controller=await _controller.future;
+      controller.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+    });
   }
 }

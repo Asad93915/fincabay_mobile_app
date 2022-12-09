@@ -20,9 +20,8 @@ import '../../../../helper_widgets/house_details.dart';
 import '../../../../utils/Functions.dart';
 
 class FavouritesScreen extends StatefulWidget {
-
-
-
+  final   bool showScaffold;
+  FavouritesScreen({this.showScaffold=false});
 
   @override
   State<FavouritesScreen> createState() => _FavouritesScreenState();
@@ -31,7 +30,8 @@ class FavouritesScreen extends StatefulWidget {
 // UserModel user=UserModel.fromJson(box.read('user'));
 
 class _FavouritesScreenState extends State<FavouritesScreen> {
-  UserModel user=UserModel();
+
+
 
 
   // _getFavouriteProperties()async{
@@ -39,55 +39,17 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
   //   await GetFavouritePropService().getFavProp(context: context, userId: user.id??"");
   //   CustomLoader.hideLoader(context);
   // }
-  @override
-  void initState() {
-    // TODO: implement initState
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-    initMethod();
 
-
-    });
-    super.initState();
-  }
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Text("Profile",style: profileStyle,),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12.0,vertical: 12.0),
-          child: Text("Favourites",style:profileStyle ,),
-        ),
-        Consumer<GetFavPropProvider>(builder:(context,fav,_){
-          return fav.favProp!.isNotEmpty?ListView.builder(
-              shrinkWrap: true,
-              itemCount: fav.favProp!.length,
-              physics: NeverScrollableScrollPhysics(),
-              scrollDirection: Axis.vertical,
-              primary: false,
-              itemBuilder: (BuildContext,index){
-                return FavouriteWidget(
-                  favProp: fav.favProp![index],
-
-                  userId: user.id!,
-                );
-              }):Container(
-            alignment: Alignment.center,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Image.asset("assets/icons/favourites_prop_icon.png",width: 200.0,height: 250.0,),
-                Text("No Favourites Yet",style: TextStyle(color: Colors.red[500],fontSize: 24.0,fontWeight: FontWeight.w400),),
-
-              ],
-            ),
-          );
-        }),
-      ],
-    );
+    return widget.showScaffold?Scaffold(
+      appBar: AppBar(
+        backgroundColor: bgColor,
+        centerTitle: true,
+        title: Text("Favourites"),
+      ),
+      body:ShowFavouritesScreen() ,
+    ): ShowFavouritesScreen();
   }
   // getUserId()async{
   //   String getUserId=await LocaleStorageServices().getUser();
@@ -96,11 +58,79 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
   //
   // }
 
-   initMethod()async {
-   user= await   getUser();
-   getFavouritePropHandler(context, user.id==null?"":user.id!);
-   }
+
 }
+
+class ShowFavouritesScreen extends StatefulWidget {
+  const ShowFavouritesScreen({Key? key}) : super(key: key);
+
+  @override
+  State<ShowFavouritesScreen> createState() => _ShowFavouritesScreenState();
+}
+
+class _ShowFavouritesScreenState extends State<ShowFavouritesScreen> {
+
+  UserModel user=UserModel();
+  @override
+  void initState() {
+    // TODO: implement initState
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      initMethod();
+
+
+    });
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child
+          : Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Text("Profile",style: profileStyle,),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0,vertical: 12.0),
+            child: Text("Favourites",style:profileStyle ,),
+          ),
+          Consumer<GetFavPropProvider>(builder:(context,fav,_){
+            return fav.favProp!.isNotEmpty?ListView.builder(
+                shrinkWrap: true,
+                itemCount: fav.favProp!.length,
+                physics: NeverScrollableScrollPhysics(),
+                scrollDirection: Axis.vertical,
+                primary: false,
+                itemBuilder: (BuildContext,index){
+                  return FavouriteWidget(
+                    favProp: fav.favProp![index],
+
+                    userId: user.id??"",
+                  );
+                }):Container(
+              alignment: Alignment.center,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Image.asset("assets/icons/favourites_prop_icon.png",width: 200.0,height: 250.0,),
+                  Text("No Favourites Yet",style: TextStyle(color: Colors.red[500],fontSize: 24.0,fontWeight: FontWeight.w400),),
+
+                ],
+              ),
+            );
+          }),
+        ],
+      ),
+    );
+  }
+  initMethod()async {
+    user= await   getUser();
+   await getFavouritePropHandler(context, user.id!);
+  }
+}
+
 class FavouriteWidget extends StatefulWidget {
   FavouriteProperty favProp;
   final String userId;

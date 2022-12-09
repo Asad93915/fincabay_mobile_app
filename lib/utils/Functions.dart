@@ -38,3 +38,9 @@ getUserEmail()async{
   String email= user.email??"";
   return email;
 }
+getUserId()async{
+  String getUserId=await LocaleStorageServices().getUser();
+  UserModel user=UserModel.fromJson(json.decode(getUserId));
+  String userId= user.id??"";
+  return userId;
+}

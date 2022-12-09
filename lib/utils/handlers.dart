@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../Agents_module/services/staff_member_service.dart';
+import '../customer_module/services/add_favourites_properties_service.dart';
 import '../customer_module/services/area_size_service.dart';
 import '../customer_module/services/area_size_view_service.dart';
 import '../customer_module/services/cities_service.dart';
@@ -43,6 +44,12 @@ areaSizeViewHandler(BuildContext context,String catName,int areaSizeId,int typeI
   CustomLoader.hideLoader(context);
 }
 //Favourites
+addFavouritePropHandler({required BuildContext context,required int typeId,required String userId})async{
+  CustomLoader.showLoader(context: context);
+  await AddFavouritePropertyService().addFavourite(context: context, pTypeId: typeId, userId: userId);
+  CustomLoader.hideLoader(context);
+}
+
 getFavouritePropHandler(BuildContext context,String userId)async{
   CustomLoader.showLoader(context: context);
   await GetFavouritePropService().getFavProp(context: context, userId: userId??"");
