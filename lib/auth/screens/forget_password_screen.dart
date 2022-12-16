@@ -1,7 +1,10 @@
 
+import 'package:fincabay_application/auth/services/forgot_password_service.dart';
 import 'package:fincabay_application/configs/colors.dart';
 import 'package:fincabay_application/configs/text_styles.dart';
+import 'package:fincabay_application/helper_services/custom_loader.dart';
 import 'package:fincabay_application/helper_services/custom_snackbar.dart';
+import 'package:fincabay_application/utils/Functions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -16,9 +19,21 @@ class ForgotPasswordScreen extends StatefulWidget {
 }
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
-   TextEditingController _newPasswordCont=TextEditingController();
+  _forgotPasswordHandler()async{
+    CustomLoader.showLoader(context: context);
+    var res=await ForgotPasswordService().forgotPassword(context: context, email: _emailCont.text, password: _newPasswordCont.text);
+    CustomLoader.hideLoader(context);
+    if(res){
+      Navigator.pop(context);
+    }
+  }
+
+
+  TextEditingController _emailCont=TextEditingController();
+  TextEditingController _newPasswordCont=TextEditingController();
    TextEditingController _confirmPasswodCont=TextEditingController();
    FocusNode _newPasswordNode=FocusNode();
+   FocusNode _emailFocus=FocusNode();
    FocusNode _confirmPasswordNode=FocusNode();
   @override
   Widget build(BuildContext context) {
@@ -47,6 +62,14 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 Image.asset(
                   "assets/images/fincabay_logo.jpg", height: 100.0,),
                 Text("Create Password",style: passwordStyle,),
+                CustomTextField(
+                  hintText: "Enter Email",
+                  inputType: TextInputType.emailAddress,
+                  controller: _emailCont,
+                  focusNode: _emailFocus,
+
+
+                ),
                 CustomTextField(
                   // hintText:"Email Address",
                   controller: _newPasswordCont,
@@ -78,7 +101,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   height: 50.0,
                   fontWeight: FontWeight.w800,
                   onTap: (){
-                    _validateForgot();
+                   if(_validateForgot()){
+                     _forgotPasswordHandler();
+                   }
                   },
 
                 ),
@@ -97,13 +122,18 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     );
   }
   _validateForgot(){
-    if(_newPasswordCont.text.isEmpty || _newPasswordCont.text.length<4){
-      CustomSnackBar.failedSnackBar(context: context, message: "Password Length must be greater then 4");
+    if(_emailCont.text.isEmpty || !validateEmail(_emailCont.text)){
+      CustomSnackBar.failedSnackBar(context: context, message: "Enter Valid Email");
+      _emailFocus.requestFocus();
+      return false;
+    }
+   else if(_newPasswordCont.text.isEmpty || _newPasswordCont.text.length<8){
+      CustomSnackBar.failedSnackBar(context: context, message: "Password Length should be 8");
       _newPasswordNode.requestFocus();
       return false;
     }
-    else if(_confirmPasswodCont.text.isEmpty || _confirmPasswodCont.text.length<4){
-      CustomSnackBar.failedSnackBar(context: context, message: "Confirm Password Length must be greater then 4");
+    else if(_confirmPasswodCont.text.isEmpty || _confirmPasswodCont.text.length<8){
+      CustomSnackBar.failedSnackBar(context: context, message: "Confirm Password Length should be 8");
       _confirmPasswordNode.requestFocus();
       return false;
     }
@@ -111,6 +141,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       CustomSnackBar.failedSnackBar(context: context, message: "Password Should be Matched");
       _newPasswordNode.requestFocus();
       return false;
+    }
+    else{
+      return true;
     }
   }
 }

@@ -40,15 +40,18 @@ class FavouriteProperty {
   int? noOfBeds;
   int? noOfBaths;
   String? expireAfter;
-  Null? uploadImage;
+  String? imageUploadString;
+  String? uploadImage;
   String? imageByPath;
-  Null? uploadVideo;
+  String? videoUploadString;
+  String? uploadVideo;
   String? videoByPath;
   String? city;
   int? cityId;
   String? area;
   int? locationPhaseId;
   int? areaSizeID;
+  String? areaSize;
   int? areaId;
   String? detailAddress;
   double? amount;
@@ -60,7 +63,9 @@ class FavouriteProperty {
   bool? isPending;
   String? userId;
   String? userEmail;
+  Null? userMobile;
   String? roleName;
+  List<PropertyImages>? propertyImages;
   Null? signUpUserEmail;
   Null? userPassword;
   Null? signUpUserName;
@@ -68,6 +73,8 @@ class FavouriteProperty {
   Null? signUpAs;
   bool? isLogin;
   bool? isSignUp;
+  Null? imageIformFile;
+  Null? bytesList;
 
   FavouriteProperty(
       {this.id,
@@ -82,8 +89,10 @@ class FavouriteProperty {
         this.noOfBeds,
         this.noOfBaths,
         this.expireAfter,
+        this.imageUploadString,
         this.uploadImage,
         this.imageByPath,
+        this.videoUploadString,
         this.uploadVideo,
         this.videoByPath,
         this.city,
@@ -91,6 +100,7 @@ class FavouriteProperty {
         this.area,
         this.locationPhaseId,
         this.areaSizeID,
+        this.areaSize,
         this.areaId,
         this.detailAddress,
         this.amount,
@@ -102,14 +112,18 @@ class FavouriteProperty {
         this.isPending,
         this.userId,
         this.userEmail,
+        this.userMobile,
         this.roleName,
+        this.propertyImages,
         this.signUpUserEmail,
         this.userPassword,
         this.signUpUserName,
         this.mobile,
         this.signUpAs,
         this.isLogin,
-        this.isSignUp});
+        this.isSignUp,
+        this.imageIformFile,
+        this.bytesList});
 
   FavouriteProperty.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -124,8 +138,10 @@ class FavouriteProperty {
     noOfBeds = json['noOfBeds'];
     noOfBaths = json['noOfBaths'];
     expireAfter = json['expireAfter'];
+    imageUploadString = json['imageUploadString'];
     uploadImage = json['uploadImage'];
     imageByPath = json['imageByPath'];
+    videoUploadString = json['videoUploadString'];
     uploadVideo = json['uploadVideo'];
     videoByPath = json['videoByPath'];
     city = json['city'];
@@ -133,6 +149,7 @@ class FavouriteProperty {
     area = json['area'];
     locationPhaseId = json['locationPhaseId'];
     areaSizeID = json['areaSizeID'];
+    areaSize = json['areaSize'];
     areaId = json['areaId'];
     detailAddress = json['detailAddress'];
     amount = json['amount'];
@@ -144,7 +161,14 @@ class FavouriteProperty {
     isPending = json['isPending'];
     userId = json['userId'];
     userEmail = json['userEmail'];
+    userMobile = json['userMobile'];
     roleName = json['roleName'];
+    if (json['propertyImages'] != null) {
+      propertyImages = <PropertyImages>[];
+      json['propertyImages'].forEach((v) {
+        propertyImages!.add(new PropertyImages.fromJson(v));
+      });
+    }
     signUpUserEmail = json['signUpUserEmail'];
     userPassword = json['userPassword'];
     signUpUserName = json['signUpUserName'];
@@ -152,6 +176,8 @@ class FavouriteProperty {
     signUpAs = json['signUpAs'];
     isLogin = json['isLogin'];
     isSignUp = json['isSignUp'];
+    imageIformFile = json['imageIformFile'];
+    bytesList = json['bytesList'];
   }
 
   Map<String, dynamic> toJson() {
@@ -168,8 +194,10 @@ class FavouriteProperty {
     data['noOfBeds'] = this.noOfBeds;
     data['noOfBaths'] = this.noOfBaths;
     data['expireAfter'] = this.expireAfter;
+    data['imageUploadString'] = this.imageUploadString;
     data['uploadImage'] = this.uploadImage;
     data['imageByPath'] = this.imageByPath;
+    data['videoUploadString'] = this.videoUploadString;
     data['uploadVideo'] = this.uploadVideo;
     data['videoByPath'] = this.videoByPath;
     data['city'] = this.city;
@@ -177,6 +205,7 @@ class FavouriteProperty {
     data['area'] = this.area;
     data['locationPhaseId'] = this.locationPhaseId;
     data['areaSizeID'] = this.areaSizeID;
+    data['areaSize'] = this.areaSize;
     data['areaId'] = this.areaId;
     data['detailAddress'] = this.detailAddress;
     data['amount'] = this.amount;
@@ -188,7 +217,12 @@ class FavouriteProperty {
     data['isPending'] = this.isPending;
     data['userId'] = this.userId;
     data['userEmail'] = this.userEmail;
+    data['userMobile'] = this.userMobile;
     data['roleName'] = this.roleName;
+    if (this.propertyImages != null) {
+      data['propertyImages'] =
+          this.propertyImages!.map((v) => v.toJson()).toList();
+    }
     data['signUpUserEmail'] = this.signUpUserEmail;
     data['userPassword'] = this.userPassword;
     data['signUpUserName'] = this.signUpUserName;
@@ -196,6 +230,37 @@ class FavouriteProperty {
     data['signUpAs'] = this.signUpAs;
     data['isLogin'] = this.isLogin;
     data['isSignUp'] = this.isSignUp;
+    data['imageIformFile'] = this.imageIformFile;
+    data['bytesList'] = this.bytesList;
+    return data;
+  }
+}
+
+class PropertyImages {
+  int? id;
+  int? propertyId;
+  String? imageURL;
+  Null? videoURL;
+  String? dateTime;
+
+  PropertyImages(
+      {this.id, this.propertyId, this.imageURL, this.videoURL, this.dateTime});
+
+  PropertyImages.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    propertyId = json['propertyId'];
+    imageURL = json['imageURL'];
+    videoURL = json['videoURL'];
+    dateTime = json['dateTime'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['propertyId'] = this.propertyId;
+    data['imageURL'] = this.imageURL;
+    data['videoURL'] = this.videoURL;
+    data['dateTime'] = this.dateTime;
     return data;
   }
 }

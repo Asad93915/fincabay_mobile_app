@@ -33,4 +33,6 @@ const TextStyle userStyle=TextStyle(color: blackColor,fontWeight: FontWeight.w70
 const TextStyle noStyle=TextStyle(fontSize: 13.0);
 const TextStyle sellStyle=TextStyle(color: blackColor,fontSize: 14.0,fontWeight: FontWeight.bold);
 const TextStyle accountsStyle=TextStyle(color: lightBlackColor,fontSize: 16.0,height: 2.5);
-
+const TextStyle lengthStyle=TextStyle(color: whiteColor,fontSize: 14.0,fontWeight: FontWeight.w500);
+const TextStyle accStyle=TextStyle(color: Colors.black45, fontSize: 14.0, height: 2.3);
+const TextStyle signUpStyle=TextStyle(color: lightBlackColor, fontSize: 14.0, fontWeight: FontWeight.w800);

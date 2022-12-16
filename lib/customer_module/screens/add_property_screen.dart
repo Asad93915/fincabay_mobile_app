@@ -73,11 +73,13 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
   TextEditingController _passwordCont = TextEditingController();
   TextEditingController _regNameCont = TextEditingController();
   TextEditingController _regMobileCont = TextEditingController();
+  TextEditingController _phoneNoCont = TextEditingController();
 
   FocusNode _emailFocus = FocusNode();
   FocusNode _passwordFocus = FocusNode();
   FocusNode _regNameFocus = FocusNode();
   FocusNode _regMobileFocus = FocusNode();
+  FocusNode _phoneNoFocus = FocusNode();
 
   int selectedIndex = 1;
 
@@ -86,6 +88,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
     await CitiesService().getAllCities(context: context);
     CustomLoader.hideLoader(context);
   }
+
   _getAreaUnitsHandler() async {
     CustomLoader.showLoader(context: context);
     await SelectAreaUnitsService().selectUnit(context: context);
@@ -111,7 +114,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
             propPurpose: selectedPurpose,
             price: _priceCont.text,
             landArea: _landAreaCont.text,
-            unit: selectedUnit??"",
+            unit: selectedUnit ?? "",
             noOfBeds: selectedProperty == 'Homes' ? _noOfBedsCont.text : "0",
             noOfBaths: selectedProperty == "Homes" ? _noOfBathsCont.text : '0',
             expiryDate: _expiryCont.text,
@@ -125,6 +128,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
             signUpAs: selectedWhoIAm,
             isLogin: selectedIndex == 0 ? true : false,
             isSignup: selectedIndex == 1 ? true : false,
+      phoneNo: _phoneNoCont.text,
           )
         : await AgentsAddPropertyService().addAgentProperty(
             context: context,
@@ -134,15 +138,16 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
             purpose: selectedPurpose,
             price: _priceCont.text,
             landArea: _landAreaCont.text,
-            unit: selectedUnit??"",
+            unit: selectedUnit ?? "",
             noOfBeds: selectedProperty == 'Homes' ? _noOfBedsCont.text : "0",
             noOfBaths: selectedProperty == "Homes" ? _noOfBathsCont.text : '0',
             expiryDate: selectedExpiration,
             city: _selectedCity!,
             area: selectedArea!,
             detailsAddress: _addressCont.text,
-            userEmail: widget.isSelected==false?widget.userEmail:"",
+            userEmail: widget.isSelected == false ? widget.userEmail : "",
             uploadImage: uploadMultImagesBytes,
+            phoneNo: _phoneNoCont.text,
             uploadedVideo: []);
     CustomLoader.hideLoader(context);
   }
@@ -159,11 +164,12 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
     setState(() {});
     super.initState();
   }
-  String? selectedUnit;
-  updateUnit(String value){
-    setState((){
-      selectedUnit=value;
 
+  String? selectedUnit;
+
+  updateUnit(String value) {
+    setState(() {
+      selectedUnit = value;
     });
   }
 
@@ -176,6 +182,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
   }
 
   String? selectedArea;
+
   @override
   updateArea(String? value) async {
     selectedArea = value;
@@ -201,20 +208,16 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
   FocusNode _addressFocus = FocusNode();
   bool isShow = false;
 
-  CameraPosition initCamerPosition=CameraPosition(
-    target: LatLng(31.5204,74.3587),
-    zoom: 20.0
-  );
-  List<Marker> _markers=[
+  CameraPosition initCamerPosition =
+      CameraPosition(target: LatLng(31.5204, 74.3587), zoom: 20.0);
+  List<Marker> _markers = [
     Marker(
         markerId: MarkerId('1'),
-    position: LatLng(31.5204,74.3587),
-      infoWindow: InfoWindow(
-        title: "My Location"
-      )
-    )
+        position: LatLng(31.5204, 74.3587),
+        infoWindow: InfoWindow(title: "My Location"))
   ];
-  final Completer<GoogleMapController> _controller=Completer();
+  final Completer<GoogleMapController> _controller = Completer();
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -398,33 +401,35 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                         inputType: TextInputType.number,
                         inputAction: TextInputAction.next,
                       )),
-                     Consumer<SelectAreaUnitsProvider>(builder: (context,area,_){
-                       return  Expanded(
-                         child: CustomDropDown(
-                           borderColor:
-                           selectedUnit==null ? lightBlackColor : bgColor,
-                           child: DropdownButton(
-                             value: selectedUnit,
-                             isExpanded: true,
-                             underline: SizedBox(),
-                             hint: Text(selectedUnit==null?
-                                  "Select Unit"
-                                 : selectedUnit!),
-                             items: area.areaUnit!.map((item) {
-                               return DropdownMenuItem(
-                                 child: Text(item.name!),
-                                 value: item.name,
-                               );
-                             }).toList(),
-                             onChanged: (String? newValue) {
-                               updateUnit(newValue!);
+                      Consumer<SelectAreaUnitsProvider>(
+                          builder: (context, area, _) {
+                        return Expanded(
+                          child: CustomDropDown(
+                            borderColor: selectedUnit == null
+                                ? lightBlackColor
+                                : bgColor,
+                            child: DropdownButton(
+                              value: selectedUnit,
+                              isExpanded: true,
+                              underline: SizedBox(),
+                              hint: Text(selectedUnit == null
+                                  ? "Select Unit"
+                                  : selectedUnit!),
+                              items: area.areaUnit!.map((item) {
+                                return DropdownMenuItem(
+                                  child: Text(item.name!),
+                                  value: item.name,
+                                );
+                              }).toList(),
+                              onChanged: (String? newValue) {
+                                updateUnit(newValue!);
 
-                               setState(() {});
-                             },
-                           ),
-                         ),
-                       );
-                     })
+                                setState(() {});
+                              },
+                            ),
+                          ),
+                        );
+                      })
                     ],
                   ),
                   isShow == true
@@ -742,23 +747,29 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                     maxLine: 1,
                     controller: _addressCont,
                     focusNode: _addressFocus,
+                    inputAction: TextInputAction.next,
+                  ),
+                  CustomTextField(
+                    headerText: "Phone Number",
+                    controller: _phoneNoCont,
+                    focusNode: _phoneNoFocus,
+                    inputType: TextInputType.number,
                     inputAction: TextInputAction.done,
                   ),
+                  Divider(),
                   Container(
                     decoration: BoxDecoration(
                       border: Border.all(color: black12),
-
                     ),
                     margin: EdgeInsets.symmetric(vertical: 12.0),
                     height: 200.0,
                     width: double.infinity,
                     child: GoogleMap(
-                        initialCameraPosition: initCamerPosition,
-                      markers:Set<Marker>.of(_markers),
-                      onMapCreated: (GoogleMapController controller){
-                          _controller.complete(controller);
+                      initialCameraPosition: initCamerPosition,
+                      markers: Set<Marker>.of(_markers),
+                      onMapCreated: (GoogleMapController controller) {
+                        _controller.complete(controller);
                       },
-
                     ),
                   ),
                   if (widget.isSelected == true)
@@ -1026,7 +1037,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
           context: context, message: "Enter Total Land");
       _landAreaFocus.requestFocus();
       return false;
-    } else if (selectedUnit==null) {
+    } else if (selectedUnit == null) {
       CustomSnackBar.failedSnackBar(
           context: context, message: "Selected Property Unit");
     }
@@ -1042,17 +1053,14 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
         _noOfBathsFocus.requestFocus();
         return false;
       }
-    }
-    else if (selectedExpiration.isEmpty) {
+    } else if (selectedExpiration.isEmpty) {
       CustomSnackBar.failedSnackBar(
           context: context, message: "Selected Expiration Date");
       return false;
-    }
-    else if (_selectedCity == null) {
+    } else if (_selectedCity == null) {
       CustomSnackBar.failedSnackBar(context: context, message: "Selected City");
       return false;
-    }
-    else if (_addressCont.text.isEmpty) {
+    } else if (_addressCont.text.isEmpty) {
       CustomSnackBar.failedSnackBar(
           context: context, message: "Enter Address Details");
       _addressFocus.requestFocus();
@@ -1108,39 +1116,31 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
     }
   }
 
-  Future<Position> _getCurrentLocation() async{
-    await Geolocator.requestPermission().then((value) {
-
-    }).onError((error, stackTrace) {
+  Future<Position> _getCurrentLocation() async {
+    await Geolocator.requestPermission()
+        .then((value) {})
+        .onError((error, stackTrace) {
       print("Error $error");
     });
 
     return await Geolocator.getCurrentPosition();
-
   }
+
   ////Get Location in init or at start
 
-  initMethod()async{
-    _getCurrentLocation().then((value)async {
+  initMethod() async {
+    _getCurrentLocation().then((value) async {
       print("My Current Location");
       print("Lonitude ${value.longitude}");
       print("Latitude ${value.latitude}");
-      _markers.add(
-          Marker(
-              markerId: MarkerId('3'),
-              infoWindow: InfoWindow(
-                  title: "My Current Location"
-              ),
-              position: LatLng(
-                  value.latitude,value.longitude
-              )
-          )
-      );
-      setState((){});
-      CameraPosition cameraPosition=CameraPosition(
-          target:LatLng(value.latitude,value.longitude),
-          zoom: 14);
-      final GoogleMapController controller=await _controller.future;
+      _markers.add(Marker(
+          markerId: MarkerId('3'),
+          infoWindow: InfoWindow(title: "My Current Location"),
+          position: LatLng(value.latitude, value.longitude)));
+      setState(() {});
+      CameraPosition cameraPosition = CameraPosition(
+          target: LatLng(value.latitude, value.longitude), zoom: 14);
+      final GoogleMapController controller = await _controller.future;
       controller.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
     });
   }

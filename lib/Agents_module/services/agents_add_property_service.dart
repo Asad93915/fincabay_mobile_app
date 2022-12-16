@@ -23,6 +23,7 @@ class AgentsAddPropertyService {
     required String userEmail,
     required List<String> uploadImage,
     required List<String> uploadedVideo,
+    required String phoneNo,
   }) async {
     try {
       Map _body = {
@@ -41,6 +42,7 @@ class AgentsAddPropertyService {
         "detailAddress": detailsAddress,
         "signUpUserEmail": userEmail,
         "imageUploadString":uploadImage,
+        "userMobile":phoneNo,
         "videoUploadString":uploadedVideo
       };
       var res = await PostRequestService()

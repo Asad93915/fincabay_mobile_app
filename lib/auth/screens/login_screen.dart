@@ -62,8 +62,12 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  TextEditingController _emailCont = TextEditingController();
-  TextEditingController _passwordCont = TextEditingController();
+  TextEditingController _emailCont = TextEditingController(
+    text: "customer@gmail.com"
+  );
+  TextEditingController _passwordCont = TextEditingController(
+    text: "Asad123@"
+  );
   FocusNode _emailFocus = FocusNode();
   FocusNode _passwordFocus = FocusNode();
 
@@ -115,9 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     controller: _emailCont,
                     focusNode: _emailFocus,
                   ),
-                  SizedBox(
-                    height: 10.0,
-                  ),
+
                   CustomTextField(
                     // hintText:"Password",
                     inputType: TextInputType.visiblePassword,
@@ -134,9 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       setState(() {});
                     },
                   ),
-                  SizedBox(
-                    height: 10.0,
-                  ),
+
                   TextButton(
                       onPressed: () {
                         NavigationServices.goNextAndKeepHistory(
@@ -150,7 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     width: double.infinity,
                     text: "Login",
                     fontSize: 18.0,
-                    height: 50.0,
+
                     horizontalMargin: 6.0,
                     fontWeight: FontWeight.w800,
                     onTap: () {
@@ -163,8 +163,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   RichText(
                     text: TextSpan(
                         text: "Don't have an account? ",
-                        style: TextStyle(
-                            color: Colors.black45, fontSize: 14.0, height: 2.3),
+                        style: accStyle,
                         children: [
                           TextSpan(
                               recognizer: TapGestureRecognizer()
@@ -175,10 +174,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       widget: RegistrationScreen());
                                 },
                               text: "Sign Up",
-                              style: TextStyle(
-                                  color: lightBlackColor,
-                                  fontSize: 14.0,
-                                  fontWeight: FontWeight.w800))
+                              style: signUpStyle)
                         ]),
                   ),
                   Text(

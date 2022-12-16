@@ -28,7 +28,10 @@ class AddPropertyService {
     required String signUpAs,
     required String name,
     required bool isLogin,
-    required bool isSignup}) async {
+    required bool isSignup,
+    required String phoneNo,
+
+  }) async {
     try {
       print("list  $uploadImage");
       Map _body = {
@@ -52,7 +55,8 @@ class AddPropertyService {
         "signUpAs": signUpAs,
         "signUpUserName": name,
         "isLogin": isLogin,
-        "isSignUp": isSignup
+        "isSignUp": isSignup,
+        "userMobile":phoneNo
       };
       print("Body $_body");
       var res = await PostRequestService()

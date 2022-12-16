@@ -4,20 +4,25 @@ import 'dart:convert';
 import 'package:fincabay_application/auth/models/user_response_model.dart';
 import 'package:fincabay_application/customer_module/models/get_favourite_property_model.dart';
 import 'package:fincabay_application/customer_module/providers/get_favourite_prop_provider.dart';
+import 'package:fincabay_application/customer_module/screens/home_dashboard/dashboard_widgets/property_details_screen.dart';
 import 'package:fincabay_application/customer_module/services/get_favourite_property_service.dart';
 import 'package:fincabay_application/helper_services/delete_favourite_property_service.dart';
+import 'package:fincabay_application/helper_services/navigation_services.dart';
 import 'package:fincabay_application/utils/handlers.dart';
 import 'package:fincabay_application/utils/local_storage_services.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_sms/flutter_sms.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../auth/provider/user_data_provider.dart';
+import '../../../../configs/api_configs.dart';
 import '../../../../configs/colors.dart';
 import '../../../../configs/text_styles.dart';
 import '../../../../helper_services/custom_loader.dart';
 import '../../../../helper_widgets/custom_button.dart';
 import '../../../../helper_widgets/house_details.dart';
 import '../../../../utils/Functions.dart';
+import '../../../../utils/launchers.dart';
 
 class FavouritesScreen extends StatefulWidget {
   final   bool showScaffold;
@@ -143,37 +148,15 @@ class FavouriteWidget extends StatefulWidget {
 
 class _FavouriteWidgetState extends State<FavouriteWidget> {
 
-  // _delFavProp()async{
-  //   CustomLoader.showLoader(context: context);
-  //   await DeleteFavouritePropertyService().delFavProp(context: context, userId: widget.userId, propId: widget.favProp.id!);
-  //   getFavouritePropHandler(context, widget.userId);
-  //   CustomLoader.hideLoader(context);
-  // }
-
-  // getFavouritePropHandler(context, widget.userId);
   @override
   Widget build(BuildContext context) {
-    String imageUrl="assets/images/property_image.jpg";
+
 
 
     return InkWell(
       onTap: (){
-        // Navigator.push(
-        //     context,
-        //     PageRouteBuilder(
-        //         transitionDuration: Duration(seconds: 2),
-        //         pageBuilder: (_, __, ___) => PropertyDetailsScreen(
-        //           imageUrl: imageUrl,
-        //           price: widget.areaView.amount.toString(),
-        //           sellingAsset:"${widget.areaView.propertyType}"+" For " + "${widget.areaView.purpose}",
-        //           address: widget.areaView.detailAddress!,
-        //           noOfBaths: widget.areaView.noOfBaths!,
-        //           noOfBeds: widget.areaView.noOfBeds!,
-        //           landArea: widget.areaView.landArea!,
-        //           unit: widget.areaView.unit!,
-        //           description: widget.areaView.description!,
-        //
-        //         )));
+
+        NavigationServices.goNextAndKeepHistory(context: context, widget: FavouritePropertiesDetailsScreen(prop: widget.favProp,));
       },
       child: Padding(
         padding: const EdgeInsets.only(left: 10.0, right: 5.0,top: 10.0),
@@ -185,13 +168,43 @@ class _FavouriteWidgetState extends State<FavouriteWidget> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Hero(tag: 'propertyUrl',
-                  child:  Image.asset(
-                    "$imageUrl",
-                    height: MediaQuery.of(context).size.height / 4.5,
-                    width: 125.0,
-                    fit: BoxFit.fill,
-                  ),),
+                widget.favProp.propertyImages!.isNotEmpty?
+
+          Stack(
+            alignment: Alignment.bottomRight,
+
+            children: [
+              Image.network("http://173.208.142.67:5955/fincabayapi/${widget.favProp.propertyImages![0].imageURL!}",
+              height: MediaQuery.of(context).size.height / 4.5,
+              width: 125.0,
+              fit: BoxFit.fill,
+        ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 6.0,vertical: 5.0),
+                decoration: BoxDecoration(
+                    color: Colors.black54,
+                  borderRadius: BorderRadius.circular(8.0)
+                ),
+                height: 30.0,
+                width: 50.0,
+
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(Icons.image_rounded,color: whiteColor,size: 20.0,),
+                    Text(widget.favProp.propertyImages!.length.toString(),style: lengthStyle,)
+                  ],
+                ),
+              )
+            ],
+          ) :
+                Image.asset(
+                  "assets/images/property_image.jpg",
+                  height: MediaQuery.of(context).size.height / 4.5,
+                  width: 125.0,
+                  fit: BoxFit.fill,
+                ),
                 Padding(
                   padding:
                   const EdgeInsets.only(left: 8.0, top: 8.0, bottom: 8.0),
@@ -215,7 +228,7 @@ class _FavouriteWidgetState extends State<FavouriteWidget> {
                         ),
                       ),
                       Text(
-                        "${widget.favProp.propertyType}"+" For "+"${widget.favProp.purpose}",
+                        "${widget.favProp.category}"+" For "+"${widget.favProp.purpose}",
                         style: houseStyle,
                       ),
                       SizedBox(
@@ -270,7 +283,9 @@ class _FavouriteWidgetState extends State<FavouriteWidget> {
                               fontSize: 14.0,
                               fontWeight: FontWeight.w600,
                               onTap: () {
-
+                                sendSMS(message: message, recipients: [
+                                 "${widget.favProp.userMobile}"
+                                ]);
                               },
                             ),
                             SizedBox(
@@ -286,21 +301,29 @@ class _FavouriteWidgetState extends State<FavouriteWidget> {
                                             borderRadius: BorderRadius.circular(10.0)
                                         )
                                     ),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      makePhoneCall( "${widget.favProp.userMobile}");
+                                    },
                                     icon: Icon(Icons.call),
                                     label: Text("Call",style: TextStyle(fontSize: 14.0),))),
                             SizedBox(width: 3.0,),
                             Expanded(
-                                child: Container(
-                                  height: 30.0,
-                                  decoration: BoxDecoration(
-                                      color: bgColor,
-                                      borderRadius: BorderRadius.circular(10.0
-                                      )
-                                  ),
-                                  margin: EdgeInsets.symmetric(vertical: 5.0),
-                                  child: Icon(
-                                    Icons.whatsapp,color: whiteColor,
+                                child: InkWell(
+                                  onTap: (){
+                                    launchWhatsapp(
+                                        context: context, phoneNo: '${widget.favProp.userMobile}');
+                                  },
+                                  child: Container(
+                                    height: 30.0,
+                                    decoration: BoxDecoration(
+                                        color: bgColor,
+                                        borderRadius: BorderRadius.circular(10.0
+                                        )
+                                    ),
+                                    margin: EdgeInsets.symmetric(vertical: 5.0),
+                                    child: Icon(
+                                      Icons.whatsapp,color: whiteColor,
+                                    ),
                                   ),
                                 )
                             ),

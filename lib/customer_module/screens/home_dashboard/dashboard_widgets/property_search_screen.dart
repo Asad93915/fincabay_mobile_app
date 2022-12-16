@@ -67,6 +67,7 @@ class _PropertySearchScreenState extends State<PropertySearchScreen> {
                       landArea: search.propSearch![index].landArea!,
                       unit: search.propSearch![index].unit==null?"null":search.propSearch![index].unit!,
                       description: search.propSearch![index].description==null?"null":search.propSearch![index].description!,
+                    mobileNo: "",
                   ));
                 },
                 child: SearchWidget(
@@ -104,17 +105,16 @@ class SearchWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Hero(tag: 'propertyUrl',
-                child: Image.asset(
-                  propSearch.uploadImage == null ? imageUrl : propSearch
-                      .uploadImage!,
-                  height: MediaQuery
-                      .of(context)
-                      .size
-                      .height / 4.8,
-                  width: 125.0,
-                  fit: BoxFit.fill,
-                ),),
+              Image.asset(
+                propSearch.uploadImage == null ? imageUrl : propSearch
+                    .uploadImage!,
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .height / 4.8,
+                width: 125.0,
+                fit: BoxFit.fill,
+              ),
               Padding(
                 padding:
                 const EdgeInsets.only(left: 8.0, top: 8.0, bottom: 8.0),

@@ -7,14 +7,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sms/flutter_sms.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../configs/colors.dart';
 import '../../../configs/text_styles.dart';
 import '../../../helper_services/custom_loader.dart';
 import '../../../helper_widgets/house_details.dart';
+import '../../../utils/launchers.dart';
 import '../../models/get_user_properties_model.dart';
 import '../../providers/get_user_properties_provider.dart';
 import '../../services/get_user_properties_service.dart';
+import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 
 class GetUserPropertiesScreen extends StatefulWidget {
   final String userEmail;
@@ -51,7 +54,8 @@ class _GetUserPropertiesScreenState extends State<GetUserPropertiesScreen> {
       return    _getUserPropertiesHandler();
         },
         child: Consumer<GetUserPropertiesProvider>(builder: (context,property,_){
-          return property.properties!.isNotEmpty?ListView.builder(
+          return
+            property.properties!.isNotEmpty?ListView.builder(
               shrinkWrap: true,
               primary: false,
               physics: AlwaysScrollableScrollPhysics(),
@@ -99,8 +103,6 @@ class _GetUserPropertiesWidgetState extends State<GetUserPropertiesWidget> {
   //   super.initState();
   // }
 
-  String message =
-      "Hey Asad, I am using Fincabay.com app please call me on this number";
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +111,7 @@ class _GetUserPropertiesWidgetState extends State<GetUserPropertiesWidget> {
       child: InkWell(
 
         onTap: (){
-          NavigationServices.goNextAndKeepHistory(context: context, widget: PropertyDetailsScreen1(properties: widget.prop,));
+          NavigationServices.goNextAndKeepHistory(context: context, widget: UserPropertiesDetailsScreen(properties: widget.prop,));
           setState((){});
         },
         child: Column(
@@ -159,7 +161,7 @@ class _GetUserPropertiesWidgetState extends State<GetUserPropertiesWidget> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Icon(Icons.image_rounded,color: whiteColor,size: 20.0,),
-                          Text(widget.prop.propertyImages!.length.toString(),style: TextStyle(color: whiteColor,fontSize: 14.0,fontWeight: FontWeight.w500),),
+                          Text(widget.prop.propertyImages!.length.toString(),style: lengthStyle),
                         ],
                       )),
                 ],
@@ -267,7 +269,16 @@ class _GetUserPropertiesWidgetState extends State<GetUserPropertiesWidget> {
                               textColor: bgColor,
                               fontSize: 14.0,
                               fontWeight: FontWeight.w600,
-                              onTap: () {},
+                              onTap: () {
+                                {
+                                  sendMessage(message, [
+                                    widget.prop.userMobile??"03064123"
+                                    // apis like that
+                                    // '${widget.missionReminderModel.phone}',
+                                  ]);
+                                  setState(() {});
+                                }
+                              },
                             ),
                             SizedBox(
                               width: 3.0,
@@ -282,14 +293,7 @@ class _GetUserPropertiesWidgetState extends State<GetUserPropertiesWidget> {
                                             borderRadius:
                                                 BorderRadius.circular(10.0))),
                                     onPressed: () {
-                                      {
-                                        _sendSMS(message, [
-                                          '+923414044446',
-                                          // apis like that
-                                          // '${widget.missionReminderModel.phone}',
-                                        ]);
-                                        setState(() {});
-                                      }
+                                      makePhoneCall(widget.prop.userMobile??"0111111");
                                     },
                                     icon: Icon(Icons.call),
                                     label: Text(
@@ -300,17 +304,23 @@ class _GetUserPropertiesWidgetState extends State<GetUserPropertiesWidget> {
                               width: 3.0,
                             ),
                             Expanded(
-                                child: Container(
+                                child: InkWell(
+                                  onTap: (){
+                                    launchWhatsapp(
+                                        context: context, phoneNo: '${widget.prop.userMobile}');
+                                  },
+                                  child: Container(
                               height: 30.0,
                               decoration: BoxDecoration(
-                                  color: bgColor,
-                                  borderRadius: BorderRadius.circular(10.0)),
+                                    color: bgColor,
+                                    borderRadius: BorderRadius.circular(10.0)),
                               margin: EdgeInsets.symmetric(vertical: 5.0),
                               child: Icon(
-                                Icons.whatsapp,
-                                color: whiteColor,
+                                  Icons.whatsapp,
+                                  color: whiteColor,
                               ),
-                            )),
+                            ),
+                                )),
                           ],
                         ),
                       )
@@ -328,15 +338,8 @@ class _GetUserPropertiesWidgetState extends State<GetUserPropertiesWidget> {
     );
   }
 
-  void _sendSMS(String message, List<String> recipents) async {
-    print('i am message $message');
-    print('i am recipents $recipents');
-    String _result = await sendSMS(message: message, recipients: recipents)
-        .catchError((onError) {
-      print(onError);
-    });
-    print(_result);
-  }
+
+
 }
 
 

@@ -71,6 +71,7 @@ class UserProperties {
   String? signUpAs;
   bool? isLogin;
   bool? isSignUp;
+  String? userMobile;
   String? imageIformFile;
 
   UserProperties(
@@ -117,7 +118,9 @@ class UserProperties {
         this.signUpAs,
         this.isLogin,
         this.isSignUp,
-        this.imageIformFile});
+        this.imageIformFile,
+        this.userMobile,
+      });
 
   UserProperties.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -168,6 +171,7 @@ class UserProperties {
     signUpAs = json['signUpAs'];
     isLogin = json['isLogin'];
     isSignUp = json['isSignUp'];
+    userMobile = json['userMobile'];
     imageIformFile = json['imageIformFile'];
   }
 
@@ -219,6 +223,7 @@ class UserProperties {
     data['signUpAs'] = this.signUpAs;
     data['isLogin'] = this.isLogin;
     data['isSignUp'] = this.isSignUp;
+    data['userMobile'] = this.userMobile;
     data['imageIformFile'] = this.imageIformFile;
     return data;
   }
