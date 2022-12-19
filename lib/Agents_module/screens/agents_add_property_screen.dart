@@ -5,8 +5,8 @@ import 'package:fincabay_application/Agents_module/services/agents_add_property_
 import 'package:fincabay_application/auth/models/user_response_model.dart';
 import 'package:fincabay_application/auth/provider/user_data_provider.dart';
 import 'package:fincabay_application/configs/colors.dart';
-import 'package:fincabay_application/customer_module/services/area_size_service.dart';
-import 'package:fincabay_application/customer_module/services/location_name_service.dart';
+import 'package:fincabay_application/Customer_module/services/area_size_service.dart';
+import 'package:fincabay_application/Customer_module/services/location_name_service.dart';
 import 'package:fincabay_application/dialogs/show_will_pop_dialog.dart';
 import 'package:fincabay_application/helper_services/custom_loader.dart';
 import 'package:fincabay_application/helper_widgets/custom_button.dart';
@@ -21,11 +21,11 @@ import 'package:provider/provider.dart';
 import '../../../configs/text_styles.dart';
 import '../../../helper_widgets/custom_dropdown_text.dart';
 import '../../../helper_widgets/custom_uploading_widget.dart';
-import '../../customer_module/providers/cities_provider.dart';
-import '../../customer_module/providers/location_name_provider.dart';
-import '../../customer_module/providers/select_area_units_provider.dart';
-import '../../customer_module/services/cities_service.dart';
-import '../../customer_module/services/select_area_unit_service.dart';
+import '../../Customer_module/providers/cities_provider.dart';
+import '../../Customer_module/providers/location_name_provider.dart';
+import '../../Customer_module/providers/select_area_units_provider.dart';
+import '../../Customer_module/services/cities_service.dart';
+import '../../Customer_module/services/select_area_unit_service.dart';
 
 class AgentsAddPropertyScreen extends StatefulWidget {
   const AgentsAddPropertyScreen({super.key});

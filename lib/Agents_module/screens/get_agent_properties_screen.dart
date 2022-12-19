@@ -1,7 +1,7 @@
 import 'package:fincabay_application/Agents_module/providers/agent_properties_provider.dart';
 import 'package:fincabay_application/Agents_module/services/agent_properties_service.dart';
 import 'package:fincabay_application/auth/provider/user_data_provider.dart';
-import 'package:fincabay_application/customer_module/cusomer_drawer_screen.dart';
+import 'package:fincabay_application/Customer_module/cusomer_drawer_screen.dart';
 import 'package:fincabay_application/dialogs/show_will_pop_dialog.dart';
 import 'package:fincabay_application/helper_services/custom_loader.dart';
 import 'package:fincabay_application/helper_services/navigation_services.dart';
@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 
 import '../../configs/colors.dart';
 import '../../configs/text_styles.dart';
-import '../../customer_module/screens/home_dashboard/dashboard_widgets/property_details_screen.dart';
+import '../../Customer_module/screens/home_dashboard/properties_widgets/property_details_screen.dart';
 import '../../helper_widgets/custom_button.dart';
 import '../../helper_widgets/house_details.dart';
 import '../models/agent_properties_model.dart';

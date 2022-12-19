@@ -13,7 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:provider/provider.dart';
 
-import '../../customer_module/providers/cities_provider.dart';
+import '../../Customer_module/providers/cities_provider.dart';
 import '../../helper_widgets/custom_dropdown_text.dart';
 import '../../utils/handlers.dart';
 import 'login_screen.dart';

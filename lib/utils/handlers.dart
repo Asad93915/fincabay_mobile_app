@@ -4,12 +4,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../Agents_module/services/staff_member_service.dart';
-import '../customer_module/services/add_favourites_properties_service.dart';
-import '../customer_module/services/area_size_service.dart';
-import '../customer_module/services/area_size_view_service.dart';
-import '../customer_module/services/cities_service.dart';
-import '../customer_module/services/get_favourite_property_service.dart';
-import '../customer_module/services/property_typer_service.dart';
+import '../Customer_module/services/add_favourites_properties_service.dart';
+import '../Customer_module/services/area_size_service.dart';
+import '../Customer_module/services/prop_list_service.dart';
+import '../Customer_module/services/cities_service.dart';
+import '../Customer_module/services/get_favourite_property_service.dart';
+import '../Customer_module/services/property_typer_service.dart';
 import '../helper_services/custom_loader.dart';
 import '../helper_services/delete_favourite_property_service.dart';
 
@@ -35,7 +35,7 @@ propertyTypeHandler(BuildContext context,String categoryType)async{
 }
 areaSizeViewHandler(BuildContext context,String catName,int areaSizeId,int typeId)async {
   CustomLoader.showLoader(context: context);
-  await AreaSizeViewService().getAreaSizeView(context: context,
+  await PropertyListService().getProp(context: context,
       catName: "$catName",
       areaSizeId: areaSizeId,
       typeId: typeId);

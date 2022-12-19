@@ -6,7 +6,7 @@ import 'package:fincabay_application/auth/screens/login_screen.dart';
 import 'package:fincabay_application/auth/services/registration_service.dart';
 import 'package:fincabay_application/configs/colors.dart';
 import 'package:fincabay_application/configs/text_styles.dart';
-import 'package:fincabay_application/customer_module/services/update_profile_service.dart';
+import 'package:fincabay_application/Customer_module/services/update_profile_service.dart';
 import 'package:fincabay_application/dialogs/show_will_pop_dialog.dart';
 import 'package:fincabay_application/helper_services/custom_loader.dart';
 import 'package:fincabay_application/helper_services/custom_snackbar.dart';
@@ -18,7 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:provider/provider.dart';
 
-import '../../customer_module/providers/cities_provider.dart';
+import '../../Customer_module/providers/cities_provider.dart';
 import '../../helper_widgets/custom_dropdown_text.dart';
 import '../../helper_widgets/custom_form_field.dart';
 import '../../utils/handlers.dart';

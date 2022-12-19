@@ -21,8 +21,8 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../configs/text_styles.dart';
-import '../../customer_module/screens/add_property_screen.dart';
-import '../../customer_module/screens/home_dashboard/home_dashboard_screens.dart';
+import '../../Customer_module/screens/home_dashboard/home_dashboard_menus/home_dashboard_screens.dart';
+import '../../Customer_module/screens/home_dashboard/properties_widgets/add_property_screen.dart';
 import '../../utils/Functions.dart';
 import '../../utils/variable_storage.dart';
 import '../models/user_response_model.dart';

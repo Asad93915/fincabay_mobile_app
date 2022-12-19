@@ -8,27 +8,26 @@ import 'package:fincabay_application/Agents_module/providers/agent_properties_pr
 import 'package:fincabay_application/Agents_module/providers/staff_member_provider.dart';
 import 'package:fincabay_application/Agents_module/screens/agents_home_screen.dart';
 import 'package:fincabay_application/app_localization.dart';
-import 'package:fincabay_application/customer_module/providers/agents_list_provider.dart';
-import 'package:fincabay_application/customer_module/providers/get_favourite_prop_provider.dart';
-import 'package:fincabay_application/customer_module/providers/select_area_units_provider.dart';
-import 'package:fincabay_application/customer_module/screens/home_dashboard/home_dashboard_screens.dart';
+import 'package:fincabay_application/Customer_module/providers/agents_list_provider.dart';
+import 'package:fincabay_application/Customer_module/providers/get_favourite_prop_provider.dart';
+import 'package:fincabay_application/Customer_module/providers/select_area_units_provider.dart';
 import 'package:fincabay_application/helper_services/navigation_services.dart';
 import 'package:fincabay_application/utils/local_storage_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-
+import 'Customer_module/screens/home_dashboard/home_dashboard_menus/home_dashboard_screens.dart';
 import 'auth/provider/registration_provider.dart';
 import 'auth/provider/user_data_provider.dart';
-import 'customer_module/providers/area_size_provider.dart';
-import 'customer_module/providers/area_size_view_provider.dart';
-import 'customer_module/providers/cities_provider.dart';
-import 'customer_module/providers/get_user_properties_provider.dart';
-import 'customer_module/providers/location_name_provider.dart';
-import 'customer_module/providers/location_phases_provider.dart';
-import 'customer_module/providers/property_search_provider.dart';
-import 'customer_module/providers/property_type_provider.dart';
+import 'Customer_module/providers/area_size_provider.dart';
+import 'Customer_module/providers/prop_list_provider.dart';
+import 'Customer_module/providers/cities_provider.dart';
+import 'Customer_module/providers/get_user_properties_provider.dart';
+import 'Customer_module/providers/location_name_provider.dart';
+import 'Customer_module/providers/location_phases_provider.dart';
+import 'Customer_module/providers/property_search_provider.dart';
+import 'Customer_module/providers/property_type_provider.dart';
 
 
 // void main() {
@@ -49,7 +48,7 @@ void main() {
         ChangeNotifierProvider(create: (context)=>LocationPhasesProvider()),
         ChangeNotifierProvider(create: (context)=>PropertySearchProvider()),
         ChangeNotifierProvider(create: (context)=>GetUserPropertiesProvider()),
-        ChangeNotifierProvider(create: (context)=>AreaSizeViewProvider()),
+        ChangeNotifierProvider(create: (context)=>PropertyListProvider()),
         ChangeNotifierProvider(create: (context)=>GetFavPropProvider()),
         ChangeNotifierProvider(create: (context)=>SelectAreaUnitsProvider()),
         //Agents
@@ -102,7 +101,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (context)=>LocationPhasesProvider()),
         ChangeNotifierProvider(create: (context)=>PropertySearchProvider()),
         ChangeNotifierProvider(create: (context)=>GetUserPropertiesProvider()),
-        ChangeNotifierProvider(create: (context)=>AreaSizeViewProvider()),
+        ChangeNotifierProvider(create: (context)=>PropertyListProvider()),
         //Agents
         ChangeNotifierProvider(create: (context)=>AgentPropertiesProvider()),
         ChangeNotifierProvider(create: (context)=>GetStaffProvider())
