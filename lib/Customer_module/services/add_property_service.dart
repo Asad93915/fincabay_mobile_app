@@ -18,10 +18,10 @@ class AddPropertyService {
     required String noOfBeds,
     required String noOfBaths,
     required String expiryDate,
-    required String city,
+    required int cityId,
     required List<String> uploadImage,
 
-    required String area,
+    required int areaId,
     required String detailAddress,
     required String email,
     required String password,
@@ -30,6 +30,7 @@ class AddPropertyService {
     required bool isLogin,
     required bool isSignup,
     required String phoneNo,
+    required String pTypeId,
 
   }) async {
     try {
@@ -46,9 +47,8 @@ class AddPropertyService {
         "noOfBaths": noOfBaths,
         "expireAfter": expiryDate,
         // "uploadImage":uploadImage
-        "imageUploadString":uploadImage,
-        "city": city,
-        "area": area,
+        "cityId": cityId,
+        "areaId": areaId,
         "detailAddress": detailAddress,
         "signUpUserEmail": email,
         "userPassword": password,
@@ -56,7 +56,9 @@ class AddPropertyService {
         "signUpUserName": name,
         "isLogin": isLogin,
         "isSignUp": isSignup,
-        "userMobile":phoneNo
+        "userMobile":phoneNo,
+        "pTypeId":pTypeId,
+        "imageUploadString":uploadImage,
       };
       print("Body $_body");
       var res = await PostRequestService()

@@ -5,6 +5,7 @@ import 'package:fincabay_application/Customer_module/providers/prop_list_provide
 import 'package:fincabay_application/Customer_module/screens/home_dashboard/properties_widgets/property_details_screen.dart';
 import 'package:fincabay_application/Customer_module/services/add_favourites_properties_service.dart';
 import 'package:fincabay_application/helper_services/custom_loader.dart';
+import 'package:fincabay_application/helper_services/navigation_services.dart';
 import 'package:fincabay_application/helper_widgets/custom_button.dart';
 import 'package:fincabay_application/helper_widgets/house_details.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../configs/api_configs.dart';
+import '../../../../helper_widgets/custom_property_count_widget.dart';
 import '../../../../utils/Functions.dart';
 import '../../../../utils/handlers.dart';
 import '../../../../utils/launchers.dart';
@@ -228,7 +230,7 @@ class _PropertyListScreenState extends State<PropertyListScreen> {
                           primary: false,
                           itemBuilder: (BuildContext, index) {
                             return AreaViewWidget(
-                              areaView: view.areaView![index],
+                              propList: view.areaView![index],
                               catName: widget.catName,
                               typeId: view.areaView![index].id!,
                             );
@@ -251,12 +253,12 @@ class _PropertyListScreenState extends State<PropertyListScreen> {
 }
 
 class AreaViewWidget extends StatefulWidget {
-  PropertyList areaView;
+  PropertyList propList;
   final String catName;
   final int typeId;
 
   AreaViewWidget(
-      {required this.areaView, required this.catName, required this.typeId});
+      {required this.propList, required this.catName, required this.typeId});
 
   @override
   State<AreaViewWidget> createState() => _AreaViewWidgetState();
@@ -278,25 +280,8 @@ class _AreaViewWidgetState extends State<AreaViewWidget> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        Navigator.push(
-            context,
-            PageRouteBuilder(
-                transitionDuration: Duration(seconds: 2),
-                pageBuilder: (_, __, ___) => PropertyDetailsScreen(
-                      imageUrl: imageUrl,
-                      price: widget.areaView.amount.toString(),
-                      sellingAsset: "${widget.areaView.propertyType}" +
-                          " For " +
-                          "${widget.areaView.purpose}",
-                      address: widget.areaView.detailAddress!,
-                      noOfBaths: widget.areaView.noOfBaths!,
-                      noOfBeds: widget.areaView.noOfBeds!,
-                      landArea: widget.areaView.landArea!,
-                      unit: widget.areaView.unit!,
-                      description: widget.areaView.description!,
-                      mobileNo: "${widget.areaView.userMobile}",
-                    )));
+      onTap: (){
+        NavigationServices.goNextAndKeepHistory(context: context, widget: PropListDetailsScreen(prop: widget.propList));
       },
       child: Padding(
         padding: const EdgeInsets.only(left: 10.0, right: 5.0, top: 10.0),
@@ -308,14 +293,12 @@ class _AreaViewWidgetState extends State<AreaViewWidget> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                widget.areaView.propertyImages!.isNotEmpty
-                    ? Image.network(
-                        "http://173.208.142.67:5955/fincabayapi/"
-                            "${widget.areaView.propertyImages![0].imageURL}",
-                        height: MediaQuery.of(context).size.height / 4.5,
-                        width: 125.0,
-                        fit: BoxFit.fill,
-                      )
+                widget.propList.propertyImages!.isNotEmpty
+                    ?CustomPropertyCountWidget(
+                  imageUrl: "${widget.propList.propertyImages![0].imageURL}",
+                  totalCount: '${widget.propList.propertyImages!.length}',
+
+                )
                     : Image.asset(
                         "$imageUrl",
                         height: MediaQuery.of(context).size.height / 4.5,
@@ -329,15 +312,15 @@ class _AreaViewWidgetState extends State<AreaViewWidget> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Expire After ${widget.areaView.expireAfter}"),
+                      Text("Expire After ${widget.propList.expireAfter}"),
                       Text(
-                        "PKR ${widget.areaView.amount}",
+                        "PKR ${widget.propList.amount}",
                         style: pkrStyle,
                       ),
                       SizedBox(
                         width: MediaQuery.of(context).size.width / 1.78,
                         child: Text(
-                          "${widget.areaView.detailAddress}",
+                          "${widget.propList.detailAddress}",
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           softWrap: false,
@@ -345,9 +328,11 @@ class _AreaViewWidgetState extends State<AreaViewWidget> {
                         ),
                       ),
                       Text(
-                        "${widget.areaView.propertyType}" +
+                        "${widget.propList.category}" +
+
+
                             " For " +
-                            "${widget.areaView.purpose}",
+                            "${widget.propList.purpose}",
                         style: houseStyle,
                       ),
                       SizedBox(
@@ -362,15 +347,15 @@ class _AreaViewWidgetState extends State<AreaViewWidget> {
                                 children: [
                                   HouseDetails(
                                     icon: Icons.bed_outlined,
-                                    title: widget.areaView.noOfBeds.toString(),
+                                    title: widget.propList.noOfBeds.toString(),
                                   ),
                                   HouseDetails(
                                     icon: Icons.bathtub_outlined,
-                                    title: "${widget.areaView.noOfBaths}",
+                                    title: "${widget.propList.noOfBaths}",
                                   ),
                                   HouseDetails(
                                     icon: Icons.house,
-                                    title: "${widget.areaView.landArea}",
+                                    title: "${widget.propList.landArea}",
                                   ),
                                   Spacer(),
                                   InkWell(
@@ -424,9 +409,9 @@ class _AreaViewWidgetState extends State<AreaViewWidget> {
                                           margin: EdgeInsets.only(
                                               left: 10.0, top: 0.0),
                                           child: Text(
-                                              widget.areaView.landArea! +
+                                              widget.propList.landArea! +
                                                   " " +
-                                                  widget.areaView.unit!)),
+                                                  widget.propList.unit!)),
                                       Spacer(),
                                       InkWell(
                                           onTap: () {
@@ -479,9 +464,9 @@ class _AreaViewWidgetState extends State<AreaViewWidget> {
                                                   horizontal: 10.0,
                                                   vertical: 2.0),
                                               child: Text(
-                                                  "${widget.areaView.landArea!}" +
+                                                  "${widget.propList.landArea!}" +
                                                       " " +
-                                                      "${widget.areaView.unit}")),
+                                                      "${widget.propList.unit}")),
                                           Spacer(),
                                           InkWell(
                                               onTap: () {
@@ -535,7 +520,7 @@ class _AreaViewWidgetState extends State<AreaViewWidget> {
                               fontWeight: FontWeight.w600,
                               onTap: () {
                                 sendMessage(
-                                    message, ["${widget.areaView.userMobile}"]);
+                                    message, ["${widget.propList.userMobile}"]);
                                 print("Category Name ${widget.catName}");
                               },
                             ),
@@ -553,7 +538,7 @@ class _AreaViewWidgetState extends State<AreaViewWidget> {
                                                 BorderRadius.circular(10.0))),
                                     onPressed: () {
                                       makePhoneCall(
-                                          '${widget.areaView.userMobile}');
+                                          '${widget.propList.userMobile}');
                                     },
                                     icon: Icon(Icons.call),
                                     label: Text(
@@ -568,7 +553,7 @@ class _AreaViewWidgetState extends State<AreaViewWidget> {
                               onTap: () {
                                 launchWhatsapp(
                                     context: context,
-                                    phoneNo: '${widget.areaView.userMobile}');
+                                    phoneNo: '${widget.propList.userMobile}');
                               },
                               child: Container(
                                 height: 30.0,
@@ -602,4 +587,5 @@ class _AreaViewWidgetState extends State<AreaViewWidget> {
   initMethod() async {
     user = await getUser();
   }
+
 }

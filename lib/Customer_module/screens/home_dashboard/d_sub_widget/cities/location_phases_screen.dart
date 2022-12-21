@@ -27,9 +27,9 @@ class _PhasesScreenState extends State<PhasesScreen> {
     CustomLoader.hideLoader(context);
   }
   _getSearch(int phaseId)async{
-      NavigationServices.goNextAndKeepHistory(context: context, widget: PropertySearchScreen(
-          cityId: widget.cityId, areaId: widget.areaId, phaseId: phaseId
-      ));
+      // NavigationServices.goNextAndKeepHistory(context: context, widget: PropertySearchScreen(
+      //     cityId: widget.cityId, areaId: widget.areaId, phaseId: phaseId
+      // ));
   }
 
   @override

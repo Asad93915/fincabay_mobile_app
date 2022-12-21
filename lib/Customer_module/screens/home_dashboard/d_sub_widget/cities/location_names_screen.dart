@@ -6,6 +6,7 @@ import '../../../../../configs/text_styles.dart';
 import '../../../../../helper_services/navigation_services.dart';
 import '../../../../providers/location_name_provider.dart';
 import '../../../../services/location_name_service.dart';
+import '../../properties_widgets/property_search_screen.dart';
 import 'location_phases_screen.dart';
 
 class AreaNameScreen extends StatefulWidget {
@@ -90,12 +91,18 @@ class _AreaNameScreenState extends State<AreaNameScreen> {
                         itemBuilder: (BuildContext ctx, index) {
                           return InkWell(
                             onTap: (){
-                              NavigationServices.goNextAndKeepHistory(context: context, widget: PhasesScreen(
-                                cityText:widget.cityName ,
-                                areaId: location.locName![index].areaId!,
-                                cityId: widget.cityId,
-
-                              ));
+                              // NavigationServices.goNextAndKeepHistory(context: context, widget:
+                              // PhasesScreen(
+                              //   cityText:widget.cityName ,
+                              //   areaId: location.locName![index].areaId!,
+                              //   cityId: widget.cityId,
+                              //
+                              // )
+                              NavigationServices.goNextAndKeepHistory(context: context, widget: PropertySearchScreen(
+                                  cityId: widget.cityId, areaId: location.locName![index].areaId!,
+                                  // phaseId: phaseId
+                              ),
+                              );
                             },
                             child: Container(
                               alignment: Alignment.center,

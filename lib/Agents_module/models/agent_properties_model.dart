@@ -72,7 +72,7 @@ class AgentProperties {
   bool? isLogin;
   bool? isSignUp;
   String? imageIformFile;
-
+  String ?userMobile;
   AgentProperties(
       {this.id,
         this.propertyTitle,
@@ -117,7 +117,9 @@ class AgentProperties {
         this.signUpAs,
         this.isLogin,
         this.isSignUp,
-        this.imageIformFile});
+        this.imageIformFile,
+        this.userMobile
+      });
 
   AgentProperties.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -169,6 +171,7 @@ class AgentProperties {
     isLogin = json['isLogin'];
     isSignUp = json['isSignUp'];
     imageIformFile = json['imageIformFile'];
+    userMobile=json['userMobile'];
   }
 
   Map<String, dynamic> toJson() {
@@ -220,6 +223,7 @@ class AgentProperties {
     data['isLogin'] = this.isLogin;
     data['isSignUp'] = this.isSignUp;
     data['imageIformFile'] = this.imageIformFile;
+    data['userMobile'] = this.userMobile;
     return data;
   }
 }

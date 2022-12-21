@@ -14,6 +14,7 @@ import 'package:fincabay_application/helper_widgets/custom_button.dart';
 import 'package:fincabay_application/helper_widgets/custom_drop_down.dart';
 import 'package:fincabay_application/helper_widgets/custom_text_field.dart';
 import 'package:fincabay_application/utils/Functions.dart';
+import 'package:fincabay_application/utils/handlers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -27,9 +28,11 @@ import '../../../../helper_widgets/custom_dropdown_text.dart';
 import '../../../../helper_widgets/custom_uploading_widget.dart';
 import '../../../providers/cities_provider.dart';
 import '../../../providers/location_name_provider.dart';
+import '../../../providers/property_type_provider.dart';
 import '../../../services/add_property_service.dart';
 import '../../../services/cities_service.dart';
 import '../../../services/location_name_service.dart';
+import '../../../services/property_typer_service.dart';
 
 class AddPropertyScreen extends StatefulWidget {
   final bool isSelected;
@@ -51,8 +54,9 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
 
   PickedFile? cameraFile;
 
-  String selectedProperty = "";
-  List<String> propertyTypeList = ["Homes", "Plots", "Commercial"];
+  String? selectedProperty;
+  int? selectedPropType;
+  List<String> propertyTypeList = ["Home", "Plots", "Commercial"];
   String selectedPurpose = "";
   List<String> purposeList = ["Sell", "Rent Out", "Purchase"];
 
@@ -89,6 +93,13 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
     CustomLoader.hideLoader(context);
   }
 
+  getPropertyTypeHandler(String categoryType) async {
+    CustomLoader.showLoader(context: context);
+    await PropertyTypeService()
+        .getPropertyType(context: context, categoryType: "$categoryType");
+    CustomLoader.hideLoader(context);
+  }
+
   _getAreaUnitsHandler() async {
     CustomLoader.showLoader(context: context);
     await SelectAreaUnitsService().selectUnit(context: context);
@@ -110,7 +121,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
             context: context,
             propertyTitle: _propTitleCont.text,
             content: _contentCont.text,
-            propType: selectedProperty,
+            propType: selectedProperty ?? "",
             propPurpose: selectedPurpose,
             price: _priceCont.text,
             landArea: _landAreaCont.text,
@@ -118,9 +129,9 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
             noOfBeds: selectedProperty == 'Homes' ? _noOfBedsCont.text : "0",
             noOfBaths: selectedProperty == "Homes" ? _noOfBathsCont.text : '0',
             expiryDate: _expiryCont.text,
-            city: _selectedCity!,
+            cityId: _selectedCity??1,
             uploadImage: uploadMultImagesBytes,
-            area: selectedArea!,
+            areaId: selectedArea??1,
             detailAddress: _addressCont.text,
             email: _emailCont.text,
             password: _passwordCont.text,
@@ -128,13 +139,14 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
             signUpAs: selectedWhoIAm,
             isLogin: selectedIndex == 0 ? true : false,
             isSignup: selectedIndex == 1 ? true : false,
-      phoneNo: _phoneNoCont.text,
+            phoneNo: _phoneNoCont.text,
+            pTypeId: selectedPropType.toString(),
           )
         : await AgentsAddPropertyService().addAgentProperty(
             context: context,
             propTitle: _propTitleCont.text,
             content: _contentCont.text,
-            category: selectedProperty,
+            category: selectedProperty ?? "",
             purpose: selectedPurpose,
             price: _priceCont.text,
             landArea: _landAreaCont.text,
@@ -142,12 +154,13 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
             noOfBeds: selectedProperty == 'Homes' ? _noOfBedsCont.text : "0",
             noOfBaths: selectedProperty == "Homes" ? _noOfBathsCont.text : '0',
             expiryDate: selectedExpiration,
-            city: _selectedCity!,
-            area: selectedArea!,
+            cityId: _selectedCity??0,
+            areaId: selectedArea??0,
             detailsAddress: _addressCont.text,
             userEmail: widget.isSelected == false ? widget.userEmail : "",
             uploadImage: uploadMultImagesBytes,
             phoneNo: _phoneNoCont.text,
+        pTypeId: selectedPropType??0,
             uploadedVideo: []);
     CustomLoader.hideLoader(context);
   }
@@ -159,6 +172,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
       print("Is Selected ${widget.isSelected}");
       _getCities();
       _getAreaUnitsHandler();
+
       initMethod();
     });
     setState(() {});
@@ -173,18 +187,18 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
     });
   }
 
-  String? _selectedCity;
+  int? _selectedCity;
 
-  updateCity(String value) {
+  updateCity(int value) {
     setState(() {
       _selectedCity = value;
     });
   }
 
-  String? selectedArea;
+  int? selectedArea;
 
   @override
-  updateArea(String? value) async {
+  updateArea(int? value) async {
     selectedArea = value;
 
     setState(() {});
@@ -289,7 +303,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                     children: [
                       Expanded(
                         child: CustomDropDownText(
-                          text: "Property Type",
+                          text: "Select Property",
                         ),
                       ),
                       Expanded(
@@ -305,16 +319,15 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                     children: [
                       Expanded(
                         child: CustomDropDown(
-                          borderColor: selectedProperty.isEmpty
+                          borderColor: selectedProperty == null
                               ? lightBlackColor
                               : bgColor,
                           child: DropdownButton(
+                            value: selectedProperty,
                             isExpanded: true,
                             underline: SizedBox(),
                             hint: Text(
-                              selectedProperty.isEmpty
-                                  ? "Select Property"
-                                  : selectedProperty,
+                              "Select Property",
                               style: TextStyle(
                                 height: 1.0,
                               ),
@@ -327,11 +340,23 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                             }).toList(),
                             onChanged: (String? value) {
                               selectedProperty = value!;
-                              if (selectedProperty.contains('Homes')) {
+                              if (selectedProperty!.contains('Home')) {
                                 isShow = true;
                               } else {
                                 isShow = false;
                               }
+                              propertyTypeList.map((item) {
+                                if (value == item) {
+                                  if (selectedPropType == null) {
+                                    getPropertyTypeHandler(item);
+                                  } else {
+                                    selectedPropType = null;
+                                    getPropertyTypeHandler(item);
+                                  }
+                                  // cities.city!.clear();
+
+                                }
+                              }).toList();
 
                               setState(() {});
                             },
@@ -367,12 +392,69 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                       ),
                     ],
                   ),
-                  CustomTextField(
-                    headerText: "Price",
-                    controller: _priceCont,
-                    focusNode: _priceFocus,
-                    inputType: TextInputType.number,
-                    inputAction: TextInputAction.next,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: CustomDropDownText(
+                          text: "Property Type",
+                        ),
+                      ),
+                      Expanded(
+                        child: CustomDropDownText(
+                          text: "Price",
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Consumer<PropertyTypeProvider>(
+                          builder: (context, prop, _) {
+                        return Expanded(
+                          child: CustomDropDown(
+                            borderColor: selectedPropType == null
+                                ? lightBlackColor
+                                : bgColor,
+                            child: DropdownButton(
+                              value: selectedPropType,
+                              isExpanded: true,
+                              underline: SizedBox(),
+                              hint: Text(
+                                "Property Type",
+                                style: TextStyle(
+                                  height: 1.0,
+                                ),
+                              ),
+                              items: prop.propertyType!.map((item) {
+                                return DropdownMenuItem(
+                                  child: Text(item.type ?? ""),
+                                  value: item.pTypeId,
+                                );
+                              }).toList(),
+                              onChanged: (int? value) {
+                                selectedPropType = value!;
+                                print("Selected Prop Type $selectedPropType");
+
+                                setState(() {});
+                              },
+                            ),
+                          ),
+                        );
+                      }),
+                      Expanded(
+                        child: CustomTextField(
+                          // headerText: "Price",
+                          controller: _priceCont,
+                          focusNode: _priceFocus,
+                          inputType: TextInputType.number,
+                          inputAction: TextInputAction.next,
+                        ),
+                      ),
+                    ],
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -673,29 +755,29 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                                 ),
                                 items: cities.city!.toSet().map((item) {
                                   return DropdownMenuItem(
-                                    value: item.cityName,
+                                    value: item.cityId,
                                     child: Text(item.cityName!),
                                   );
                                 }).toList(),
-                                onChanged: (String? newValue) {
+                                onChanged: (int? newValue) {
                                   // if (updateCity != null) {
                                   updateCity(newValue!);
                                   cities.city!.map((item) {
-                                    print("City Name ${item.cityName}");
-                                    print("newValue $newValue");
-                                    if (newValue == item.cityName) {
+                                    if (newValue == item.cityId) {
                                       if (selectedArea == null) {
                                         _getLocNameHandler(item.cityId!);
                                       } else {
                                         selectedArea = null;
                                         _getLocNameHandler(item.cityId!);
                                       }
+                                      print("Selected Area $selectedArea");
                                       // cities.city!.clear();
 
                                     }
                                   }).toList();
                                   //
                                   // };
+                                  print("Selected City $_selectedCity");
                                   setState(() {});
                                 }),
                           );
@@ -726,11 +808,11 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                                 ),
                                 items: name.locName!.map((item) {
                                   return DropdownMenuItem(
-                                    value: item.areaName,
+                                    value: item.areaId,
                                     child: Text(item.areaName!),
                                   );
                                 }).toList(),
-                                onChanged: (String? newValue) {
+                                onChanged: (int? newValue) {
                                   // if (updateArea != null) {
                                   updateArea(newValue!);
 
@@ -1021,7 +1103,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
           context: context, message: "Enter Property Description");
       _contentFocus.requestFocus();
       return false;
-    } else if (selectedProperty.isEmpty) {
+    } else if (selectedProperty!.isEmpty) {
       CustomSnackBar.failedSnackBar(
           context: context, message: "Selected Property Type");
     } else if (selectedPurpose.isEmpty) {

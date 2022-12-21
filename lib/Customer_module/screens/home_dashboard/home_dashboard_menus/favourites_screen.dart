@@ -20,6 +20,7 @@ import '../../../../configs/colors.dart';
 import '../../../../configs/text_styles.dart';
 import '../../../../helper_services/custom_loader.dart';
 import '../../../../helper_widgets/custom_button.dart';
+import '../../../../helper_widgets/custom_property_count_widget.dart';
 import '../../../../helper_widgets/house_details.dart';
 import '../../../../utils/Functions.dart';
 import '../../../../utils/launchers.dart';
@@ -170,35 +171,12 @@ class _FavouriteWidgetState extends State<FavouriteWidget> {
               children: [
                 widget.favProp.propertyImages!.isNotEmpty?
 
-          Stack(
-            alignment: Alignment.bottomRight,
+                CustomPropertyCountWidget(
+                  imageUrl: '${widget.favProp.propertyImages![0].imageURL!}',
+                  totalCount: '${widget.favProp.propertyImages!.length.toString()}',
 
-            children: [
-              Image.network("http://173.208.142.67:5955/fincabayapi/${widget.favProp.propertyImages![0].imageURL!}",
-              height: MediaQuery.of(context).size.height / 4.5,
-              width: 125.0,
-              fit: BoxFit.fill,
-        ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 6.0,vertical: 5.0),
-                decoration: BoxDecoration(
-                    color: Colors.black54,
-                  borderRadius: BorderRadius.circular(8.0)
-                ),
-                height: 30.0,
-                width: 50.0,
-
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Icon(Icons.image_rounded,color: whiteColor,size: 20.0,),
-                    Text(widget.favProp.propertyImages!.length.toString(),style: lengthStyle,)
-                  ],
-                ),
-              )
-            ],
-          ) :
+                )
+                    :
                 Image.asset(
                   "assets/images/property_image.jpg",
                   height: MediaQuery.of(context).size.height / 4.5,

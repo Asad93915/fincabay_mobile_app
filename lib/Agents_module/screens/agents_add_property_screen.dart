@@ -84,26 +84,28 @@ class _AgentsAddPropertyScreenState extends State<AgentsAddPropertyScreen> {
   void initState() {
     // TODO: implement initState
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      print("START");
       _getAreaUnitsHandler();
+      print("End");
       getInitMethod();
       setState(() {});
     });
     super.initState();
   }
 
-  String? _selectedCity;
+  int? _selectedCity;
 
   @override
-  updateCity(String value) {
+  updateCity(int value) {
     setState(() {
       _selectedCity = value;
     });
   }
 
-  String? selectedArea;
+  int? selectedArea;
 
   @override
-  updateArea(String? value) async {
+  updateArea(int? value) async {
     selectedArea = value;
 
     setState(() {});
@@ -116,6 +118,7 @@ class _AgentsAddPropertyScreenState extends State<AgentsAddPropertyScreen> {
   TextEditingController _noOfBedsCont = TextEditingController();
   TextEditingController _noOfBathsCont = TextEditingController();
   TextEditingController _addressCont = TextEditingController();
+  TextEditingController _phoneNoCont = TextEditingController();
 
   _getAreas(int cityId) async {
     CustomLoader.showLoader(context: context);
@@ -137,12 +140,13 @@ class _AgentsAddPropertyScreenState extends State<AgentsAddPropertyScreen> {
         noOfBeds: isShow ? _noOfBathsCont.text : "0",
         noOfBaths: isShow ? _noOfBathsCont.text : "0",
         expiryDate: selectedExpiration,
-        city: _selectedCity!,
-        area: selectedArea!,
+        cityId: _selectedCity??0,
+        areaId: selectedArea??0,
         detailsAddress: _addressCont.text,
         userEmail: user.email!,
         uploadImage: propertyGalleryBytes,
-        phoneNo: "",
+        phoneNo: _phoneNoCont.text,
+        pTypeId: 0,
         uploadedVideo: []);
     CustomLoader.hideLoader(context);
   }
@@ -601,17 +605,16 @@ class _AgentsAddPropertyScreenState extends State<AgentsAddPropertyScreen> {
                                   ),
                                   items: cities.city!.toSet().map((item) {
                                     return DropdownMenuItem(
-                                      value: item.cityName,
+                                      value: item.cityId,
                                       child: Text(item.cityName!),
                                     );
                                   }).toList(),
-                                  onChanged: (String? newValue) {
+                                  onChanged: (int? newValue) {
                                     // if (updateCity != null) {
                                     updateCity(newValue!);
                                     cities.city!.map((item) {
-                                      print("City Name ${item.cityName}");
-                                      print("newValue $newValue");
-                                      if (newValue == item.cityName) {
+
+                                      if (newValue == item.cityId) {
                                         if (selectedArea == null) {
                                           _getAreas(item.cityId!);
                                         } else {
@@ -652,11 +655,11 @@ class _AgentsAddPropertyScreenState extends State<AgentsAddPropertyScreen> {
                                   ),
                                   items: name.locName!.map((item) {
                                     return DropdownMenuItem(
-                                      value: item.areaName,
+                                      value: item.areaId,
                                       child: Text(item.areaName!),
                                     );
                                   }).toList(),
-                                  onChanged: (String? newValue) {
+                                  onChanged: (int? newValue) {
                                     // if (updateArea != null) {
                                     updateArea(newValue!);
 
@@ -672,6 +675,13 @@ class _AgentsAddPropertyScreenState extends State<AgentsAddPropertyScreen> {
                       headerText: "Details Address",
                       maxLine: 1,
                       controller: _addressCont,
+                      inputAction: TextInputAction.done,
+                    ),
+                    CustomTextField(
+                      headerText: "Phone Number",
+                      maxLine: 1,
+                      inputType: TextInputType.number,
+                      controller: _phoneNoCont,
                       inputAction: TextInputAction.done,
                     ),
                   ],
@@ -737,7 +747,7 @@ class _AgentsAddPropertyScreenState extends State<AgentsAddPropertyScreen> {
     galleryFile.forEach((element) async {
       List<int> bytesList = await File(element.path).readAsBytesSync();
       propertyGalleryBytes.add(bytesList.toString());
-      print(bytesList);
+      // print(bytesList);
     });
   }
 

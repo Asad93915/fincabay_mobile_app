@@ -17,13 +17,14 @@ class AgentsAddPropertyService {
     required String noOfBeds,
     required String noOfBaths,
     required String expiryDate,
-    required String city,
-    required String area,
+    required int cityId,
+    required int areaId,
     required String detailsAddress,
     required String userEmail,
     required List<String> uploadImage,
     required List<String> uploadedVideo,
     required String phoneNo,
+    required int pTypeId,
   }) async {
     try {
       Map _body = {
@@ -37,13 +38,14 @@ class AgentsAddPropertyService {
         "noOfBeds": noOfBeds,
         "noOfBaths": noOfBaths,
         "expireAfter": expiryDate,
-        "city": city,
-        "area": area,
+        "cityId": cityId,
+        "areaId": areaId,
         "detailAddress": detailsAddress,
         "signUpUserEmail": userEmail,
         "imageUploadString":uploadImage,
         "userMobile":phoneNo,
-        "videoUploadString":uploadedVideo
+        "videoUploadString":uploadedVideo,
+        "pTypeId":pTypeId
       };
       var res = await PostRequestService()
           .httpPostRequest(url: agentAddPropUrl, body: _body, context: context);

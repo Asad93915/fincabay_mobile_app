@@ -1,12 +1,8 @@
 import 'package:fincabay_application/configs/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:shimmer_animation/shimmer_animation.dart';
+
 
 class CustomLoader {
   static void showLoader(
@@ -15,22 +11,25 @@ class CustomLoader {
     //     content: LoaderContentWidget(
     //   message: message,
     // ));
-    final spinkit = SpinKitCircle(
+    final spinKit = SpinKitCircle(
+
       itemBuilder: (BuildContext context, int index) {
         return DecoratedBox(
+
           decoration: BoxDecoration(
+
             color: index.isEven ? bgColor : barColor,
           ),
         );
       },
-    );;
+    );
     print('loader started ..');
 
     showDialog(
         barrierDismissible: false,
         context: context,
         builder: (BuildContext context) {
-          return spinkit;
+          return spinKit;
         });
   }
 

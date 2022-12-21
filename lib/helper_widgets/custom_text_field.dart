@@ -49,7 +49,7 @@ class CustomTextField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         headerText!.isEmpty ? SizedBox(
-          height: 10.0,
+          height: 0.0,
         ) : Padding(
           padding:  EdgeInsets.symmetric(vertical: headerText!.isEmpty ? 0.0:0.0,horizontal:headerText!.isEmpty ? 0.0:8.0 ),
           child: Text(headerText!,style: headerStyle,),

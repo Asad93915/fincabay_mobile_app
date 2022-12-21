@@ -1,12 +1,11 @@
 import 'package:fincabay_application/Agents_module/providers/agent_properties_provider.dart';
 import 'package:fincabay_application/Agents_module/services/agent_properties_service.dart';
-import 'package:fincabay_application/auth/provider/user_data_provider.dart';
 import 'package:fincabay_application/Customer_module/cusomer_drawer_screen.dart';
-import 'package:fincabay_application/dialogs/show_will_pop_dialog.dart';
 import 'package:fincabay_application/helper_services/custom_loader.dart';
 import 'package:fincabay_application/helper_services/navigation_services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_sms/flutter_sms.dart';
 import 'package:provider/provider.dart';
 
 import '../../configs/colors.dart';
@@ -14,6 +13,7 @@ import '../../configs/text_styles.dart';
 import '../../Customer_module/screens/home_dashboard/properties_widgets/property_details_screen.dart';
 import '../../helper_widgets/custom_button.dart';
 import '../../helper_widgets/house_details.dart';
+import '../../utils/launchers.dart';
 import '../models/agent_properties_model.dart';
 import 'agent_property_details_screen.dart';
 import 'agents_drawer_screen.dart';
@@ -301,7 +301,11 @@ class GetAgentPropertiesWidget extends StatelessWidget {
                             textColor: bgColor,
                             fontSize: 14.0,
                             fontWeight: FontWeight.w600,
-                            onTap: () {},
+                            onTap: () {
+                              sendSMS(message: message, recipients: [
+                            "${prop.userMobile}"
+                              ]);
+                            },
                           ),
                           SizedBox(
                             width: 3.0,
@@ -315,7 +319,11 @@ class GetAgentPropertiesWidget extends StatelessWidget {
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(10.0))),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    makePhoneCall(
+                                      "${prop.userMobile}"
+                                    );
+                                  },
                                   icon: Icon(Icons.call),
                                   label: Text(
                                     "Call",
@@ -325,17 +333,22 @@ class GetAgentPropertiesWidget extends StatelessWidget {
                             width: 3.0,
                           ),
                           Expanded(
-                              child: Container(
+                              child: InkWell(
+                                onTap: (){
+                                  launchWhatsapp(context: context, phoneNo: "${prop.userMobile}");
+                                },
+                                child: Container(
                             height: 30.0,
                             decoration: BoxDecoration(
-                                color: bgColor,
-                                borderRadius: BorderRadius.circular(10.0)),
+                                  color: bgColor,
+                                  borderRadius: BorderRadius.circular(10.0)),
                             margin: EdgeInsets.symmetric(vertical: 5.0),
                             child: Icon(
-                              Icons.whatsapp,
-                              color: whiteColor,
+                                Icons.whatsapp,
+                                color: whiteColor,
                             ),
-                          )),
+                          ),
+                              )),
                         ],
                       ),
                     )

@@ -11,12 +11,14 @@ class PropertySearchService {
     required BuildContext context,
     required cityId,
     required int areaId,
-    required int phaseId,
+    // required int phaseId,
   }) async {
     try {
       var res = await GetRequestService().httpGetRequest(
           url: propSearchUrl +
-              "cityid=$cityId&areaid=$areaId&locationphaseid=$phaseId",
+              "cityid=$cityId&areaid=$areaId"
+                  // "&locationphaseid=$phaseId"
+          ,
           context: context);
       if (res!=null) {
         PropertySearchModel propertySearch = PropertySearchModel.fromJson(res);

@@ -2,30 +2,38 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_sms/flutter_sms.dart';
 
-import '../../configs/colors.dart';
-import '../../configs/text_styles.dart';
-import '../../helper_widgets/custom_icon_button.dart';
-import '../../helper_widgets/custom_prop_details_widget.dart';
-import '../../utils/Functions.dart';
-import '../../utils/handlers.dart';
-import '../../utils/launchers.dart';
-import '../models/agent_properties_model.dart';
+import '../configs/colors.dart';
+import '../configs/text_styles.dart';
+import '../utils/Functions.dart';
+import '../utils/handlers.dart';
+import '../utils/launchers.dart';
+import 'custom_icon_button.dart';
 
-class AgentPropertyDetailsScreen extends StatefulWidget {
-  AgentProperties properties;
+class CustomPropertyDetailsWidget extends StatefulWidget {
+final Widget imagesListBuild;
 
-  AgentPropertyDetailsScreen({required this.properties});
+  final String category;
+  final String purpose;
+  final double amount;
+  final int propId;
+  final String detailsAddress;
+  final int noOfBath;
+  final int noOfBeds;
+  final String landArea;
+  final String unit;
+  final String content;
+  final String phoneNo;
+
+  CustomPropertyDetailsWidget({  required this.imagesListBuild,required this.category, required this.purpose, required this.amount, required this.propId, required this.detailsAddress, required this.noOfBath, required this.noOfBeds, required this.landArea, required this.unit, required this.content, required this.phoneNo });
+
 
   @override
-  State<AgentPropertyDetailsScreen> createState() => _PropertyDetailsScreen1State();
+  State<CustomPropertyDetailsWidget> createState() => _CustomPropertyDetailsWidgetState();
 }
 
-class _PropertyDetailsScreen1State extends State<AgentPropertyDetailsScreen> {
+class _CustomPropertyDetailsWidgetState extends State<CustomPropertyDetailsWidget> {
   bool showAllText = false;
-  String descriptionText =
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
 
   bool isFavourite=false;
   @override
@@ -51,87 +59,7 @@ class _PropertyDetailsScreen1State extends State<AgentPropertyDetailsScreen> {
                   background: SizedBox(
                     width: double.infinity,
                     height: MediaQuery.of(context).size.height / 2.5,
-                    child: ListView.builder(
-                        itemCount: widget.properties.propertyImages!.length,
-                        shrinkWrap: true,
-                        physics: AlwaysScrollableScrollPhysics(),
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (BuildContext, index) {
-                          return Stack(
-                            alignment: Alignment.topLeft,
-                            children: [
-                              Image.network(
-                                "http://173.208.142.67:5955/fincabayapi/${widget.properties.propertyImages![index].imageURL}",
-                                width: MediaQuery.of(context).size.width / 1,
-                                fit: BoxFit.cover,
-                              ),
-                              Positioned(
-
-                                child: Container(
-
-                                  margin: EdgeInsets.symmetric(
-                                      vertical: 8.0, horizontal: 12.0),
-                                  child:
-                                  InkWell(
-                                    child: Icon(
-                                      Icons.arrow_back_ios,
-                                      color: bgColor,
-                                      size: 20.0,
-                                    ),
-                                    onTap: (){
-                                      Navigator.pop(context);
-                                    },
-                                  ),
-                                  alignment: Alignment.center,
-
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: whiteColor
-                                  ),
-                                  height: MediaQuery.of(context).size.height/18,
-                                  width: MediaQuery.of(context).size.width/12 ,
-                                  padding: EdgeInsets.symmetric(horizontal: 8.0),
-                                ),
-                                top: 30.0,
-                              ),
-                              Align(
-                                alignment: Alignment.bottomCenter,
-                                child: Container(
-                                    alignment: Alignment.bottomCenter,
-                                    margin: EdgeInsets.symmetric(
-                                        vertical: 8.0, horizontal: 6.0),
-                                    width: 70.0,
-                                    height: 30.0,
-                                    decoration: BoxDecoration(
-                                        color: Colors.black54,
-                                        borderRadius: BorderRadius.circular(6.0)),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.image_rounded,
-                                          color: whiteColor,
-                                          size: 20.0,
-                                        ),
-                                        Text(
-                                          "${index + 1}" +
-                                              "/" +
-                                              widget
-                                                  .properties.propertyImages!.length
-                                                  .toString(),
-                                          style: TextStyle(
-                                              color: whiteColor,
-                                              fontSize: 14.0,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                      ],
-                                    )),
-                              ),
-                            ],
-                          );
-                        }),
+                    child: widget.imagesListBuild
                   )
                 // )
               ),
@@ -154,13 +82,13 @@ class _PropertyDetailsScreen1State extends State<AgentPropertyDetailsScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(widget.properties.category!+ " for " +"${widget.properties.purpose}",
+                      Text(widget.category+ " for " +"${widget.purpose}",
                           style: propertyNameStyle),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("${widget.properties.amount}",
+                          Text("${widget.amount}",
                               style: priceStyle),
                           Spacer(),
                           InkWell(
@@ -170,12 +98,12 @@ class _PropertyDetailsScreen1State extends State<AgentPropertyDetailsScreen> {
                                 setState((){});
                                 isFavourite?addFavouritePropHandler(
                                     context: context,
-                                    typeId:widget.properties.id!,
+                                    typeId:widget.propId,
                                     userId:"$userId"
                                 ):delFavPropHandler(
                                     userId: "$userId",
                                     context: context,
-                                    propId: widget.properties.id!
+                                    propId:widget.propId
                                 );
                               },
                               child:isFavourite==false?Image.asset(
@@ -223,7 +151,7 @@ class _PropertyDetailsScreen1State extends State<AgentPropertyDetailsScreen> {
                             width: 8.0,
                           ),
                           Text(
-                            "${widget.properties.detailAddress}",
+                            "${widget.detailsAddress}",
                             style: locationStyle,
                           )
                         ],
@@ -233,20 +161,74 @@ class _PropertyDetailsScreen1State extends State<AgentPropertyDetailsScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          CustomPropDetailsWidget(
-                            imageUrl: "assets/icons/bath_icon.png",
-                            title:"${widget.properties.noOfBaths}" ,
+                          Expanded(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Image.asset(
+                                  "assets/icons/bath_icon.png",
+                                  height: 25.0,
+                                  width: 25.0,
+                                  fit: BoxFit.fill,
+                                ),
+                                SizedBox(
+                                  width: 6.0,
+                                ),
+                                Text(
+                                  "${widget.noOfBath}",
+                                  style: iconStyle,
+                                )
+                              ],
+                            ),
                           ),
-                          CustomPropDetailsWidget(
-                            imageUrl: "assets/icons/bed_icon.png",
-                            title:"${widget.properties.noOfBeds}" ,
+                          Expanded(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Image.asset(
+                                  "assets/icons/bed_icon.png",
+                                  height: 25.0,
+                                  width: 25.0,
+                                  fit: BoxFit.fill,
+                                ),
+                                SizedBox(
+                                  width: 6.0,
+                                ),
+                                Text(
+                                  "${"${widget.noOfBeds}"}",
+                                  style: iconStyle,
+                                )
+                              ],
+                            ),
                           ),
-                          CustomPropDetailsWidget(
-                            imageUrl: "assets/icons/marla_icon.png",
-                            title:"${widget.properties.landArea} " +
-                                " ${widget.properties.unit}" ,
+                          Expanded(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Image.asset(
+                                  "assets/icons/marla_icon.png",
+                                  height: 25.0,
+                                  width: 25.0,
+                                  fit: BoxFit.fill,
+                                ),
+                                SizedBox(
+                                  width: 6.0,
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    "${widget.landArea} " +
+                                        " ${widget.unit}",
+                                    style: iconStyle,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
-
                         ],
                       )
                     ],
@@ -293,11 +275,11 @@ class _PropertyDetailsScreen1State extends State<AgentPropertyDetailsScreen> {
                         textAlign: TextAlign.justify,
                         text: TextSpan(
                           // widget.description.substring(0,showAllText==true?null:(widget.description.length/4).toInt())
-                            text: widget.properties.content!.substring(
+                            text: widget.content!.substring(
                                 0,
                                 showAllText == true
                                     ? null
-                                    : (widget.properties.content!.length / 4)
+                                    : (widget.content!.length / 4)
                                     .toInt()),
                             style: forgotStyle,
                             children: [
@@ -335,7 +317,8 @@ class _PropertyDetailsScreen1State extends State<AgentPropertyDetailsScreen> {
                 fontWeight: FontWeight.w600,
                 fontSize: 14.0,
                 onTap: () {
-                  makePhoneCall("${widget.properties.userMobile}");
+
+                  makePhoneCall('${widget.phoneNo}');
                 },
                 horizontalMargin: 10.0,
               ),
@@ -353,8 +336,8 @@ class _PropertyDetailsScreen1State extends State<AgentPropertyDetailsScreen> {
                 fontWeight: FontWeight.w600,
                 fontSize: 14.0,
                 onTap: () {
-                  sendSMS(message: message, recipients: [
-                    "${widget.properties.userMobile}"
+                  sendMessage(message, [
+                    '${widget.phoneNo}'
                   ]);
                 },
                 horizontalMargin: 10.0,
@@ -366,3 +349,5 @@ class _PropertyDetailsScreen1State extends State<AgentPropertyDetailsScreen> {
     );
   }
 }
+
+

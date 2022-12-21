@@ -63,7 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   TextEditingController _emailCont = TextEditingController(
-    text: "customer@gmail.com"
+    text: "testuser@gmail.com"
   );
   TextEditingController _passwordCont = TextEditingController(
     text: "Asad123@"

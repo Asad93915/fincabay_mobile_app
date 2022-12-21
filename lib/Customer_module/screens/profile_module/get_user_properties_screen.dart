@@ -12,6 +12,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../configs/colors.dart';
 import '../../../configs/text_styles.dart';
 import '../../../helper_services/custom_loader.dart';
+import '../../../helper_widgets/custom_property_count_widget.dart';
 import '../../../helper_widgets/house_details.dart';
 import '../../../utils/launchers.dart';
 import '../../models/get_user_properties_model.dart';
@@ -111,7 +112,7 @@ class _GetUserPropertiesWidgetState extends State<GetUserPropertiesWidget> {
       child: InkWell(
 
         onTap: (){
-          NavigationServices.goNextAndKeepHistory(context: context, widget: UserPropertiesDetailsScreen(properties: widget.prop,));
+          NavigationServices.goNextAndKeepHistory(context: context, widget: UserPropertiesDetailsScreen(prop: widget.prop,));
           setState((){});
         },
         child: Column(
@@ -139,33 +140,11 @@ class _GetUserPropertiesWidgetState extends State<GetUserPropertiesWidget> {
                 //   fit: BoxFit.fill,
                 // ),
                widget.prop.propertyImages!=null?
-              Stack(
-                alignment: Alignment.bottomRight,
-                children: [
-                  Image.network("http://173.208.142.67:5955/fincabayapi/${widget.prop.propertyImages![0].imageURL!}",
-                    height: MediaQuery.of(context).size.height / 4.5,
-                    width: 125.0,
-                    fit: BoxFit.fill,
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                      margin: EdgeInsets.symmetric(vertical: 8.0,horizontal: 6.0),
-                      width: 50.0,
-                      height: 30.0,
-                      decoration: BoxDecoration(
-                        color: Colors.black54,
-                        borderRadius: BorderRadius.circular(6.0)
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(Icons.image_rounded,color: whiteColor,size: 20.0,),
-                          Text(widget.prop.propertyImages!.length.toString(),style: lengthStyle),
-                        ],
-                      )),
-                ],
-              ):
+               CustomPropertyCountWidget(
+                 imageUrl: '${widget.prop.propertyImages![0].imageURL!}',
+                 totalCount: widget.prop.propertyImages!.length.toString(),
+
+               ):
                Image.asset(
                  "assets/images/property_image.jpg",
                  height: MediaQuery.of(context).size.height / 4.5,
