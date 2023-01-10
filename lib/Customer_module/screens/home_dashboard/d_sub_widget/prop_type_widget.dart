@@ -5,7 +5,7 @@ import '../../../../configs/text_styles.dart';
 import '../../../models/property_type_model.dart';
 
 class PropertyTypeWidget extends StatelessWidget {
-  PropertyTypeModel type;
+  PropertyTypeList type;
   final bool selectedColor;
   final Function()?onTap;
   PropertyTypeWidget({required this.type, this.selectedColor=false, this.onTap});

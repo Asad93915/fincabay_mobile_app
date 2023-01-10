@@ -13,10 +13,11 @@ class PropertyTypeService{
   Future getPropertyType({required BuildContext context,required String categoryType})async{
     try{
       var res=await GetRequestService().httpGetRequest(context: context, url: getPropertyTypeUrl+"category=$categoryType");
-      List<PropertyTypeModel> propertyType = (res).map<PropertyTypeModel>((m )=> PropertyTypeModel.fromJson(m)).toList();
+
+      PropertyTypeModel propertyType=PropertyTypeModel.fromJson(res);
       if(res!=null){
         Provider.of<PropertyTypeProvider>(context,listen: false).updatePropertyType(
-          newPropertyType: propertyType
+          newPropertyType: propertyType.data
         );
         return true;
       }

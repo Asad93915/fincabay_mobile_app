@@ -45,20 +45,21 @@ class AddPropertyScreen extends StatefulWidget {
 }
 
 class _AddPropertyScreenState extends State<AddPropertyScreen> {
-  List<PickedFile>? galleryFile;
-  File? imageFile;
-
+  // List<PickedFile>? galleryFile;
+  // File? imageFile;
   List<String> uploadMultImagesBytes = [];
 
-  List<int> propertyCameraBytes = [];
-
-  PickedFile? cameraFile;
+  // List<int> propertyCameraBytes = [];
+  //
+  // PickedFile? fromCamera;
+  // List<PickedFile> cameraFile=[];
+  List<PickedFile> imagesList = [];
 
   String? selectedProperty;
   int? selectedPropType;
   List<String> propertyTypeList = ["Home", "Plots", "Commercial"];
   String selectedPurpose = "";
-  List<String> purposeList = ["Sell", "Rent Out", "Purchase"];
+  List<String> purposeList = ["Sell", "Rent Out"];
 
   String selectedExpiration = "";
   List<String> expiryList = [
@@ -126,12 +127,12 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
             price: _priceCont.text,
             landArea: _landAreaCont.text,
             unit: selectedUnit ?? "",
-            noOfBeds: selectedProperty == 'Homes' ? _noOfBedsCont.text : "0",
-            noOfBaths: selectedProperty == "Homes" ? _noOfBathsCont.text : '0',
+            noOfBeds: selectedProperty == 'Home' ? _noOfBedsCont.text : "0",
+            noOfBaths: selectedProperty == "Home" ? _noOfBathsCont.text : '0',
             expiryDate: _expiryCont.text,
-            cityId: _selectedCity??1,
+            cityId: _selectedCity ?? 1,
             uploadImage: uploadMultImagesBytes,
-            areaId: selectedArea??1,
+            areaId: selectedArea ?? 1,
             detailAddress: _addressCont.text,
             email: _emailCont.text,
             password: _passwordCont.text,
@@ -151,16 +152,16 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
             price: _priceCont.text,
             landArea: _landAreaCont.text,
             unit: selectedUnit ?? "",
-            noOfBeds: selectedProperty == 'Homes' ? _noOfBedsCont.text : "0",
-            noOfBaths: selectedProperty == "Homes" ? _noOfBathsCont.text : '0',
+            noOfBeds: selectedProperty == 'Home' ? _noOfBedsCont.text : "0",
+            noOfBaths: selectedProperty == "Home" ? _noOfBathsCont.text : '0',
             expiryDate: selectedExpiration,
-            cityId: _selectedCity??0,
-            areaId: selectedArea??0,
+            cityId: _selectedCity ?? 0,
+            areaId: selectedArea ?? 0,
             detailsAddress: _addressCont.text,
             userEmail: widget.isSelected == false ? widget.userEmail : "",
             uploadImage: uploadMultImagesBytes,
             phoneNo: _phoneNoCont.text,
-        pTypeId: selectedPropType??0,
+            pTypeId: selectedPropType ?? 0,
             uploadedVideo: []);
     CustomLoader.hideLoader(context);
   }
@@ -639,7 +640,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                                                   BorderRadius.circular(8.0))),
                                       onPressed: () {
                                         _getFromCamera();
-                                        print(cameraFile!.path);
+
                                         setState(() {});
                                       },
                                       icon: Icon(
@@ -654,22 +655,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                               ),
                             ),
                           ),
-                          cameraFile != null
-                              ? Container(
-                                  margin: EdgeInsets.only(top: 10.0),
-                                  child: Image.file(
-                                    File(
-                                      cameraFile!.path,
-                                    ),
-                                    fit: BoxFit.fill,
-                                    height: 100.0,
-                                    width: 100.0,
-                                  ),
-                                )
-                              : Container(
-                                  color: bgColor,
-                                ),
-                          galleryFile != null
+                          imagesList.isNotEmpty
                               ? Container(
                                   margin: EdgeInsets.only(
                                       top: 10.0, left: 10.0, right: 10.0),
@@ -677,7 +663,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                                       MediaQuery.of(context).size.height / 6,
                                   width: double.infinity,
                                   child: ListView.builder(
-                                      itemCount: galleryFile!.length,
+                                      itemCount: imagesList!.length,
                                       shrinkWrap: true,
                                       primary: false,
                                       scrollDirection: Axis.horizontal,
@@ -689,7 +675,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                                             borderRadius:
                                                 BorderRadius.circular(10.0),
                                             child: Image.file(
-                                              File(galleryFile![index].path),
+                                              File(imagesList[index].path),
                                               width: 100.0,
                                               fit: BoxFit.fill,
                                             ),
@@ -835,6 +821,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                     headerText: "Phone Number",
                     controller: _phoneNoCont,
                     focusNode: _phoneNoFocus,
+                    charLength: 11,
                     inputType: TextInputType.number,
                     inputAction: TextInputAction.done,
                   ),
@@ -1024,70 +1011,38 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                   // await pickMultipleImage();
                   if (_addPropValidation()) {
                     await uploadedImagesIntoBytes();
-
                     await postAddressHandler();
-                    Navigator.pop(context);
                   }
                 },
               ),
             ],
           ),
         ),
-        // floatingActionButton: FloatingActionButton(
-        //   backgroundColor: bgColor,
-        //   onPressed: (){
-        //     _getCurrentLocation().then((value)async {
-        //       print("My Current Location");
-        //       print("Lonitude ${value.longitude}");
-        //       print("Latitude ${value.latitude}");
-        //       _markers.add(
-        //           Marker(
-        //               markerId: MarkerId('3'),
-        //               infoWindow: InfoWindow(
-        //                   title: "My Current Location"
-        //               ),
-        //               position: LatLng(
-        //                   value.latitude,value.longitude
-        //               )
-        //           )
-        //       );
-        //       setState((){});
-        //       CameraPosition cameraPosition=CameraPosition(
-        //           target:LatLng(value.latitude,value.longitude),
-        //       zoom: 14);
-        //       final GoogleMapController controller=await _controller.future;
-        //       controller.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
-        //     });
-        //
-        //     setState((){});
-        //   },
-        //   child: Icon(Icons.location_on),
-        // ),
       ),
     );
   }
 
   _getFromGallery() async {
-    galleryFile = await ImagePicker().getMultiImage();
-    if (galleryFile != null) {
-      imageFile = File(galleryFile![0].path);
-      setState(() {});
-    }
+    List<PickedFile>? galleryImages = await ImagePicker().getMultiImage();
+
+    galleryImages!.forEach((element) {
+      imagesList.add(element);
+    });
+    setState(() {});
   }
 
   _getFromCamera() async {
-    cameraFile = await ImagePicker().getImage(source: ImageSource.camera);
-    if (cameraFile != null) {
-      imageFile = File(cameraFile!.path);
-      setState(() {});
-    }
+    PickedFile? fromCamera =
+        await ImagePicker().getImage(source: ImageSource.camera);
+    imagesList.add(fromCamera!);
+    setState(() {});
   }
 
   uploadedImagesIntoBytes() async {
-    galleryFile!.forEach((element) async {
+    imagesList.forEach((element) async {
       List<int> temp = await File(element.path).readAsBytesSync();
       uploadMultImagesBytes.add(temp.toString());
-      print('temp $temp');
+      log('temp $temp');
       //log(uploadImagesBytes.toString());
     });
   }
@@ -1106,6 +1061,10 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
     } else if (selectedProperty!.isEmpty) {
       CustomSnackBar.failedSnackBar(
           context: context, message: "Selected Property Type");
+    } else if (selectedPropType == null) {
+      CustomSnackBar.failedSnackBar(
+          context: context, message: "Select Property Type");
+      return null;
     } else if (selectedPurpose.isEmpty) {
       CustomSnackBar.failedSnackBar(
           context: context, message: "Selected Property Purpose");
@@ -1123,6 +1082,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
       CustomSnackBar.failedSnackBar(
           context: context, message: "Selected Property Unit");
     }
+
     if (isShow == true) {
       if (_noOfBedsCont.text.isEmpty) {
         CustomSnackBar.failedSnackBar(
@@ -1134,18 +1094,35 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
             context: context, message: "Enter No Of Baths");
         _noOfBathsFocus.requestFocus();
         return false;
+      } else {
+        return true;
       }
-    } else if (selectedExpiration.isEmpty) {
+    }
+    else if (selectedExpiration.isEmpty) {
       CustomSnackBar.failedSnackBar(
           context: context, message: "Selected Expiration Date");
       return false;
-    } else if (_selectedCity == null) {
+    } else if (selectedExpiration.isEmpty) {
+      CustomSnackBar.failedSnackBar(
+          context: context, message: "Select Expiration Date");
+      return false;
+    }
+    else if (imagesList.isEmpty) {
+      CustomSnackBar.failedSnackBar(context: context, message: "Select images");
+      return false;
+    }
+    else if (_selectedCity == null) {
       CustomSnackBar.failedSnackBar(context: context, message: "Selected City");
       return false;
     } else if (_addressCont.text.isEmpty) {
       CustomSnackBar.failedSnackBar(
           context: context, message: "Enter Address Details");
       _addressFocus.requestFocus();
+      return false;
+    } else if (_phoneNoCont.text.isEmpty || _phoneNoCont.text.length < 11) {
+      CustomSnackBar.failedSnackBar(
+          context: context, message: "Phone number should be 11 characters");
+      _phoneNoFocus.requestFocus();
       return false;
     }
     print("Selected Index $selectedIndex");
@@ -1193,10 +1170,13 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
       } else {
         return true;
       }
-    } else {
+    }
+    else {
       return true;
     }
+
   }
+
 
   Future<Position> _getCurrentLocation() async {
     await Geolocator.requestPermission()

@@ -7,18 +7,38 @@ import 'package:provider/provider.dart';
 
 import '../../configs/api_configs.dart';
 
-class GetAllAgentsService{
-  Future getAgents({required BuildContext context})async{
+class GetAllAgentsService extends ChangeNotifier{
+  List<AgentsList>? agentsList=[];
+  int pageNumber=1;
+
+  Future getInitAgents({required BuildContext context})async{
+    await getMoreAgents(context: context);
+  }
+  Future getMoreAgents({required BuildContext context})async{
+
+
     try{
-      var res=await GetRequestService().httpGetRequest(url: getAllAgentsUrl, context: context);
+      var res=await GetRequestService().httpGetRequest(url: getAllAgentsUrl+"pageNo=$pageNumber", context: context);
 
       if(res!=null){
         print("Inside");
 
-     AgentsListModel agentsList=AgentsListModel.fromJson(res);
-    Provider.of<AgentsListProvider>(context,listen: false).updateAgentsList(
-          newAgents: agentsList.data
-        );
+        AgentsListModel agentsModel=AgentsListModel.fromJson(res);
+   if(pageNumber==1 || agentsList==[]){
+     print("If");
+
+     agentsList=agentsModel.data;
+     print("Length ${agentsList!.length}");
+   }
+   else{
+     print("else");
+     agentsList!.addAll(agentsModel.data!);
+   }
+   notifyListeners();
+   return true;
+    // Provider.of<AgentsListProvider>(context,listen: false).updateAgentsList(
+    //       newAgents: agentsList.data
+    //     );
       }
       else{
         return null;

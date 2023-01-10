@@ -107,7 +107,9 @@ class _CommercialScreenState extends State<CommercialScreen> {
               widgets.add(PropertyTypeWidget(
                 onTap: (){
                   NavigationServices.goNextAndKeepHistory(context: context, widget: PropertyListScreen(
-                      areaSizeId: 0, catName: "Commercial", typeId: element.pTypeId!));
+                      areaSizeId: 0, catName: "Commercial", typeId: element.pTypeId!,
+
+                  ));
                   setState((){});
 
                 },

@@ -10,6 +10,7 @@ import 'package:fincabay_application/helper_widgets/custom_button.dart';
 import 'package:fincabay_application/helper_widgets/house_details.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_switch/flutter_switch.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../configs/api_configs.dart';
@@ -20,12 +21,13 @@ import '../../../../utils/launchers.dart';
 import '../../../models/prop_list_model.dart';
 
 class PropertyListScreen extends StatefulWidget {
+  final String propertyTypeText;
   final int areaSizeId;
   final String catName;
   final int typeId;
 
   PropertyListScreen(
-      {required this.areaSizeId, required this.catName, required this.typeId});
+      {required this.areaSizeId, required this.catName, required this.typeId, this.propertyTypeText=""});
 
   @override
   State<PropertyListScreen> createState() => _PropertyListScreenState();
@@ -43,7 +45,7 @@ class _PropertyListScreenState extends State<PropertyListScreen> {
   ];
   TextEditingController locationCont = TextEditingController();
   TextEditingController _companyCont = TextEditingController();
-
+bool showSwitch=false;
   @override
   void initState() {
     // TODO: implement initState
@@ -73,7 +75,7 @@ class _PropertyListScreenState extends State<PropertyListScreen> {
             ),
           ),
           title: Text(
-            "Houses For Sale",
+            "${widget.propertyTypeText} For Sale",
             style: titleStyle,
           ),
           actions: [
@@ -98,116 +100,28 @@ class _PropertyListScreenState extends State<PropertyListScreen> {
               ),
             )
           ],
-          flexibleSpace: ListView(
-            // This next line does the trick.
-            padding: EdgeInsets.only(top: 80.0),
-            scrollDirection: Axis.horizontal,
-            children: <Widget>[
-              Container(
-                width: MediaQuery.of(context).size.width / 2.1,
-                child: Card(
-                  child: DropdownButtonFormField(
-                    decoration: InputDecoration(
-                        prefixIcon: Icon(
-                          Icons.location_city_sharp,
-                          color:
-                              selectedCity.isEmpty ? lightBlackColor : bgColor,
-                        ),
-                        contentPadding: EdgeInsets.symmetric(
-                            horizontal: 0.0, vertical: 0.0),
-                        border: InputBorder.none),
-                    hint: Text(
-                        selectedCity.isEmpty ? "Select City" : selectedCity),
-                    items: citiesList.map((item) {
-                      return DropdownMenuItem(
-                        child: Text(item),
-                        value: item,
-                      );
-                    }).toList(),
-                    onChanged: (String? value) {
-                      selectedCity = value!;
-                      setState(() {});
-                    },
-                  ),
-                ),
-              ),
-              SizedBox(
-                  width: MediaQuery.of(context).size.width / 2.3,
-                  child: Card(
-                      child: TextField(
-                    controller: locationCont,
-                    decoration: InputDecoration(
-                      hintText: "Select Location",
-                      contentPadding:
-                          EdgeInsets.symmetric(horizontal: 6.0, vertical: 0.0),
-                      prefixIcon: Icon(
-                        Icons.add_location_alt_outlined,
-                        color: locationCont.text.isEmpty
-                            ? lightBlackColor
-                            : bgColor,
-                        size: 20.0,
-                      ),
-                      border: InputBorder.none,
-                    ),
-                  ))),
-              Container(
-                width: MediaQuery.of(context).size.width / 1.5,
-                child: Card(
-                  child: DropdownButtonFormField(
-                    decoration: InputDecoration(
-                        prefixIcon: Icon(
-                          Icons.real_estate_agent_outlined,
-                          color: selectedAgency.isEmpty
-                              ? lightBlackColor
-                              : bgColor,
-                          size: 20.0,
-                        ),
-                        contentPadding: EdgeInsets.symmetric(
-                            horizontal: 0.0, vertical: 0.0),
-                        border: InputBorder.none),
-                    hint: Text(selectedAgency.isEmpty
-                        ? "Select Agency"
-                        : selectedAgency),
-                    items: agencyList.map((item) {
-                      return DropdownMenuItem(
-                        child: Text(item),
-                        value: item,
-                      );
-                    }).toList(),
-                    onChanged: (String? value) {
-                      selectedAgency = value!;
-                      setState(() {});
-                    },
-                  ),
-                ),
-              ),
-              SizedBox(
-                  width: MediaQuery.of(context).size.width / 2.3,
-                  child: Card(
-                      child: TextField(
-                    style: TextStyle(height: 1.4),
-                    controller: _companyCont,
-                    decoration: InputDecoration(
-                      hintText: "Company",
-                      contentPadding:
-                          EdgeInsets.symmetric(horizontal: 6.0, vertical: 0.0),
-                      prefixIcon: Icon(
-                        Icons.business_sharp,
-                        color: _companyCont.text.isEmpty
-                            ? lightBlackColor
-                            : bgColor,
-                        size: 20.0,
-                      ),
-                      border: InputBorder.none,
-                    ),
-                  ))),
-              CustomButton(
-                width: MediaQuery.of(context).size.width / 2.0,
-                verticalMargin: 3.0,
-                text: "Find Property",
-                onTap: () {},
-              )
-            ],
+          flexibleSpace: Padding(
+            padding: const EdgeInsets.only(top: 80.0),
+            child: FlutterSwitch(
+              activeText: "Sell",
+              inactiveText: "Rent",
+
+              value: showSwitch,
+              valueFontSize: 14.0,
+              activeTextFontWeight: FontWeight.w700,
+              width: 110,
+
+
+              borderRadius: 30.0,
+              showOnOff: true,
+              inactiveColor: postColor,
+              activeColor: postColor,
+              onToggle: (val) {
+                setState(() {
+                  showSwitch = val;
+                });
+              },
+            ),
           ),
         ),
       ),
@@ -221,21 +135,25 @@ class _PropertyListScreenState extends State<PropertyListScreen> {
             ),
             Consumer<PropertyListProvider>(builder: (context, view, _) {
               return view.areaView!.isNotEmpty
-                  ? InkWell(
-                      child: ListView.builder(
-                          itemCount: view.areaView!.length,
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          scrollDirection: Axis.vertical,
-                          primary: false,
-                          itemBuilder: (BuildContext, index) {
-                            return AreaViewWidget(
-                              propList: view.areaView![index],
-                              catName: widget.catName,
-                              typeId: view.areaView![index].id!,
-                            );
-                          }),
-                    )
+                  ? ListView.builder(
+                      itemCount: view.areaView!.length,
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      scrollDirection: Axis.vertical,
+                      primary: false,
+                      itemBuilder: (BuildContext, index) {
+                        return showSwitch?view.areaView![index].purpose=="Sell"?
+                        AreaViewWidget(
+                          propList: view.areaView![index],
+                          catName: widget.catName,
+                          typeId: view.areaView![index].id!,
+                        ):SizedBox():view.areaView![index].purpose=="Rent Out"?
+                        AreaViewWidget(
+                          propList: view.areaView![index],
+                          catName: widget.catName,
+                          typeId: view.areaView![index].id!,
+                        ):SizedBox();
+                      })
                   : Container(
                       alignment: Alignment.center,
                       child: Text(
@@ -312,7 +230,7 @@ class _AreaViewWidgetState extends State<AreaViewWidget> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Expire After ${widget.propList.expireAfter}"),
+                      Text("Expire ${widget.propList.expireAfter}"),
                       Text(
                         "PKR ${widget.propList.amount}",
                         style: pkrStyle,

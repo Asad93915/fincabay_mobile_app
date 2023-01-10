@@ -116,7 +116,9 @@ int ? cityId;
                 type: element,
                 onTap: (){
                   NavigationServices.goNextAndKeepHistory(context: context, widget: PropertyListScreen(
-                      areaSizeId: 0, catName: "Home", typeId: element.pTypeId!));
+                      areaSizeId: 0, catName: "Home", typeId: element.pTypeId!,
+                    propertyTypeText: element.type??"",
+                  ));
 
                   print("selectedIndex $selectedIndex");
                   setState((){});
@@ -148,6 +150,7 @@ int ? cityId;
                     areaSizeId: element.id!,
                     catName: "Home",
                     typeId: 0,
+                    propertyTypeText: element.name??"",
                   ));
 
                   // getAllAreaUnitHandler(context,element.cityId!);

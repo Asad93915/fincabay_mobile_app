@@ -40,37 +40,38 @@ class PropertySearch {
   int? noOfBeds;
   int? noOfBaths;
   String? expireAfter;
-  String? imageUploadString;
-  String? uploadImage;
-  String? imageByPath;
-  String? videoUploadString;
-  String? uploadVideo;
+  Null? imageUploadString;
+  Null? uploadImage;
+  Null? imageByPath;
+  Null? videoUploadString;
+  Null? uploadVideo;
   String? videoByPath;
-  Null? city;
+  String? city;
   int? cityId;
-  Null? area;
+  String? area;
   int? locationPhaseId;
   int? areaSizeID;
-  Null? areaSize;
+  String? areaSize;
   int? areaId;
   String? detailAddress;
   double? amount;
   String? description;
   String? propertyStatus;
-  int? propertySize;
+  String? propertySize;
   bool? isApproved;
   bool? isRejected;
   bool? isPending;
+  bool? isDelete;
   String? userId;
   String? userEmail;
   String? userMobile;
   String? roleName;
   List<PropertyImages>? propertyImages;
-  String? signUpUserEmail;
-  String? userPassword;
-  String? signUpUserName;
-  String? mobile;
-  String? signUpAs;
+  Null? signUpUserEmail;
+  Null? userPassword;
+  Null? signUpUserName;
+  Null? mobile;
+  Null? signUpAs;
   bool? isLogin;
   bool? isSignUp;
   Null? imageIformFile;
@@ -110,6 +111,7 @@ class PropertySearch {
         this.isApproved,
         this.isRejected,
         this.isPending,
+        this.isDelete,
         this.userId,
         this.userEmail,
         this.userMobile,
@@ -159,6 +161,7 @@ class PropertySearch {
     isApproved = json['isApproved'];
     isRejected = json['isRejected'];
     isPending = json['isPending'];
+    isDelete = json['isDelete'];
     userId = json['userId'];
     userEmail = json['userEmail'];
     userMobile = json['userMobile'];
@@ -215,6 +218,7 @@ class PropertySearch {
     data['isApproved'] = this.isApproved;
     data['isRejected'] = this.isRejected;
     data['isPending'] = this.isPending;
+    data['isDelete'] = this.isDelete;
     data['userId'] = this.userId;
     data['userEmail'] = this.userEmail;
     data['userMobile'] = this.userMobile;

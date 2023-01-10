@@ -39,9 +39,11 @@ class CustomSnackBar{
       content: Text('$message'),
       behavior: SnackBarBehavior.floating,
       backgroundColor: Colors.green[700],
+      margin: EdgeInsets.only(bottom: 300.0),
       duration: Duration(milliseconds: 1150),
 
 
     ));
   }
 }
+

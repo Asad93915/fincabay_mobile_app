@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import 'package:fincabay_application/auth/models/user_response_model.dart';
@@ -57,12 +56,12 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
       body:ShowFavouritesScreen() ,
     ): ShowFavouritesScreen();
   }
-  // getUserId()async{
-  //   String getUserId=await LocaleStorageServices().getUser();
-  //   user=UserModel.fromJson(jsonDecode(getUserId));
-  //   print("User ID ${user.id}");
-  //
-  // }
+// getUserId()async{
+//   String getUserId=await LocaleStorageServices().getUser();
+//   user=UserModel.fromJson(jsonDecode(getUserId));
+//   print("User ID ${user.id}");
+//
+// }
 
 
 }
@@ -133,7 +132,7 @@ class _ShowFavouritesScreenState extends State<ShowFavouritesScreen> {
   }
   initMethod()async {
     user= await   getUser();
-   await getFavouritePropHandler(context, user.id!);
+    await getFavouritePropHandler(context, user.id!);
   }
 }
 
@@ -234,8 +233,8 @@ class _FavouriteWidgetState extends State<FavouriteWidget> {
                             Spacer(),
                             InkWell(
                                 onTap: ()async{
-                                 await delFavPropHandler(context: context, userId: widget.userId, propId: widget.favProp.id!);
-                                 await getFavouritePropHandler(context, widget.userId);
+                                  await delFavPropHandler(context: context, userId: widget.userId, propId: widget.favProp.id!);
+                                  await getFavouritePropHandler(context, widget.userId);
 
                                 },
                                 child: Icon(Icons.favorite,size: 20.0,color: redColor,))
@@ -262,7 +261,7 @@ class _FavouriteWidgetState extends State<FavouriteWidget> {
                               fontWeight: FontWeight.w600,
                               onTap: () {
                                 sendSMS(message: message, recipients: [
-                                 "${widget.favProp.userMobile}"
+                                  "${widget.favProp.userMobile}"
                                 ]);
                               },
                             ),

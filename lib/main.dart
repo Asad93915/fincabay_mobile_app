@@ -1,5 +1,6 @@
 
-import 'dart:async';
+
+
 
 
 
@@ -7,6 +8,9 @@ import 'dart:async';
 import 'package:fincabay_application/Agents_module/providers/agent_properties_provider.dart';
 import 'package:fincabay_application/Agents_module/providers/staff_member_provider.dart';
 import 'package:fincabay_application/Agents_module/screens/agents_home_screen.dart';
+import 'package:fincabay_application/Customer_module/services/agents_service.dart';
+import 'package:fincabay_application/Customer_module/services/get_favourite_property_service.dart';
+import 'package:fincabay_application/Customer_module/services/get_user_properties_service.dart';
 import 'package:fincabay_application/app_localization.dart';
 import 'package:fincabay_application/Customer_module/providers/agents_list_provider.dart';
 import 'package:fincabay_application/Customer_module/providers/get_favourite_prop_provider.dart';
@@ -47,14 +51,17 @@ void main() {
         ChangeNotifierProvider(create: (context)=>LocationNameProvider()),
         ChangeNotifierProvider(create: (context)=>LocationPhasesProvider()),
         ChangeNotifierProvider(create: (context)=>PropertySearchProvider()),
-        ChangeNotifierProvider(create: (context)=>GetUserPropertiesProvider()),
+        // ChangeNotifierProvider(create: (context)=>GetUserPropertiesProvider()),
+        ChangeNotifierProvider(create: (context)=>GetUserPropertiesService()),
         ChangeNotifierProvider(create: (context)=>PropertyListProvider()),
         ChangeNotifierProvider(create: (context)=>GetFavPropProvider()),
+
         ChangeNotifierProvider(create: (context)=>SelectAreaUnitsProvider()),
         //Agents
         ChangeNotifierProvider(create: (context)=>AgentPropertiesProvider()),
         ChangeNotifierProvider(create: (context)=>GetStaffProvider()),
-        ChangeNotifierProvider(create: (context)=>AgentsListProvider())
+        // ChangeNotifierProvider(create: (context)=>AgentsListProvider()),
+        ChangeNotifierProvider(create: (context)=>GetAllAgentsService())
       ],
       child: MaterialApp(home: MyApp())));
 }

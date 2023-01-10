@@ -44,7 +44,7 @@ class _UserPropertiesDetailsScreenState extends State<UserPropertiesDetailsScree
                 Image.network(
                   "http://173.208.142.67:5955/fincabayapi/${widget.prop.propertyImages![index].imageURL}",
                   width: MediaQuery.of(context).size.width / 1,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.cover
                 ),
                 Positioned(
 

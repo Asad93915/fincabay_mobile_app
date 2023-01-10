@@ -1,4 +1,3 @@
-
 import 'package:fincabay_application/configs/api_configs.dart';
 import 'package:fincabay_application/Customer_module/models/get_favourite_property_model.dart';
 import 'package:fincabay_application/helper_services/custom_get_request_service.dart';
@@ -17,7 +16,7 @@ class GetFavouritePropService{
         GetFavouritePropertyModel favProp=GetFavouritePropertyModel.fromJson(res);
 
         Provider.of<GetFavPropProvider>(context,listen: false).updateFavProp(
-          newProp: favProp.data
+            newProp: favProp.data
         );
         return true;
       }
@@ -26,9 +25,9 @@ class GetFavouritePropService{
       }
 
     }
-        catch(err){
+    catch(err){
       print("Exception in Get Favourite Property Service $err");
       return null;
-        }
+    }
   }
 }

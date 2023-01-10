@@ -49,7 +49,6 @@ addFavouritePropHandler({required BuildContext context,required int typeId,requi
   await AddFavouritePropertyService().addFavourite(context: context, pTypeId: typeId, userId: userId);
   CustomLoader.hideLoader(context);
 }
-
 getFavouritePropHandler(BuildContext context,String userId)async{
   CustomLoader.showLoader(context: context);
   await GetFavouritePropService().getFavProp(context: context, userId: userId??"");

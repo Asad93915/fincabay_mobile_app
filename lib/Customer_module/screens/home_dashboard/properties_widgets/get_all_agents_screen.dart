@@ -20,15 +20,37 @@ class GetAllAgentsScreen extends StatefulWidget {
 }
 
 class _GetAllAgentsScreenState extends State<GetAllAgentsScreen> {
+
+ late GetAllAgentsService agentsService;
+
   _getAllAgentsHandler()async{
     CustomLoader.showLoader(context: context);
-    await GetAllAgentsService().getAgents(context: context);
+    await agentsService.getInitAgents(context: context);
+    agentCont.addListener(()async {
+      if(agentCont.position.maxScrollExtent==agentCont.offset){
+       agentsService.pageNumber=agentsService.pageNumber+1;
+       CustomLoader.showLoader(context: context);
+       await agentsService.getMoreAgents(context: context);
+       CustomLoader.hideLoader(context);
+       setState(() {
+
+       });
+      }
+    });
+    setState(() {
+
+    });
     CustomLoader.hideLoader(context);
+
   }
+  final ScrollController agentCont=ScrollController();
   @override
   void initState() {
     // TODO: implement initState
+    agentsService=GetAllAgentsService();
+
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      agentsService=Provider.of<GetAllAgentsService>(context,listen: false);
       _getAllAgentsHandler();
 
     });
@@ -54,33 +76,32 @@ class _GetAllAgentsScreenState extends State<GetAllAgentsScreen> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12.0,vertical: 12.0),
-          child: Consumer<AgentsListProvider>(builder: (context,agent,_){
-            return
-              SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Agents",style: profileStyle,),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      scrollDirection: Axis.vertical,
-                      itemCount:agent.agents!.length,
+          child:
+          // Consumer<AgentsListProvider>(builder: (context,agent,_){
+          //   return
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
 
-                      itemBuilder: (BuildContext,index){
-                    return AgentsListWidget(
-                        agentsList:agent.agents![index]
 
-                    );
+                  ListView.builder(
+                    shrinkWrap: true,
+                    controller: agentCont,
+                    physics: AlwaysScrollableScrollPhysics(),
+                    scrollDirection: Axis.vertical,
+                    itemCount:agentsService.agentsList!.length,
+
+                    itemBuilder: (BuildContext,index){
+                  return AgentsListWidget(
+                      agentsList:agentsService.agentsList![index]
+
+                  );
             }),
-                  ],
-                ),
-              ) ;
-          },),
-        ),
+                ],
+              ),
       ),
-    );
+    ));
 
   }
 }

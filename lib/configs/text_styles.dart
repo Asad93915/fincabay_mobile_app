@@ -36,3 +36,5 @@ const TextStyle accountsStyle=TextStyle(color: lightBlackColor,fontSize: 16.0,he
 const TextStyle lengthStyle=TextStyle(color: whiteColor,fontSize: 14.0,fontWeight: FontWeight.w500);
 const TextStyle accStyle=TextStyle(color: Colors.black45, fontSize: 14.0, height: 2.3);
 const TextStyle signUpStyle=TextStyle(color: lightBlackColor, fontSize: 14.0, fontWeight: FontWeight.w800);
+const TextStyle delStyle=TextStyle(color: lightBlackColor,fontWeight: FontWeight.w700,fontSize: 18.0,);
+const TextStyle delAccStyle=TextStyle(color: Colors.black38,fontSize: 14.0,fontWeight: FontWeight.w500);
